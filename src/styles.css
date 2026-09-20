@@ -61,6 +61,13 @@
 .collection-card{border-color:#c4a56d;}
 .collection-card.SSR{border-color:var(--gold);}
 .collection-card.SR{border-color:#a37c7a;}
+.demo-shell .hero-copy,.demo-shell .hero-copy p,.demo-shell .hero-copy .eyebrow,.demo-shell .identity-copy,.demo-shell .identity-copy span,.demo-shell .hero-choices span,.demo-shell .journey,.demo-shell .journey small,.demo-shell .pity,.demo-shell .pity span,.demo-shell .hint,.demo-shell .pull small{color:var(--red);}
+.demo-shell .hero-copy .eyebrow,.demo-shell .journey small,.demo-shell .hint{color:var(--gold);}
+.demo-shell .hero-choices [aria-pressed=true] span{color:var(--red);font-weight:600;}
+.demo-shell .featured small{color:var(--gold);}
+.demo-shell .pull-area .pull-buttons button small{color:var(--red);}
+.demo-shell .pull-area .pull-buttons .primary small{color:#f5dfb0;}
+.demo-shell .collection-link{color:var(--red);}
 .home-wash{position:absolute;inset:0;z-index:-1;opacity:.78;background:radial-gradient(ellipse at 76% 25%,#d4d9ca 0,#d4d9ca99 18%,transparent 48%),linear-gradient(120deg,#f4efe5 0%,#e5e6da 52%,#cbd2c6 100%);}
 .home-wash:after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(165deg,transparent 0 110px,#52675b12 112px 114px),linear-gradient(180deg,transparent 45%,#30473e18);mix-blend-mode:multiply;}
 .hero-copy{z-index:2;width:42%;}
