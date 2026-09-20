@@ -65,7 +65,7 @@
 .demo-shell .hero-copy .eyebrow,.demo-shell .journey small,.demo-shell .hint{color:var(--gold);}
 .demo-shell .hero-choices [aria-pressed=true] span{color:var(--red);font-weight:600;}
 .demo-shell .featured small{color:var(--gold);}
-.demo-shell .pull-area .pull-buttons button small{color:var(--red);}
+.demo-shell .pull-area .pull-buttons button small{color:var(--gold);}
 .demo-shell .pull-area .pull-buttons .primary small{color:#f5dfb0;}
 .demo-shell .collection-link{color:var(--red);}
 .demo-shell .pull-area{position:relative;}
