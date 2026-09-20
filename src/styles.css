@@ -6,7 +6,7 @@
 @media(max-height:600px) and (orientation:landscape){.hero-choices span{display:none}.hero-art>img{right:9%}.journey{width:180px}}
 @media(orientation:portrait) and (max-width:700px){.rotate{position:fixed;inset:0;z-index:50;background:var(--paper);display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:30px}.rotate span{font-size:70px;color:var(--red);margin-bottom:30px}.rotate h2{font-size:25px}.rotate p{font-size:12px;color:var(--muted)}}
 .home{isolation:isolate;background:#e9e6d9;}
-.demo-shell{position:relative;isolation:isolate;min-height:100dvh;height:100dvh;overflow:hidden;background:#e9e6d9;color:var(--ink);}
+.demo-shell{position:relative;isolation:isolate;min-height:100dvh;height:100dvh;overflow:hidden;background:#e9e6d9 url('../assets/palace-bg.svg') center/cover no-repeat;color:var(--ink);}
 .demo-shell .hero-copy{position:absolute;left:7%;top:11%;padding:0;width:40%;z-index:2;}
 .demo-shell .hero-copy h1{font-size:76px;line-height:1.25;letter-spacing:15px;margin:0 0 18px;font-family:var(--serif);font-weight:400;}
 .demo-shell .hero-copy h1 span{display:block;padding-left:45px;}
