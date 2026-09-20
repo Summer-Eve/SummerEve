@@ -1,0 +1,14 @@
+.pity .ssr-pity{margin-left:0;padding-left:0;color:var(--ink)}
+.pity .sr-pity{margin-left:auto;padding-left:16px;color:var(--muted)}
+.star-rating{--star-fill:#7ba77e;--star-edge:#567c5a;display:inline-grid;grid-template-columns:repeat(var(--star-cols),14px);gap:2px;align-content:center;min-height:30px;vertical-align:middle}
+.star-rating.SSR{--star-fill:#e6b943;--star-edge:#a17a26}
+.star-rating.SR{--star-fill:#aa83ce;--star-edge:#79549d}
+.star-rating.R{--star-fill:#71a9d5;--star-edge:#477ca5}
+.star-rating.N{--star-fill:#87b18a;--star-edge:#577f5a}
+.star-rating .star{width:14px;height:14px;display:block;stroke-linejoin:round;stroke-width:1.4}
+.star-rating .lit{fill:var(--star-fill);stroke:var(--star-edge)}
+.star-rating .unlit{fill:none;stroke:#a5aa9e;stroke-width:1.2}
+.card-name .star-rating{margin-top:3px}
+.detail .star-rating{grid-template-columns:repeat(var(--star-cols),22px);gap:5px;margin:12px 0;min-height:22px}
+.detail .star-rating .star{width:22px;height:22px}
+@media(max-height:600px) and (orientation:landscape){.card-name .star-rating{grid-template-columns:repeat(var(--star-cols),12px);min-height:26px;gap:1px}.card-name .star-rating .star{width:12px;height:12px}}

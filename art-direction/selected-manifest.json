@@ -1,0 +1,46 @@
+{
+  "status": "awaiting-user-art-approval",
+  "generationMode": "built-in image_gen",
+  "characters": [
+    {
+      "id": "chancellor",
+      "role": "女相",
+      "revision": "v3",
+      "original": "selected/chancellor-v3.png",
+      "webAsset": "../assets/chancellor-v3.webp",
+      "promptSet": "v3-female-prompts.json"
+    },
+    {
+      "id": "marshal",
+      "role": "女武将",
+      "revision": "v3",
+      "original": "selected/marshal-v3.png",
+      "webAsset": "../assets/marshal-v3.webp",
+      "promptSet": "v3-female-prompts.json"
+    },
+    {
+      "id": "justice",
+      "role": "廷尉",
+      "revision": "v2",
+      "original": "selected/justice-v2.png",
+      "webAsset": "../assets/justice-v2.webp",
+      "promptSet": "v2-prompts.json"
+    },
+    {
+      "id": "envoy",
+      "role": "鸿胪卿",
+      "revision": "v4",
+      "original": "selected/envoy-v4.png",
+      "webAsset": "../assets/envoy-v4.webp",
+      "promptSet": "v4-envoy-prompt.json"
+    },
+    {
+      "id": "aide",
+      "role": "近臣",
+      "revision": "v2",
+      "original": "selected/aide-v2.png",
+      "webAsset": "../assets/aide-v2.webp",
+      "promptSet": "v2-prompts.json"
+    }
+  ]
+}
