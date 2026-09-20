@@ -42,6 +42,25 @@
 .collection-card.SR{border-color:#8d789f}.collection-card.SR .collection-rarity{color:#756080}.collection-card.R{border-color:#8ba09a}.collection-card.N{border-color:#b8b8a7;}
 @media(max-width:1100px){.demo-shell .hero-carousel{width:min(76vw,700px);height:74%;}.demo-shell .identity-dock{right:2%;bottom:15%;width:245px;}.demo-shell .draw-dock{width:min(650px,78vw);}}
 @media(max-height:600px) and (orientation:landscape){.demo-shell .hero-carousel{top:45%;height:76%;width:min(64vw,640px);}.demo-shell .identity-dock{bottom:17%;}.demo-shell .draw-dock{bottom:2%;width:min(620px,76vw);}.demo-shell .draw-dock .pull-area{padding:8px 10px;}.demo-shell .draw-dock .pull-buttons{gap:24px;}.demo-shell .draw-dock .pull-buttons .pull{flex-basis:220px;}.demo-shell .draw-dock .hint{margin-top:5px;}}
+.demo-shell,.collection-page{--ink:#6f302d;--red:#963e33;--gold:#b48745;--line:#c7a875;color:var(--ink);}
+.demo-shell button,.collection-page button{border-color:var(--gold);color:var(--ink);}
+.demo-shell button:hover,.collection-page button:hover{background:#f0dfbd;}
+.demo-shell .primary,.demo-shell .pull-area .primary{background:var(--red);border-color:var(--gold);color:#fff7e7;}
+.demo-shell .pull-area{border:1px solid #bfa16c;}
+.demo-shell .pull-area .pull-buttons button{background:#fff8e9;border:1px solid var(--gold);color:var(--red);}
+.demo-shell .pull-area .pull-buttons .primary{background:var(--red);color:#fff7e7;}
+.demo-shell .red-seal{background:var(--red);outline-color:var(--gold);}
+.demo-shell .identity-dock{border-left-color:var(--gold);}
+.demo-shell .track span{background:var(--red);}
+.collection-page{background:#f4efe5;}
+.collection-heading h1,.collection-card strong{color:#6f302d;}
+.collection-top,.collection-top button,.collection-link{color:var(--red);}
+.collection-link{border-color:var(--gold);background:#fff8e9;}
+.ring{background:conic-gradient(var(--red) var(--pct),#d8d0bf 0);}
+.ring b{color:var(--red);}
+.collection-card{border-color:#c4a56d;}
+.collection-card.SSR{border-color:var(--gold);}
+.collection-card.SR{border-color:#a37c7a;}
 .home-wash{position:absolute;inset:0;z-index:-1;opacity:.78;background:radial-gradient(ellipse at 76% 25%,#d4d9ca 0,#d4d9ca99 18%,transparent 48%),linear-gradient(120deg,#f4efe5 0%,#e5e6da 52%,#cbd2c6 100%);}
 .home-wash:after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(165deg,transparent 0 110px,#52675b12 112px 114px),linear-gradient(180deg,transparent 45%,#30473e18);mix-blend-mode:multiply;}
 .hero-copy{z-index:2;width:42%;}
