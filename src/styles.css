@@ -23,6 +23,23 @@
 .demo-shell .draw-dock .pull{min-width:0;}
 .demo-shell .draw-dock .pull-buttons .pull{flex:0 1 245px;}
 .demo-shell .identity-dock{right:3%;bottom:13%;z-index:6;}
+.collection-link{display:block;width:100%;margin-top:12px;padding:8px 12px;border:1px solid #b58b55;background:#fff9ee;color:#8f493c;font-size:12px;letter-spacing:2px;}
+.collection-link:hover{background:#f1dfbd;}
+.collection-page{min-height:100dvh;background:#f4efe5;color:var(--ink);padding:34px 5vw 60px;}
+.collection-top{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #cbbfa9;padding-bottom:18px;color:#8f493c;}
+.collection-top button{border:1px solid #b58b55;color:#8f493c;background:#fff9ee;}
+.collection-heading{padding:48px 0 28px;border-bottom:1px solid #cbbfa9;}
+.collection-heading h1{font:42px var(--serif);letter-spacing:8px;margin:0;color:#30473e;display:flex;align-items:center;gap:18px;}
+.collection-heading p{color:var(--muted);font-size:13px;}
+.ring{width:1.2em;height:1.2em;border-radius:50%;display:inline-grid;place-items:center;background:conic-gradient(#984c3e var(--pct),#d8d4c7 0);position:relative;vertical-align:middle;}
+.ring:after{content:"";position:absolute;inset:4px;border-radius:50%;background:#f4efe5;}
+.ring b{position:relative;z-index:1;font:11px Georgia,serif;color:#984c3e;letter-spacing:0;}
+.collection-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:20px;margin-top:28px;}
+.collection-card{position:relative;aspect-ratio:2/3;border:1px solid #c7b98f;background:#ebe7dc;overflow:hidden;}
+.collection-card img{width:100%;height:100%;object-fit:cover;mix-blend-mode:multiply;}
+.collection-card>div{position:absolute;left:0;right:0;bottom:0;padding:22px 10px 10px;background:linear-gradient(transparent,#f4efe5);display:flex;flex-direction:column;gap:4px;}
+.collection-card strong{font:18px var(--serif);}.collection-card small{color:var(--muted);}.collection-rarity{position:absolute;top:8px;left:9px;font:bold italic 16px Georgia;color:#984c3e;}
+.collection-card.SR{border-color:#8d789f}.collection-card.SR .collection-rarity{color:#756080}.collection-card.R{border-color:#8ba09a}.collection-card.N{border-color:#b8b8a7;}
 @media(max-width:1100px){.demo-shell .hero-carousel{width:min(76vw,700px);height:74%;}.demo-shell .identity-dock{right:2%;bottom:15%;width:245px;}.demo-shell .draw-dock{width:min(650px,78vw);}}
 @media(max-height:600px) and (orientation:landscape){.demo-shell .hero-carousel{top:45%;height:76%;width:min(64vw,640px);}.demo-shell .identity-dock{bottom:17%;}.demo-shell .draw-dock{bottom:2%;width:min(620px,76vw);}.demo-shell .draw-dock .pull-area{padding:8px 10px;}.demo-shell .draw-dock .pull-buttons{gap:24px;}.demo-shell .draw-dock .pull-buttons .pull{flex-basis:220px;}.demo-shell .draw-dock .hint{margin-top:5px;}}
 .home-wash{position:absolute;inset:0;z-index:-1;opacity:.78;background:radial-gradient(ellipse at 76% 25%,#d4d9ca 0,#d4d9ca99 18%,transparent 48%),linear-gradient(120deg,#f4efe5 0%,#e5e6da 52%,#cbd2c6 100%);}
