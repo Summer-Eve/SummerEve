@@ -121,3 +121,27 @@ dialog .modal-head,dialog .result-summary,dialog .result-actions{color:#79362f;}
 .draw-dock .pull-area{min-width:420px;}
 @media(max-width:1100px){.hero-carousel{width:47vw;right:2%;}.identity-dock{right:2%;width:270px;}.draw-dock .pull-area{min-width:360px;}.hero-copy{width:46%;}}
 @media(max-height:600px) and (orientation:landscape){.hero-carousel{top:5px;height:calc(100% - 102px);width:43vw;}.identity-dock{bottom:84px;width:245px;padding:9px 12px;}.identity-copy{margin:7px 0;font-size:9px;}.identity-dock .hero-choices img{width:30px;height:34px;}.draw-dock{width:92%;bottom:8px;gap:10px;}.draw-dock .pull-area{min-width:310px;}.draw-dock .journey{flex-basis:180px;}}
+.collection-filters{
+  display:flex;
+  align-items:center;
+  gap:22px;
+  padding:14px 0;
+  border-bottom:1px solid #c7a875;
+  color:#79362f;
+  font-size:12px;
+}
+.collection-filters label{display:flex;align-items:center;gap:8px}
+.collection-filters select{
+  min-width:92px;
+  border:0;
+  border-bottom:1px solid #b48745;
+  border-radius:0;
+  background:rgba(255,249,237,.62);
+  color:#79362f;
+  padding:6px 24px 6px 8px;
+  font:inherit;
+  cursor:pointer;
+}
+.collection-filters select:focus-visible{outline:2px solid #b48745;outline-offset:2px}
+.collection-filters>span{margin-left:auto;color:#a07442}
+@media (max-height:720px){.collection-filters{gap:14px;padding:9px 0;font-size:11px}.collection-filters select{padding-top:4px;padding-bottom:4px}}
