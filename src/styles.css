@@ -94,7 +94,12 @@
 .result-card img{width:100%;height:100%;object-fit:cover;mix-blend-mode:multiply;}
 .result-card>div{position:absolute;inset:auto 0 0;padding:28px 10px 10px;background:linear-gradient(transparent,#f4efe5 42%);display:flex;flex-direction:column;gap:4px;}
 .result-card strong{font:18px var(--serif);color:#79362f;}.result-card em{position:absolute;right:7px;top:7px;background:#963e33;color:#f7e4b4;padding:3px 6px;font-size:10px;font-style:normal;}
-.result-card.SR{border-color:#9c7a80}.result-card.R,.result-card.N{border-color:#bfa979;}
+.result-card.SSR{border-color:#b89a5a;box-shadow:0 0 0 1px rgba(184,154,90,.7),0 0 15px rgba(184,154,90,.48)}
+.result-card.SR{border-color:#9b80ad;box-shadow:0 0 0 1px rgba(155,128,173,.58),0 0 12px rgba(121,84,157,.36)}
+.result-card.R{border-color:#82a9c5}.result-card.N{border-color:#91aa8e}
+.result-card.SSR .collection-rarity{color:#a17a26;text-shadow:0 1px 5px rgba(255,238,180,.9)}
+.result-card.SR .collection-rarity{color:#79549d;text-shadow:0 1px 4px rgba(237,221,255,.9)}
+.result-card.R .collection-rarity{color:#477ca5}.result-card.N .collection-rarity{color:#577f5a}
 dialog .modal-head,dialog .result-summary,dialog .result-actions{color:#79362f;}dialog .modal-head button,dialog .result-actions button{border-color:#b48745;color:#79362f;}dialog .result-actions .primary{background:#963e33;color:#f7e4b4;}
 @media(max-height:650px) and (orientation:landscape){.draw-results{grid-template-columns:repeat(5,minmax(90px,1fr));gap:8px}.result-card{max-height:190px}.result-card strong{font-size:15px}}
 .card-detail{display:grid;grid-template-columns:minmax(180px,38%) 1fr;gap:28px;align-items:center;color:#79362f;}.card-detail>img{width:100%;max-height:62dvh;object-fit:contain;mix-blend-mode:multiply;}.card-detail>div{position:relative}.card-detail .collection-rarity{position:static;display:inline-block;margin-bottom:12px}.card-detail .primary{margin-top:20px;background:#963e33;color:#f7e4b4;border-color:#b48745;}
@@ -275,9 +280,10 @@ dialog.ten-pull-modal{width:min(960px,94vw);height:min(90dvh,680px);max-height:9
 dialog.ten-pull-modal[open]{display:flex;flex-direction:column}
 .ten-pull-modal .modal-head,.ten-pull-modal .result-summary,.ten-pull-modal .result-actions{flex:0 0 auto}
 .ten-pull-modal .result-summary{margin-bottom:8px}
-.ten-pull-modal .draw-results{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:10px;flex:1 1 auto;min-height:0;overflow:hidden}
+.ten-pull-modal .draw-results{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));place-items:center;gap:10px;flex:1 1 auto;min-height:0;overflow:hidden}
 .ten-pull-modal.bonus-result .draw-results{grid-template-columns:repeat(6,minmax(0,1fr))}
-.ten-pull-modal .result-card{width:100%;height:100%;min-width:0;min-height:0;aspect-ratio:auto}
+.ten-pull-modal .result-card{width:auto;height:100%;max-width:100%;min-width:0;min-height:0;aspect-ratio:2/3}
+.ten-pull-modal .result-card img{object-fit:contain;object-position:center}
 .ten-pull-modal .result-card>div{padding:24px 7px 6px;gap:2px}
 .ten-pull-modal .result-card strong{overflow:hidden;font-size:15px;line-height:1.1;text-overflow:ellipsis;white-space:nowrap}
 .ten-pull-modal .result-card small{overflow:hidden;font-size:9px;line-height:1;text-overflow:ellipsis;white-space:nowrap}

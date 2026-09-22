@@ -42,6 +42,10 @@ test('mobile ten-pull overview keeps all cards in a fixed two-row grid',()=>{
  assert.match(appSource,/ten-pull-modal/);
  assert.match(appSource,/bonus-result/);
  assert.match(styleSource,/\.ten-pull-modal \.draw-results\{[^}]*grid-template-columns:repeat\(5/);
+ assert.match(styleSource,/\.ten-pull-modal \.result-card\{[^}]*aspect-ratio:2\/3/);
+ assert.match(styleSource,/\.ten-pull-modal \.result-card img\{[^}]*object-fit:contain/);
+ assert.match(styleSource,/\.result-card\.SSR \.collection-rarity\{color:#a17a26/);
+ assert.match(styleSource,/\.result-card\.SR \.collection-rarity\{color:#79549d/);
  assert.match(styleSource,/grid-template-rows:repeat\(2/);
  assert.match(styleSource,/dialog\.ten-pull-modal\{[^}]*overflow:hidden/);
 });
