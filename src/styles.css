@@ -75,6 +75,7 @@
 .demo-shell .pull-area .pity span:first-child{left:0;text-align:left;}
 .demo-shell .pull-area .pity span:last-child{right:0;text-align:right;}
 .demo-shell .hero-copy .poem,.demo-shell .hero-copy .intro{color:var(--red);}
+.demo-shell .hero-copy .intro{display:block;}
 .demo-shell .identity-copy,.demo-shell .identity-copy span{color:var(--gold);}
 .daily-gift{margin-top:4px;padding:8px 14px;border-color:var(--gold);color:var(--red);background:#fff8e9cc;pointer-events:auto;}
 .draw-results{display:grid;grid-template-columns:repeat(5,minmax(115px,1fr));gap:14px;}
