@@ -19,6 +19,8 @@ test('rules copy preserves rates, guarantees and exchange boundaries',()=>{
  for(const text of ['SSR 1.5%、SR 3.5%、R 25%、N 70%。','SSR最多60抽获得。','每十抽至少获得一张SR','十连中出现的SSR不能替代保底SR','100印记可兑换任意未满星SSR卡一张','余晖可兑换N、R、SR卡'])assert.ok(appSource.includes(text));
 });
 
-test('home wallet exposes all balances and tooltip descriptions',()=>{
- for(const text of ['home-wallet','用于展卷的珍贵道具','每一次展卷可获取一个，满100个可兑换SSR','满星卡溢出时获得的稀有道具，可用于兑换卡面'])assert.ok(appSource.includes(text));
+test('currency tooltips are shared by home, collection and utility pages',()=>{
+ for(const text of ['home-wallet','currency-strip','用于展卷的珍贵道具','每一次展卷可获取一个，满100个可兑换SSR','满星卡溢出时获得的稀有道具，可用于兑换卡面'])assert.ok(appSource.includes(text));
+ assert.match(appSource,/function utilityHeader\(title\).*currencyStrip\(\)/);
+ assert.match(appSource,/collection-page.*currencyStrip\(\).*collection-heading/);
 });
