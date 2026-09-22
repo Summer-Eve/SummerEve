@@ -159,3 +159,113 @@ dialog .modal-head,dialog .result-summary,dialog .result-actions{color:#79362f;}
 .collection-filters select:focus-visible{outline:2px solid #b48745;outline-offset:2px}
 .collection-filters>span{margin-left:auto;color:#a07442}
 @media (max-height:720px){.collection-filters{gap:14px;padding:9px 0;font-size:11px}.collection-filters select{padding-top:4px;padding-bottom:4px}}
+
+/* Touch tooltips and portrait-phone landscape handoff */
+#game-root{min-height:100dvh}
+.wallet-item{border:0!important;background:transparent!important;border-radius:0;margin:0;font-family:inherit;cursor:pointer;appearance:none}
+.wallet-item:hover{transform:none}
+.wallet-item:after{content:none}
+.wallet-tip{position:absolute;top:calc(100% + 10px);right:0;z-index:30;width:max-content;max-width:240px;padding:9px 12px;border:1px solid var(--gold);background:rgba(255,248,233,.97);color:var(--red);font-size:11px;line-height:1.6;font-weight:400;text-align:left;white-space:normal;box-shadow:0 8px 24px rgba(92,48,38,.16);opacity:0;visibility:hidden;transform:translateY(-4px);transition:opacity .16s,transform .16s,visibility .16s;pointer-events:none}
+.wallet-item:hover .wallet-tip,.wallet-item:focus-visible .wallet-tip,.wallet-item.is-open .wallet-tip,.wallet-item[aria-expanded=true] .wallet-tip{opacity:1;visibility:visible;transform:translateY(0)}
+.rotate-countdown{display:inline-block;min-width:1.2em;color:#b48745;font:28px Georgia,serif}
+.rotate small{color:#a07442;letter-spacing:1px}
+@media(hover:none),(pointer:coarse){
+  .wallet-item{min-height:30px}
+  .wallet-item:hover .wallet-tip,.wallet-item:focus .wallet-tip{opacity:0;visibility:hidden;transform:translateY(-4px)}
+  .wallet-item.is-open .wallet-tip,.wallet-item[aria-expanded=true] .wallet-tip{opacity:1!important;visibility:visible!important;transform:translateY(0)!important}
+}
+@media(orientation:landscape) and (pointer:coarse){
+  .side-nav{left:max(16px,env(safe-area-inset-left))}
+  .home-wallet{top:max(8px,env(safe-area-inset-top));right:max(8px,env(safe-area-inset-right))}
+  .demo-shell .draw-dock{bottom:env(safe-area-inset-bottom)}
+}
+
+@media(orientation:portrait) and (max-width:700px){
+  .rotate{display:none}
+  .rotate.is-counting{position:fixed;inset:0;z-index:100;background:linear-gradient(145deg,#f7f0e4,#eadcc6);display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:30px;color:#79362f}
+  .rotate.is-counting:before{content:"";position:absolute;inset:18px;border:1px solid rgba(180,135,69,.55);pointer-events:none}
+  .rotate span{font-size:64px;color:#963e33;margin-bottom:18px;line-height:1}
+  .rotate h2{font-size:26px;letter-spacing:4px;margin-bottom:10px}
+  .rotate p{font-size:13px;color:#79362f;margin-bottom:8px}
+  html.soft-landscape,html.soft-landscape body{width:100%;height:100%;overflow:hidden}
+  html.soft-landscape #game-root{position:fixed;left:0;top:0;width:100dvh;height:100dvw;min-height:0;overflow:hidden;transform-origin:top left;transform:translateX(100dvw) rotate(90deg);background:#f4efe5}
+  html.soft-landscape #app{width:100%;height:100%;overflow:hidden}
+  html.soft-landscape .rotate{display:none}
+  html.soft-landscape .demo-shell{width:100%;height:100%;min-height:100%}
+  html.soft-landscape .side-nav{left:max(7px,env(safe-area-inset-top));width:61px;padding:5px 4px;gap:2px}
+  html.soft-landscape .side-nav button{min-height:38px;padding:6px 2px;gap:1px;font-size:8px;letter-spacing:1px}
+  html.soft-landscape .side-nav button b{font-size:16px}
+  html.soft-landscape .home-wallet{top:6px;right:7px;gap:0;padding:2px 4px}
+  html.soft-landscape .wallet-item{gap:3px;padding:2px 5px}
+  html.soft-landscape .wallet-item small{font-size:8px;letter-spacing:0}
+  html.soft-landscape .wallet-item strong{font-size:13px}
+  html.soft-landscape .wallet-tip{top:calc(100% + 5px);max-width:190px;padding:6px 8px;font-size:9px}
+  html.soft-landscape .demo-shell .hero-copy{left:9%;top:4%;width:30%;padding:0}
+  html.soft-landscape .demo-shell .hero-copy .eyebrow{font-size:8px;letter-spacing:2px;margin-bottom:5px}
+  html.soft-landscape .demo-shell .hero-copy h1{font-size:40px;line-height:1.08;letter-spacing:9px;margin-bottom:4px}
+  html.soft-landscape .demo-shell .hero-copy h1 span{padding-left:28px}
+  html.soft-landscape .demo-shell .hero-title .daily-gift{width:auto;margin:0 0 6px;padding:4px 8px;font-size:9px}
+  html.soft-landscape .demo-shell .hero-copy .poem{font-size:11px;letter-spacing:1px;margin:0 0 5px}
+  html.soft-landscape .demo-shell .hero-copy .intro{font-size:8px;line-height:1.45;margin:0}
+  html.soft-landscape .demo-shell .hero-carousel{left:51%;top:43%;width:48%;height:76%;transform:translate(-50%,-50%)}
+  html.soft-landscape .carousel-dots{gap:3px;padding:2px 0}
+  html.soft-landscape .dot-button{padding:3px}
+  html.soft-landscape .dot-button span{width:5px;height:5px}
+  html.soft-landscape .identity-dock{right:1.5%;bottom:23%;width:185px;padding:7px 9px}
+  html.soft-landscape .featured{gap:8px}
+  html.soft-landscape .red-seal{font-size:17px;padding:2px 5px}
+  html.soft-landscape .featured h2{font-size:18px;margin:1px 0 0;letter-spacing:2px}
+  html.soft-landscape .featured small{font-size:8px}
+  html.soft-landscape .identity-copy{font-size:8px;line-height:1.45;margin:4px 0}
+  html.soft-landscape .identity-dock .hero-choices{gap:4px}
+  html.soft-landscape .identity-dock .hero-choices img{width:24px;height:27px}
+  html.soft-landscape .identity-dock .hero-choices span{display:none}
+  html.soft-landscape .collection-link{width:100%;padding:4px;font-size:9px;margin-top:4px}
+  html.soft-landscape .demo-shell .draw-dock{left:50%;bottom:0;width:66%;transform:translateX(-50%)}
+  html.soft-landscape .demo-shell .draw-dock .pull-area{padding:5px 8px}
+  html.soft-landscape .demo-shell .pull-area .pity{height:12px;margin-bottom:3px;font-size:8px}
+  html.soft-landscape .demo-shell .draw-dock .pull-buttons{gap:20px}
+  html.soft-landscape .demo-shell .draw-dock .pull-buttons .pull{flex-basis:170px;padding:7px 9px;font-size:16px}
+  html.soft-landscape .demo-shell .draw-dock .pull-buttons .pull small{display:inline;margin:0 0 0 4px;font-size:8px}
+  html.soft-landscape .demo-shell .draw-dock .hint{margin-top:3px;font-size:8px}
+  html.soft-landscape .collection-page,html.soft-landscape .utility-page{width:100%;height:100%;min-height:100%;overflow:auto;padding:12px 16px 28px 80px}
+  html.soft-landscape .collection-top{padding-bottom:7px}
+  html.soft-landscape .collection-top .eyebrow{margin:0;font-size:8px}
+  html.soft-landscape .collection-heading{padding:10px 0 7px}
+  html.soft-landscape .collection-heading h1{font-size:25px;letter-spacing:4px;gap:9px}
+  html.soft-landscape .collection-heading p{font-size:9px;margin:3px 0 0}
+  html.soft-landscape .ring{width:35px;height:35px}
+  html.soft-landscape .ring b{font-size:8px}
+  html.soft-landscape .collection-filters{gap:8px;padding:5px 0;font-size:8px}
+  html.soft-landscape .collection-filters label{gap:3px}
+  html.soft-landscape .collection-filters select{min-width:72px;padding:3px 14px 3px 4px;font-size:8px}
+  html.soft-landscape .collection-grid{grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:9px 8px;padding-top:9px}
+  html.soft-landscape .collection-card strong{font-size:14px}
+  html.soft-landscape .collection-card small{font-size:8px}
+  html.soft-landscape .collection-card>div{padding:20px 7px 7px}
+  html.soft-landscape .utility-heading{padding:10px 0 7px}
+  html.soft-landscape .utility-heading h1{font-size:25px;letter-spacing:4px;margin:0}
+  html.soft-landscape .utility-heading p{font-size:9px;margin:2px 0 0}
+  html.soft-landscape .history-table{margin-top:7px}
+  html.soft-landscape .history-row{grid-template-columns:110px 38px 1fr 60px 74px;gap:7px;padding:7px 4px;font-size:8px}
+  html.soft-landscape .history-row time,html.soft-landscape .history-row small{font-size:8px}
+  html.soft-landscape .settings-panels{grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
+  html.soft-landscape .settings-panels>section{padding:10px}
+  html.soft-landscape .settings-panels h2{font-size:17px;margin-bottom:4px}
+  html.soft-landscape .settings-panels h3{font-size:13px}
+  html.soft-landscape .settings-panels p{font-size:8px;line-height:1.45;margin-bottom:5px}
+  html.soft-landscape .setting-row{padding:6px 0;font-size:9px}
+  html.soft-landscape .setting-row small{font-size:7px;margin-top:2px}
+  html.soft-landscape .settings-actions{margin-top:8px;gap:6px}
+  html.soft-landscape .settings-actions button,html.soft-landscape .settings-panels .danger{padding:5px 8px;font-size:8px}
+  html.soft-landscape .settings-panels hr{margin:8px 0}
+  html.soft-landscape dialog{inset:50% auto auto 50%;width:min(82dvh,700px);max-width:none;max-height:84dvw;margin:0;padding:12px 18px;translate:-50% -50%;transform:rotate(90deg);transform-origin:center;overflow:auto}
+  html.soft-landscape dialog .modal-head{padding-bottom:7px;margin-bottom:8px}
+  html.soft-landscape dialog .modal-head h2{font-size:19px}
+  html.soft-landscape dialog .modal-head button{padding:5px 8px;font-size:9px}
+  html.soft-landscape dialog .rules-copy{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  html.soft-landscape dialog .rules-copy h3{font-size:14px;margin:0 0 4px}
+  html.soft-landscape dialog .rules-copy p{font-size:9px;line-height:1.55;margin:0}
+  html.soft-landscape dialog .rules-copy h3:nth-of-type(1),html.soft-landscape dialog .rules-copy h3:nth-of-type(2),html.soft-landscape dialog .rules-copy h3:nth-of-type(3){grid-row:1}
+  html.soft-landscape dialog .rules-copy p:nth-of-type(1),html.soft-landscape dialog .rules-copy p:nth-of-type(2),html.soft-landscape dialog .rules-copy p:nth-of-type(3){grid-row:2}
+}

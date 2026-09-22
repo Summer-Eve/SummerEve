@@ -4,6 +4,8 @@ import {readFileSync} from 'node:fs';
 import {pityCopy,starsMarkup} from '../src/presentation.js';
 
 const appSource=readFileSync(new URL('../src/app2.js',import.meta.url),'utf8');
+const indexSource=readFileSync(new URL('../index.html',import.meta.url),'utf8');
+const styleSource=readFileSync(new URL('../src/styles.css',import.meta.url),'utf8');
 
 test('pity text stays dynamic and uses approved exact wording',()=>{
  assert.deepEqual(pityCopy(41),{ssr:'19抽内可获得SSR',sr:'每10抽必出SR',shared:'单抽与十连均享有保底'});
@@ -23,4 +25,15 @@ test('currency tooltips are shared by home, collection and utility pages',()=>{
  for(const text of ['home-wallet','currency-strip','用于展卷的珍贵道具','每一次展卷可获取一个，满100个可兑换SSR','满星卡溢出时获得的稀有道具，可用于兑换卡面'])assert.ok(appSource.includes(text));
  assert.match(appSource,/function utilityHeader\(title\).*currencyStrip\(\)/);
  assert.match(appSource,/collection-page.*currencyStrip\(\).*collection-heading/);
+ assert.match(appSource,/data-currency-tip/);
+ assert.match(appSource,/function toggleCurrencyTip/);
+ assert.match(styleSource,/\.wallet-item\.is-open \.wallet-tip/);
+});
+
+test('portrait phones get a three-second soft-landscape handoff',()=>{
+ assert.ok(indexSource.includes('日晷需横屏体验'));
+ assert.ok(indexSource.includes('rotate-countdown'));
+ assert.match(appSource,/setTimeout\(enterSoftLandscape,3000\)/);
+ assert.match(appSource,/classList\.add\('soft-landscape'\)/);
+ assert.match(styleSource,/html\.soft-landscape #game-root/);
 });

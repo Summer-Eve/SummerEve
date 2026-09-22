@@ -9,10 +9,17 @@
   <link rel="stylesheet" href="./src/presentation.css">
 </head>
 <body>
-  <div id="app"><p class="boot">日晷 · 正在展卷</p></div>
-  <dialog id="modal" aria-label="游戏面板"></dialog>
-  <div id="toast" role="status" aria-live="polite"></div>
-  <div class="rotate"><span>↻</span><h2>请横置屏幕，展卷入画</h2><p>日晷为横屏体验。旋转设备即可继续。</p></div>
+  <div id="game-root">
+    <div id="app"><p class="boot">日晷 · 正在展卷</p></div>
+    <dialog id="modal" aria-label="游戏面板"></dialog>
+    <div id="toast" role="status" aria-live="polite"></div>
+  </div>
+  <div class="rotate" role="status" aria-live="polite">
+    <span aria-hidden="true">↻</span>
+    <h2>日晷需横屏体验</h2>
+    <p><b class="rotate-countdown">3</b> 秒后自动转为横屏模式</p>
+    <small>也可以现在横置手机</small>
+  </div>
   <noscript>请启用 JavaScript 以游玩日晷。</noscript>
 <script type="module" src="./src/app2.js"></script>
 </body>
