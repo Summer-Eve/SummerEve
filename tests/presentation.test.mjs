@@ -37,3 +37,16 @@ test('portrait phones get a three-second soft-landscape handoff',()=>{
  assert.match(appSource,/classList\.add\('soft-landscape'\)/);
  assert.match(styleSource,/html\.soft-landscape #game-root/);
 });
+
+test('mobile ten-pull overview keeps all cards in a fixed two-row grid',()=>{
+ assert.match(appSource,/ten-pull-modal/);
+ assert.match(appSource,/bonus-result/);
+ assert.match(styleSource,/\.ten-pull-modal \.draw-results\{[^}]*grid-template-columns:repeat\(5/);
+ assert.match(styleSource,/grid-template-rows:repeat\(2/);
+ assert.match(styleSource,/dialog\.ten-pull-modal\{[^}]*overflow:hidden/);
+});
+
+test('full-star detail uses the approved concise wording everywhere',()=>{
+ assert.ok(appSource.includes("full?'已满星'"));
+ assert.ok(!appSource.includes('已经满星'));
+});
