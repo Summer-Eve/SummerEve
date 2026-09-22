@@ -1,0 +1,49 @@
+/* Native phone landscape, including Safari's expanded browser toolbars. */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+.compact-landscape{--mobile-height:var(--visible-height,100dvh);--mobile-left:max(8px,env(safe-area-inset-left));--mobile-right:max(8px,env(safe-area-inset-right));--mobile-bottom:env(safe-area-inset-bottom)}
+.compact-landscape .demo-shell{height:var(--mobile-height);min-height:0}
+.compact-landscape .side-nav{left:var(--mobile-left);top:calc(var(--mobile-height) / 2);width:52px;padding:4px;gap:2px}
+.compact-landscape .side-nav button{min-height:40px;padding:4px 2px;font-size:10px;letter-spacing:1px;gap:1px}
+.compact-landscape .side-nav button b{font-size:17px}
+.compact-landscape .demo-shell .hero-copy{left:calc(var(--mobile-left) + 66px);top:12px;width:25%;padding:0}
+.compact-landscape .demo-shell .hero-copy .eyebrow{font-size:9px;letter-spacing:2px;margin-bottom:7px}
+.compact-landscape .demo-shell .hero-copy h1{font-size:clamp(30px,6vh,42px);line-height:1.08;letter-spacing:8px;margin-bottom:7px}
+.compact-landscape .demo-shell .hero-copy h1 span{display:block;padding-left:24px}
+.compact-landscape .demo-shell .hero-title{align-items:flex-start}
+.compact-landscape .demo-shell .hero-title .daily-gift{width:calc(100% - 24px);margin:0 0 7px 24px;padding:5px 3px;font-size:10px;min-height:30px;white-space:nowrap}
+.compact-landscape .demo-shell .hero-copy .poem{font-size:11px;line-height:1.5;letter-spacing:0;margin:0 0 6px}
+.compact-landscape .demo-shell .hero-copy .intro{display:block;font-size:9px;line-height:1.5;margin:0}
+.compact-landscape .demo-shell .hero-carousel{left:52%;top:8px;bottom:calc(85px + var(--mobile-bottom));width:32%;height:auto;transform:translateX(-50%)}
+.compact-landscape .carousel-dots{padding:2px 0;gap:4px}
+.compact-landscape .dot-button{padding:4px}
+.compact-landscape .home-wallet{top:6px;right:var(--mobile-right);padding:2px 4px;gap:0;max-width:30%;backdrop-filter:none}
+.compact-landscape .wallet-item{padding:2px 4px;gap:3px;min-height:28px}
+.compact-landscape .wallet-item small{font-size:9px;letter-spacing:0}
+.compact-landscape .wallet-item strong{font-size:14px}
+.compact-landscape .demo-shell .identity-dock{top:46px;bottom:auto;right:var(--mobile-right);width:26%;padding:8px 10px;backdrop-filter:none}
+.compact-landscape .featured{gap:9px}
+.compact-landscape .featured h2{font-size:20px;letter-spacing:2px;margin:1px 0 0}
+.compact-landscape .featured small{font-size:9px;letter-spacing:0}
+.compact-landscape .red-seal{font-size:19px;padding:2px 5px}
+.compact-landscape .identity-copy{font-size:9px;line-height:1.4;margin:6px 0}
+.compact-landscape .identity-dock .hero-choices{margin:5px 0 0;gap:6px}
+.compact-landscape .identity-dock .hero-choices img{width:23px;height:26px}
+.compact-landscape .identity-dock .hero-choices span{display:none}
+.compact-landscape .collection-link{padding:5px;margin-top:6px;font-size:10px;min-height:28px}
+.compact-landscape .demo-shell .draw-dock{left:calc(var(--mobile-left) + 62px);right:var(--mobile-right);bottom:var(--mobile-bottom);width:auto;transform:none}
+.compact-landscape .demo-shell .draw-dock .pull-area{padding:5px 10px}
+.compact-landscape .demo-shell .pull-area .pity{height:12px;font-size:9px;margin-bottom:3px}
+.compact-landscape .demo-shell .draw-dock .pull-buttons{gap:28px}
+.compact-landscape .demo-shell .draw-dock .pull-buttons button{flex:0 1 180px;padding:6px 8px;font-size:16px;min-height:32px}
+.compact-landscape .demo-shell .draw-dock .pull-buttons button small{font-size:10px;margin-left:4px}
+.compact-landscape .demo-shell .draw-dock .hint{margin-top:3px;font-size:8px;line-height:1.2}
+.compact-landscape .collection-page,.compact-landscape .utility-page{padding:12px var(--mobile-right) 20px calc(var(--mobile-left) + 66px);min-height:var(--mobile-height)}
+.compact-landscape dialog.ten-pull-modal{height:calc(var(--mobile-height) - 12px);max-height:calc(var(--mobile-height) - 12px)}
+.compact-landscape dialog:not(.ten-pull-modal){max-height:calc(var(--mobile-height) - 16px)}
+@media(max-height:330px){
+ .compact-landscape .identity-copy{margin:4px 0;font-size:8px;line-height:1.3}
+ .compact-landscape .identity-dock .hero-choices{display:none}
+ .compact-landscape .demo-shell .hero-copy h1{font-size:28px}
+ .compact-landscape .demo-shell .hero-copy .eyebrow{margin-bottom:4px}
+ .compact-landscape .demo-shell .hero-copy .poem{font-size:10px;margin-bottom:3px}
+}
