@@ -63,11 +63,13 @@ test('single pull stays complete and offers a one-pull redraw',()=>{
  assert.match(styleSource,/\.single-pull-modal \.result-card img\{[^}]*object-fit:contain/);
 });
 
-test('draw reveal uses a skippable scroll animation and rare-card light effects',()=>{
- assert.ok(appSource.includes('./assets/scroll-reveal.png'));
- assert.match(appSource,/reveal\.addEventListener\('pointerdown',finishDrawReveal/);
+test('the result panel itself uses a skippable scroll animation and rare-card light effects',()=>{
+ assert.ok(styleSource.includes("url('../assets/scroll-reveal.png')"));
+ assert.match(appSource,/document\.addEventListener\('pointerdown',drawRevealSkip/);
  assert.match(appSource,/setTimeout\(finishDrawReveal,2400\)/);
- assert.match(styleSource,/@keyframes scroll-unfurl/);
+ assert.match(styleSource,/dialog\.draw-modal\.scroll-opening/);
+ assert.match(styleSource,/@keyframes scroll-panel-unfurl/);
+ assert.ok(!appSource.includes('scroll-card'));
  assert.match(styleSource,/@keyframes rare-border-spin/);
  assert.match(styleSource,/\.result-card\.SSR:before,\.result-card\.SR:before/);
 });
