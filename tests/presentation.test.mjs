@@ -54,3 +54,20 @@ test('full-star detail uses the approved concise wording everywhere',()=>{
  assert.ok(appSource.includes("full?'已满星'"));
  assert.ok(!appSource.includes('已经满星'));
 });
+
+test('single pull stays complete and offers a one-pull redraw',()=>{
+ assert.match(appSource,/redrawCount=count===1\?1:10/);
+ assert.ok(appSource.includes("count===1?'再展一卷':'再展十卷'"));
+ assert.match(styleSource,/dialog\.single-pull-modal\{[^}]*overflow:hidden/);
+ assert.match(styleSource,/\.single-pull-modal \.result-card\{[^}]*aspect-ratio:2\/3/);
+ assert.match(styleSource,/\.single-pull-modal \.result-card img\{[^}]*object-fit:contain/);
+});
+
+test('draw reveal uses a skippable scroll animation and rare-card light effects',()=>{
+ assert.ok(appSource.includes('./assets/scroll-reveal.png'));
+ assert.match(appSource,/reveal\.addEventListener\('pointerdown',finishDrawReveal/);
+ assert.match(appSource,/setTimeout\(finishDrawReveal,2400\)/);
+ assert.match(styleSource,/@keyframes scroll-unfurl/);
+ assert.match(styleSource,/@keyframes rare-border-spin/);
+ assert.match(styleSource,/\.result-card\.SSR:before,\.result-card\.SR:before/);
+});
