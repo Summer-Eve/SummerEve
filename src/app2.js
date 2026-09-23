@@ -3,7 +3,7 @@ import {newSave,draw,progress,claimDaily,localDay,exchange,validateSave} from '.
 import {loadSave,persist} from './storage.js';
 import {pityCopy,starsMarkup} from './presentation.js';
 const app=document.querySelector('#app'),modal=document.querySelector('#modal'),toast=document.querySelector('#toast'),rotatePrompt=document.querySelector('.rotate'),rotateCountdown=document.querySelector('.rotate-countdown');let state=loadSave().save||newSave(),index=0,view='home',timer,toastTimer,rotateTimer,rotateTick,drawRevealTimer,drawRevealSkip,openCurrency=null,filter={rarity:'all',role:'all',owned:'all'};
-const localReview=['localhost','127.0.0.1'].includes(location.hostname);if(localReview)state.tickets=Math.max(state.tickets,9999);
+const reviewParams=new URLSearchParams(location.search),localReview=['localhost','127.0.0.1'].includes(location.hostname)||reviewParams.get('review')==='1';if(localReview){state.tickets=Math.max(state.tickets,9999);persist(state);}
 const ssr=CARDS.filter(c=>c.rarity==='SSR');
 function sideNav(){return '<nav class="side-nav" aria-label="主要导航"><button data-home '+(view==='home'?'aria-current="page"':'')+'><b>晷</b><span>主页</span></button><button data-collection '+(view==='collection'?'aria-current="page"':'')+'><b>册</b><span>图鉴</span></button><button data-history '+(view==='history'?'aria-current="page"':'')+'><b>录</b><span>纪事</span></button><button data-settings '+(view==='settings'?'aria-current="page"':'')+'><b>设</b><span>设置</span></button></nav>';}
 function currencyItems(){return [['晷签',state.tickets,'用于展卷的珍贵道具'],['印记',state.marks,'每一次展卷可获取一个，满100个可兑换SSR'],['余晖',state.glow,'满星卡溢出时获得的稀有道具，可用于兑换卡面']];}

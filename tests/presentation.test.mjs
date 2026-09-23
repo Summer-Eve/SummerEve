@@ -14,7 +14,8 @@ test('pity text stays dynamic and uses approved exact wording',()=>{
 
 test('local review builds refill tickets without affecting the hosted game',()=>{
  assert.match(appSource,/\['localhost','127\.0\.0\.1'\]\.includes\(location\.hostname\)/);
- assert.match(appSource,/localReview\)state\.tickets=Math\.max\(state\.tickets,9999\)/);
+ assert.match(appSource,/reviewParams\.get\('review'\)==='1'/);
+ assert.match(appSource,/localReview\)\{state\.tickets=Math\.max\(state\.tickets,9999\);persist\(state\);\}/);
 });
 for(const [rarity,max] of Object.entries({SSR:3,SR:5,R:8,N:10})){
  test(`${rarity} renders correct total, lit and empty stars`,()=>{
