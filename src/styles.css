@@ -285,12 +285,19 @@ dialog .modal-head,dialog .result-summary,dialog .result-actions{color:#79362f;}
 }
 
 /* Ten-pull overview: every result stays visible in a balanced 5 × 2 grid. */
-dialog.draw-modal{border:0;background:#f7f0df url('../assets/scroll-reveal.png') center/108% 170% no-repeat;box-shadow:none;padding:clamp(52px,8vh,76px) clamp(64px,7vw,92px) clamp(40px,6vh,58px);overflow:hidden}
+dialog.draw-modal{width:min(960px,96vw);height:min(90dvh,680px);max-height:96dvh;border:0;background:transparent;box-shadow:none;padding:0;overflow:visible}
 dialog.draw-modal::backdrop{background:#213b365e;backdrop-filter:blur(5px)}
-dialog.draw-modal.scroll-opening{animation:scroll-panel-unfurl 2.35s cubic-bezier(.22,.78,.18,1) both}
-dialog.draw-modal.scroll-opening>*{animation:scroll-content-reveal 2.35s ease-out both}
-dialog.ten-pull-modal{width:min(960px,96vw);height:min(90dvh,680px);max-height:96dvh;overflow:hidden}
-dialog.ten-pull-modal[open]{display:flex;flex-direction:column}
+dialog.draw-modal[open]{display:block}
+.scroll-surface{position:absolute;inset:0;display:flex;flex-direction:column;background:#f7f0df url('../assets/scroll-reveal.png') center/108% 170% no-repeat;padding:clamp(52px,8vh,76px) clamp(64px,7vw,92px) clamp(40px,6vh,58px);overflow:hidden}
+.scroll-opening .scroll-surface{animation:scroll-sheet-unroll 2.35s cubic-bezier(.45,0,.55,1) both}
+.scroll-opening .scroll-surface>*{animation:scroll-content-reveal 2.35s ease-out both}
+.scroll-roller{display:none;position:absolute;z-index:20;top:2%;bottom:2%;width:5.6%;border:2px solid #6f4c35;border-radius:22px;background:repeating-linear-gradient(0deg,#8b653e 0 7px,#d9b866 8px 17px,#a2763f 18px 26px);box-shadow:inset 0 0 8px #fff2a3,0 5px 14px #2f180f80;pointer-events:none}
+.scroll-roller:before,.scroll-roller:after{content:"";position:absolute;left:50%;width:132%;aspect-ratio:1;border-radius:50%;translate:-50% 0;background:radial-gradient(circle at 38% 30%,#d2b088,#614331 58%,#281712 100%);box-shadow:0 2px 5px #28171280}
+.scroll-roller:before{top:-2.5%}.scroll-roller:after{bottom:-2.5%}
+.scroll-opening .scroll-roller{display:block}
+.scroll-opening .scroll-roller-left{animation:scroll-roll-left 2.35s cubic-bezier(.45,0,.55,1) both}
+.scroll-opening .scroll-roller-right{animation:scroll-roll-right 2.35s cubic-bezier(.45,0,.55,1) both}
+dialog.ten-pull-modal{overflow:visible}
 .ten-pull-modal .modal-head,.ten-pull-modal .result-summary,.ten-pull-modal .result-actions{flex:0 0 auto}
 .ten-pull-modal .result-summary{margin-bottom:8px}
 .ten-pull-modal .draw-results{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));place-items:center;gap:10px;flex:1 1 auto;min-height:0;overflow:hidden}
@@ -305,19 +312,21 @@ dialog.ten-pull-modal[open]{display:flex;flex-direction:column}
 .ten-pull-modal .result-actions{margin-top:9px}
 
 /* Single pull uses a horizontal result scroll while preserving the card's portrait proportions. */
-dialog.single-pull-modal{width:min(820px,94vw);height:min(76dvh,540px);max-height:90dvh;overflow:hidden}
-dialog.single-pull-modal[open]{display:flex;flex-direction:column}
+dialog.single-pull-modal{overflow:visible}
 .single-pull-modal .modal-head,.single-pull-modal .result-summary,.single-pull-modal .result-actions{flex:0 0 auto}
 .single-pull-modal .draw-results{display:grid;grid-template-columns:1fr;place-items:center;flex:1 1 auto;min-height:0;overflow:hidden}
 .single-pull-modal .result-card{width:auto;height:100%;max-width:100%;min-height:0;aspect-ratio:2/3}
 .single-pull-modal .result-card img{object-fit:contain;object-position:center}
 .single-pull-modal .result-actions button{min-width:128px;font-size:14px;font-weight:600}
 
-@keyframes scroll-panel-unfurl{0%{clip-path:inset(0 49.4% 0 49.4%);filter:brightness(.72)}18%{clip-path:inset(0 46% 0 46%)}72%{clip-path:inset(0 0 0 0);filter:brightness(1)}100%{clip-path:inset(0 0 0 0)}}
+@keyframes scroll-sheet-unroll{0%{clip-path:inset(0 49.2%);filter:brightness(.76)}18%{clip-path:inset(0 45%)}78%{clip-path:inset(0 0);filter:brightness(1)}100%{clip-path:inset(0 0)}}
+@keyframes scroll-roll-left{0%{left:47.2%;background-position:0 0}78%{left:.7%;background-position:0 130px}92%{opacity:1}100%{left:.7%;opacity:0;background-position:0 150px}}
+@keyframes scroll-roll-right{0%{right:47.2%;background-position:0 0}78%{right:.7%;background-position:0 -130px}92%{opacity:1}100%{right:.7%;opacity:0;background-position:0 -150px}}
 @keyframes scroll-content-reveal{0%,36%{opacity:0}68%{opacity:.72}100%{opacity:1}}
 
 @media(max-height:650px) and (orientation:landscape){
-  dialog.ten-pull-modal{width:min(98vw,930px);height:96dvh;max-height:96dvh;padding:34px clamp(38px,6vw,58px) 20px}
+  dialog.draw-modal{width:min(98vw,930px);height:96dvh;max-height:96dvh}
+  dialog.draw-modal .scroll-surface{padding:34px clamp(38px,6vw,58px) 20px}
   .ten-pull-modal .modal-head{margin-bottom:5px;padding-bottom:5px}
   .ten-pull-modal .modal-head h2{font-size:18px}
   .ten-pull-modal .modal-head button{padding:4px 8px;font-size:9px}
@@ -332,7 +341,6 @@ dialog.single-pull-modal[open]{display:flex;flex-direction:column}
   .ten-pull-modal .result-card .star-rating .star{width:7px;height:7px}
   .ten-pull-modal .result-actions{gap:8px;margin-top:5px}
   .ten-pull-modal .result-actions button{padding:4px 10px;font-size:9px}
-  dialog.single-pull-modal{width:min(84vw,720px);height:96dvh;max-height:96dvh;padding:34px clamp(38px,6vw,58px) 20px}
   .single-pull-modal .modal-head{margin-bottom:5px;padding-bottom:5px}
   .single-pull-modal .modal-head h2{font-size:18px}
   .single-pull-modal .modal-head button{padding:5px 9px;font-size:9px}
@@ -342,7 +350,8 @@ dialog.single-pull-modal[open]{display:flex;flex-direction:column}
 }
 
 @media(orientation:portrait) and (max-width:700px){
-  html.soft-landscape dialog.ten-pull-modal{width:min(94dvh,790px);height:88dvw;max-height:none;padding:34px clamp(38px,6dvh,58px) 20px;overflow:hidden}
+  html.soft-landscape dialog.draw-modal{width:min(94dvh,790px);height:88dvw;max-height:none;padding:0;overflow:visible}
+  html.soft-landscape dialog.draw-modal .scroll-surface{padding:34px clamp(38px,6dvh,58px) 20px}
   html.soft-landscape .ten-pull-modal .modal-head{margin-bottom:5px;padding-bottom:5px}
   html.soft-landscape .ten-pull-modal .modal-head h2{font-size:18px}
   html.soft-landscape .ten-pull-modal .result-summary{margin:0 0 4px;font-size:8px;line-height:1.3}
@@ -356,7 +365,6 @@ dialog.single-pull-modal[open]{display:flex;flex-direction:column}
   html.soft-landscape .ten-pull-modal .result-card .star-rating .star{width:7px;height:7px}
   html.soft-landscape .ten-pull-modal .result-actions{gap:8px;margin-top:5px}
   html.soft-landscape .ten-pull-modal .result-actions button{padding:4px 10px;font-size:9px}
-  html.soft-landscape dialog.single-pull-modal{width:min(86dvh,720px);height:84dvw;max-height:none;padding:34px clamp(38px,6dvh,58px) 20px;overflow:hidden}
   html.soft-landscape .single-pull-modal .modal-head{margin-bottom:5px;padding-bottom:5px}
   html.soft-landscape .single-pull-modal .result-summary{margin:0 0 4px;font-size:8px}
   html.soft-landscape .single-pull-modal .result-actions{margin-top:5px;gap:8px}

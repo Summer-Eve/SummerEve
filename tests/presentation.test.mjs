@@ -52,7 +52,7 @@ test('mobile ten-pull overview keeps all cards in a fixed two-row grid',()=>{
  assert.match(styleSource,/\.result-card\.SSR \.collection-rarity\{color:#a17a26/);
  assert.match(styleSource,/\.result-card\.SR \.collection-rarity\{color:#79549d/);
  assert.match(styleSource,/grid-template-rows:repeat\(2/);
- assert.match(styleSource,/dialog\.ten-pull-modal\{[^}]*overflow:hidden/);
+ assert.match(styleSource,/\.ten-pull-modal \.draw-results\{[^}]*overflow:hidden/);
 });
 
 test('full-star detail uses the approved concise wording everywhere',()=>{
@@ -63,7 +63,7 @@ test('full-star detail uses the approved concise wording everywhere',()=>{
 test('single pull stays complete and offers a one-pull redraw',()=>{
  assert.match(appSource,/redrawCount=count===1\?1:10/);
  assert.ok(appSource.includes("count===1?'再展一卷':'再展十卷'"));
- assert.match(styleSource,/dialog\.single-pull-modal\{[^}]*overflow:hidden/);
+ assert.match(styleSource,/dialog\.draw-modal\{[^}]*width:min\(960px,96vw\)[^}]*height:min\(90dvh,680px\)/);
  assert.match(styleSource,/\.single-pull-modal \.result-card\{[^}]*aspect-ratio:2\/3/);
  assert.match(styleSource,/\.single-pull-modal \.result-card img\{[^}]*object-fit:contain/);
 });
@@ -72,8 +72,11 @@ test('the result panel itself uses a skippable scroll animation and rare-card li
  assert.ok(styleSource.includes("url('../assets/scroll-reveal.png')"));
  assert.match(appSource,/document\.addEventListener\('pointerdown',drawRevealSkip/);
  assert.match(appSource,/setTimeout\(finishDrawReveal,2400\)/);
- assert.match(styleSource,/dialog\.draw-modal\.scroll-opening/);
- assert.match(styleSource,/@keyframes scroll-panel-unfurl/);
+ assert.match(appSource,/scroll-roller scroll-roller-left/);
+ assert.match(appSource,/scroll-roller scroll-roller-right/);
+ assert.match(styleSource,/@keyframes scroll-sheet-unroll/);
+ assert.match(styleSource,/@keyframes scroll-roll-left/);
+ assert.match(styleSource,/@keyframes scroll-roll-right/);
  assert.ok(!appSource.includes('scroll-card'));
  assert.match(styleSource,/@keyframes rare-border-spin/);
  assert.match(styleSource,/\.result-card\.SSR:before,\.result-card\.SR:before/);

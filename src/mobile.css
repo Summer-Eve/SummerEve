@@ -38,8 +38,8 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 .compact-landscape .demo-shell .draw-dock .pull-buttons button small{font-size:10px;margin-left:4px}
 .compact-landscape .demo-shell .draw-dock .hint{margin-top:3px;font-size:8px;line-height:1.2}
 .compact-landscape .collection-page,.compact-landscape .utility-page{padding:12px var(--mobile-right) 20px calc(var(--mobile-left) + 66px);min-height:var(--mobile-height)}
-.compact-landscape dialog.ten-pull-modal{height:calc(var(--mobile-height) - 12px);max-height:calc(var(--mobile-height) - 12px)}
-.compact-landscape dialog:not(.ten-pull-modal){max-height:calc(var(--mobile-height) - 16px)}
+.compact-landscape dialog.draw-modal{height:calc(var(--mobile-height) - 12px);max-height:calc(var(--mobile-height) - 12px)}
+.compact-landscape dialog:not(.draw-modal){max-height:calc(var(--mobile-height) - 16px)}
 @media(max-height:330px){
  .compact-landscape .identity-copy{margin:4px 0;font-size:8px;line-height:1.3}
  .compact-landscape .identity-dock .hero-choices{display:none}
