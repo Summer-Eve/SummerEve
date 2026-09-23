@@ -73,8 +73,12 @@ test('the result panel itself uses a skippable scroll animation and rare-card li
  assert.ok(styleSource.includes("url('../assets/scroll-reveal.png')"));
  assert.match(appSource,/document\.addEventListener\('pointerdown',drawRevealSkip/);
  assert.match(appSource,/setTimeout\(finishDrawReveal,2400\)/);
+ assert.match(appSource,/scroll-surface"><div class="scroll-content">/);
+ assert.match(appSource,/result-actions.*result-redraw.*<\/div><\/div><i class="scroll-roller/s);
  assert.match(appSource,/scroll-roller scroll-roller-left/);
  assert.match(appSource,/scroll-roller scroll-roller-right/);
+ assert.match(styleSource,/\.scroll-surface,\.scroll-roller\{background:url\('\.\.\/assets\/scroll-reveal\.png'\)/);
+ assert.ok(!styleSource.includes('repeating-linear-gradient(0deg,#8b653e'));
  assert.match(styleSource,/@keyframes scroll-sheet-unroll/);
  assert.match(styleSource,/@keyframes scroll-roll-left/);
  assert.match(styleSource,/@keyframes scroll-roll-right/);

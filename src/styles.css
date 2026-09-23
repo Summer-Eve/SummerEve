@@ -288,12 +288,14 @@ dialog .modal-head,dialog .result-summary,dialog .result-actions{color:#79362f;}
 dialog.draw-modal{width:min(960px,96vw);height:min(90dvh,680px);max-height:96dvh;border:0;background:transparent;box-shadow:none;padding:0;overflow:visible}
 dialog.draw-modal::backdrop{background:#213b365e;backdrop-filter:blur(5px)}
 dialog.draw-modal[open]{display:block}
-.scroll-surface{position:absolute;inset:0;display:flex;flex-direction:column;background:#f7f0df url('../assets/scroll-reveal.png') center/108% 170% no-repeat;padding:clamp(52px,8vh,76px) clamp(64px,7vw,92px) clamp(40px,6vh,58px);overflow:hidden}
+.scroll-surface,.scroll-roller{background:url('../assets/scroll-reveal.png') center/108% 170% no-repeat}
+.scroll-surface{position:absolute;inset:0;overflow:hidden}
+.scroll-content{position:absolute;inset:19% 10% 20%;display:flex;flex-direction:column;min-height:0;min-width:0}
 .scroll-opening .scroll-surface{animation:scroll-sheet-unroll 2.35s cubic-bezier(.45,0,.55,1) both}
-.scroll-opening .scroll-surface>*{animation:scroll-content-reveal 2.35s ease-out both}
-.scroll-roller{display:none;position:absolute;z-index:20;top:2%;bottom:2%;width:5.6%;border:2px solid #6f4c35;border-radius:22px;background:repeating-linear-gradient(0deg,#8b653e 0 7px,#d9b866 8px 17px,#a2763f 18px 26px);box-shadow:inset 0 0 8px #fff2a3,0 5px 14px #2f180f80;pointer-events:none}
-.scroll-roller:before,.scroll-roller:after{content:"";position:absolute;left:50%;width:132%;aspect-ratio:1;border-radius:50%;translate:-50% 0;background:radial-gradient(circle at 38% 30%,#d2b088,#614331 58%,#281712 100%);box-shadow:0 2px 5px #28171280}
-.scroll-roller:before{top:-2.5%}.scroll-roller:after{bottom:-2.5%}
+.scroll-opening .scroll-content{animation:scroll-content-reveal 2.35s ease-out both}
+.scroll-roller{display:none;position:absolute;inset:0;z-index:20;pointer-events:none}
+.scroll-roller-left{clip-path:inset(0 91% 0 2%)}
+.scroll-roller-right{clip-path:inset(0 2% 0 91%)}
 .scroll-opening .scroll-roller{display:block}
 .scroll-opening .scroll-roller-left{animation:scroll-roll-left 2.35s cubic-bezier(.45,0,.55,1) both}
 .scroll-opening .scroll-roller-right{animation:scroll-roll-right 2.35s cubic-bezier(.45,0,.55,1) both}
@@ -302,7 +304,7 @@ dialog.ten-pull-modal{overflow:visible}
 .ten-pull-modal .result-summary{margin-bottom:8px}
 .ten-pull-modal .draw-results{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));place-items:center;gap:10px;flex:1 1 auto;min-height:0;overflow:hidden}
 .ten-pull-modal.bonus-result .draw-results{grid-template-columns:repeat(6,minmax(0,1fr))}
-.ten-pull-modal .result-card{width:auto;height:84%;max-width:100%;min-width:0;min-height:0;aspect-ratio:2/3}
+.ten-pull-modal .result-card{width:auto;height:95%;max-width:100%;min-width:0;min-height:0;aspect-ratio:2/3}
 .ten-pull-modal .result-card img{object-fit:contain;object-position:center}
 .ten-pull-modal .result-card>div{padding:24px 7px 6px;gap:2px}
 .ten-pull-modal .result-card strong{overflow:hidden;font-size:15px;line-height:1.1;text-overflow:ellipsis;white-space:nowrap}
@@ -319,14 +321,14 @@ dialog.single-pull-modal{overflow:visible}
 .single-pull-modal .result-card img{object-fit:contain;object-position:center}
 .single-pull-modal .result-actions button{min-width:128px;font-size:14px;font-weight:600}
 
-@keyframes scroll-sheet-unroll{0%{clip-path:inset(0 49.2%);filter:brightness(.76)}18%{clip-path:inset(0 45%)}78%{clip-path:inset(0 0);filter:brightness(1)}100%{clip-path:inset(0 0)}}
-@keyframes scroll-roll-left{0%{left:47.2%;background-position:0 0}78%{left:.7%;background-position:0 130px}92%{opacity:1}100%{left:.7%;opacity:0;background-position:0 150px}}
-@keyframes scroll-roll-right{0%{right:47.2%;background-position:0 0}78%{right:.7%;background-position:0 -130px}92%{opacity:1}100%{right:.7%;opacity:0;background-position:0 -150px}}
+@keyframes scroll-sheet-unroll{0%{clip-path:inset(0 49.2%)}18%{clip-path:inset(0 45%)}82%,100%{clip-path:inset(0 0)}}
+@keyframes scroll-roll-left{0%{transform:translateX(46%);opacity:1}82%{transform:translateX(0);opacity:1}100%{transform:translateX(0);opacity:0}}
+@keyframes scroll-roll-right{0%{transform:translateX(-46%);opacity:1}82%{transform:translateX(0);opacity:1}100%{transform:translateX(0);opacity:0}}
 @keyframes scroll-content-reveal{0%,36%{opacity:0}68%{opacity:.72}100%{opacity:1}}
 
 @media(max-height:650px) and (orientation:landscape){
   dialog.draw-modal{width:min(98vw,930px);height:96dvh;max-height:96dvh}
-  dialog.draw-modal .scroll-surface{padding:34px clamp(38px,6vw,58px) 20px}
+  dialog.draw-modal .scroll-content{inset:19% 9% 20%}
   .ten-pull-modal .modal-head{margin-bottom:5px;padding-bottom:5px}
   .ten-pull-modal .modal-head h2{font-size:18px}
   .ten-pull-modal .modal-head button{padding:4px 8px;font-size:9px}
@@ -351,7 +353,7 @@ dialog.single-pull-modal{overflow:visible}
 
 @media(orientation:portrait) and (max-width:700px){
   html.soft-landscape dialog.draw-modal{width:min(94dvh,790px);height:88dvw;max-height:none;padding:0;overflow:visible}
-  html.soft-landscape dialog.draw-modal .scroll-surface{padding:34px clamp(38px,6dvh,58px) 20px}
+  html.soft-landscape dialog.draw-modal .scroll-content{inset:19% 9% 20%}
   html.soft-landscape .ten-pull-modal .modal-head{margin-bottom:5px;padding-bottom:5px}
   html.soft-landscape .ten-pull-modal .modal-head h2{font-size:18px}
   html.soft-landscape .ten-pull-modal .result-summary{margin:0 0 4px;font-size:8px;line-height:1.3}
