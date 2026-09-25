@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {pityCopy,starsMarkup} from '../src/presentation.js';
+import {pityCopy,starsMarkup,collectionPercent} from '../src/presentation.js';
 
 const appSource=readFileSync(new URL('../src/app2.js',import.meta.url),'utf8');
 const indexSource=readFileSync(new URL('../index.html',import.meta.url),'utf8');
@@ -10,6 +10,17 @@ const styleSource=readFileSync(new URL('../src/styles.css',import.meta.url),'utf
 test('pity text stays dynamic and uses approved exact wording',()=>{
  assert.deepEqual(pityCopy(41),{ssr:'19抽内可获得SSR',sr:'每10抽必出SR',shared:'单抽与十连均享有保底'});
  assert.equal(pityCopy(0).ssr,'60抽内可获得SSR');assert.equal(pityCopy(59).ssr,'1抽内可获得SSR');
+});
+
+test('collection meter weights every lit star equally and formats two decimals',()=>{
+ assert.equal(collectionPercent({copies:0,max:790}),'0.00');
+ assert.equal(collectionPercent({copies:1,max:790}),'0.13');
+ assert.equal(collectionPercent({copies:395,max:790}),'50.00');
+ assert.equal(collectionPercent({copies:790,max:790}),'100.00');
+ assert.equal(collectionPercent({copies:999,max:790}),'100.00');
+ assert.match(appSource,/progressRingMarkup\(p,'collection'\)/);
+ assert.match(appSource,/progressRingMarkup\(p,'home'\)/);
+ assert.match(appSource,/图鉴总收集度/);
 });
 
 test('local review builds refill tickets without affecting the hosted game',()=>{

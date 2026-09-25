@@ -4,6 +4,11 @@ export function pityCopy(pity) {
   return {ssr:`${RULES.pity-pity}抽内可获得SSR`,sr:'每10抽必出SR',shared:'单抽与十连均享有保底'};
 }
 
+export function collectionPercent({copies,max}) {
+  if (!max) return '0.00';
+  return (Math.min(max,Math.max(0,copies))/max*100).toFixed(2);
+}
+
 export function starsMarkup(rarity,owned) {
   const max=RULES.caps[rarity];
   const count=Math.min(max,Math.max(0,Math.floor(owned)));

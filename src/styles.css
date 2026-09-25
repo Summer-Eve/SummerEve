@@ -368,3 +368,26 @@ dialog.single-pull-modal{overflow:visible}
   html.soft-landscape .single-pull-modal .result-actions{margin-top:5px;gap:8px}
   html.soft-landscape .single-pull-modal .result-actions button{min-width:92px;padding:5px 10px;font-size:9px}
 }
+
+/* One star-weighted collection meter, shared by home and the collection page. */
+.progress-ring{--ring-size:76px;position:relative;isolation:isolate;flex:none;display:block;width:var(--ring-size);height:var(--ring-size);padding:0;border:0;border-radius:50%;background:conic-gradient(var(--red) var(--pct),#d8d0bf 0);color:var(--red);cursor:pointer;letter-spacing:0;text-align:center;appearance:none}
+.progress-ring::before{content:"";position:absolute;inset:6px;z-index:-1;border-radius:50%;background:#fff9ee}
+.progress-ring:hover{background:conic-gradient(var(--red) var(--pct),#d8d0bf 0);transform:none}
+.progress-ring:active{transform:none}
+.progress-ring-label{position:absolute;top:16px;left:15px;font:10px/1 "Microsoft YaHei","PingFang SC",sans-serif;white-space:nowrap;color:var(--red)}
+.progress-ring strong{position:absolute;top:37px;left:0;width:100%;font:12px/1 Georgia,serif;color:var(--red);white-space:nowrap}
+.progress-tip{position:absolute;top:calc(100% + 7px);right:0;z-index:40;width:max-content;padding:7px 10px;border:1px solid var(--gold);background:#fff9ee;color:var(--red);font:11px/1.5 "Microsoft YaHei","PingFang SC",sans-serif;box-shadow:0 8px 24px #5c302629;opacity:0;visibility:hidden;transform:translateY(-4px);transition:opacity .16s,transform .16s,visibility .16s;pointer-events:none}
+.progress-ring:hover .progress-tip,.progress-ring:focus-visible .progress-tip,.progress-ring.is-open .progress-tip{opacity:1;visibility:visible;transform:translateY(0)}
+.collection-heading .progress-ring{--ring-size:76px}
+.identity-dock .featured .home-ring{--ring-size:68px;margin-left:auto}
+.home-ring .progress-ring-label{top:14px;left:12px;font-size:9px}
+.home-ring strong{top:33px;font-size:11px}
+@media (hover:none){.progress-ring:hover .progress-tip,.progress-ring:focus .progress-tip{opacity:0;visibility:hidden;transform:translateY(-4px)}.progress-ring.is-open .progress-tip{opacity:1;visibility:visible;transform:translateY(0)}}
+@media(max-width:1100px){.identity-dock .featured .home-ring{--ring-size:56px}.home-ring .progress-ring-label{top:12px;left:9px;font-size:8px}.home-ring strong{top:27px;font-size:9px}}
+@media(max-height:600px) and (orientation:landscape){.identity-dock .featured .home-ring{--ring-size:50px}.home-ring .progress-ring-label{top:10px;left:8px;font-size:7px}.home-ring strong{top:24px;font-size:8px}.collection-heading .progress-ring{--ring-size:64px}.collection-heading .progress-ring-label{top:13px;left:12px;font-size:8px}.collection-heading .progress-ring strong{top:31px;font-size:10px}}
+html.soft-landscape .collection-heading .progress-ring{--ring-size:48px}
+html.soft-landscape .collection-heading .progress-ring-label{top:10px;left:9px;font-size:7px}
+html.soft-landscape .collection-heading .progress-ring strong{top:23px;font-size:8px}
+html.soft-landscape .identity-dock .featured .home-ring{--ring-size:46px}
+html.soft-landscape .home-ring .progress-ring-label{top:9px;left:8px;font-size:7px}
+html.soft-landscape .home-ring strong{top:22px;font-size:7px}
