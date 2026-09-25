@@ -104,7 +104,8 @@ test('the result panel itself uses a skippable scroll animation and rarity halos
  assert.match(appSource,/r\.after>=c\.max\?' full-star'/);
  assert.match(appSource,/scroll-skip-hint/);
  assert.match(styleSource,/dialog\.draw-modal\.scroll-opening \.scroll-skip-hint\{opacity:0\}/);
- assert.match(styleSource,/\.demo-shell \.identity-dock\{top:auto;right:3%;bottom:22%;width:min\(380px,30vw\)/);
+ assert.match(styleSource,/\.demo-shell \.identity-dock\{top:auto;right:3%;bottom:26%;width:min\(380px,30vw\);height:auto;aspect-ratio:13\/16/);
+ assert.match(styleSource,/grid-template-rows:auto minmax\(0,1fr\) auto auto/);
  assert.doesNotMatch(appSource,/收入图鉴<\/button>/);
  assert.match(appSource,/if\(root===modal&&modal\.classList\.contains\('draw-modal'\)\)/);
 });
