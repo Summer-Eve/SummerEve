@@ -80,7 +80,7 @@ test('single pull stays complete and offers a one-pull redraw',()=>{
  assert.match(styleSource,/\.single-pull-modal \.result-card img\{[^}]*object-fit:contain/);
 });
 
-test('the result panel itself uses a skippable scroll animation and rare-card light effects',()=>{
+test('the result panel itself uses a skippable scroll animation and rarity halos',()=>{
  assert.ok(styleSource.includes("url('../assets/scroll-reveal.png')"));
  assert.match(appSource,/document\.addEventListener\('pointerdown',drawRevealSkip/);
  assert.match(appSource,/setTimeout\(finishDrawReveal,2400\)/);
@@ -95,6 +95,14 @@ test('the result panel itself uses a skippable scroll animation and rare-card li
  assert.match(styleSource,/@keyframes scroll-sheet-unroll/);
  assert.ok(!appSource.includes('scroll-core'));
  assert.ok(!appSource.includes('scroll-card'));
- assert.match(styleSource,/@keyframes rare-border-spin/);
- assert.match(styleSource,/\.result-card\.SSR:before,\.result-card\.SR:before/);
+ assert.doesNotMatch(styleSource,/rare-border-spin/);
+ assert.match(styleSource,/\.result-card\.SSR,\.result-card\.SR\{border-color:var\(--card-halo\)/);
+ assert.match(styleSource,/\.collection-card\.full-star,\.result-card\.full-star/);
+ assert.match(styleSource,/\.wallet-item strong,\.progress-ring strong\{font-family:Arial/);
+ assert.match(styleSource,/font-variant-numeric:tabular-nums lining-nums/);
+ assert.match(appSource,/n>=c\.max\?' full-star'/);
+ assert.match(appSource,/r\.after>=c\.max\?' full-star'/);
+ assert.match(appSource,/scroll-skip-hint/);
+ assert.doesNotMatch(appSource,/收入图鉴<\/button>/);
+ assert.match(appSource,/if\(root===modal&&modal\.classList\.contains\('draw-modal'\)\)/);
 });

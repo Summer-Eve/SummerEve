@@ -100,15 +100,6 @@
 .result-card.SSR .collection-rarity{color:#a17a26;text-shadow:0 1px 5px rgba(255,238,180,.9)}
 .result-card.SR .collection-rarity{color:#79549d;text-shadow:0 1px 4px rgba(237,221,255,.9)}
 .result-card.R .collection-rarity{color:#477ca5}.result-card.N .collection-rarity{color:#577f5a}
-.result-card.SSR:before,.result-card.SR:before{content:"";position:absolute;inset:0;z-index:8;padding:2px;background:conic-gradient(from var(--rare-angle),transparent 0 12%,var(--rare-light) 18%,#fff8d8 22%,var(--rare-light) 27%,transparent 34% 62%,var(--rare-light) 70%,transparent 78%);pointer-events:none;mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);mask-composite:exclude;-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;animation:rare-border-spin 2.4s linear infinite}
-.result-card.SSR:after,.result-card.SR:after{content:"";position:absolute;inset:0;z-index:7;pointer-events:none;background:radial-gradient(circle at 12% 18%,var(--rare-spark) 0 1px,transparent 2px),radial-gradient(circle at 88% 27%,var(--rare-spark) 0 1.5px,transparent 2.5px),radial-gradient(circle at 20% 82%,var(--rare-spark) 0 1px,transparent 2px),radial-gradient(circle at 78% 73%,var(--rare-spark) 0 1.3px,transparent 2.3px);animation:rare-sparkle 1.8s ease-in-out infinite alternate}
-.result-card.SSR{--rare-light:#e7bc45;--rare-spark:#fff3a5;animation:ssr-glow 1.9s ease-in-out infinite alternate}
-.result-card.SR{--rare-light:#a66be8;--rare-spark:#e8c9ff;animation:sr-glow 1.9s ease-in-out infinite alternate}
-@property --rare-angle{syntax:"<angle>";initial-value:0deg;inherits:false}
-@keyframes rare-border-spin{to{--rare-angle:360deg}}
-@keyframes rare-sparkle{from{opacity:.28;filter:brightness(.9)}to{opacity:1;filter:brightness(1.55)}}
-@keyframes ssr-glow{from{box-shadow:0 0 4px #cfa73a,0 0 9px #d7a92f80}to{box-shadow:0 0 8px #fff0a8,0 0 22px #e3b83c,0 0 34px #b9852173}}
-@keyframes sr-glow{from{box-shadow:0 0 4px #8050bd,0 0 9px #8050bd7d}to{box-shadow:0 0 8px #e1c0ff,0 0 20px #9a5fe0,0 0 32px #6e39a66b}}
 dialog .modal-head,dialog .result-summary,dialog .result-actions{color:#79362f;}dialog .modal-head button,dialog .result-actions button{border-color:#b48745;color:#79362f;}dialog .result-actions .primary{background:#963e33;color:#f7e4b4;}
 @media(max-height:650px) and (orientation:landscape){.draw-results{grid-template-columns:repeat(5,minmax(90px,1fr));gap:8px}.result-card{max-height:190px}.result-card strong{font-size:15px}}
 .card-detail{display:grid;grid-template-columns:minmax(180px,38%) 1fr;gap:28px;align-items:center;color:#79362f;}.card-detail>img{width:100%;max-height:62dvh;object-fit:contain;mix-blend-mode:multiply;}.card-detail>div{position:relative}.card-detail .collection-rarity{position:static;display:inline-block;margin-bottom:12px}.card-detail .primary{margin-top:20px;background:#963e33;color:#f7e4b4;border-color:#b48745;}
@@ -391,3 +382,23 @@ html.soft-landscape .collection-heading .progress-ring strong{top:23px;font-size
 html.soft-landscape .identity-dock .featured .home-ring{--ring-size:46px}
 html.soft-landscape .home-ring .progress-ring-label{top:9px;left:8px;font-size:7px}
 html.soft-landscape .home-ring strong{top:22px;font-size:7px}
+
+/* Align all counters on lining, tabular digits instead of mixed serif numerals. */
+.wallet-item{align-items:center}
+.wallet-item strong,.progress-ring strong{font-family:Arial,"Microsoft YaHei","PingFang SC",sans-serif;font-variant-numeric:tabular-nums lining-nums;font-feature-settings:"tnum" 1,"lnum" 1;line-height:1}
+
+/* A steady, rarity-colored fluorescence stays outside the artwork. */
+.collection-card.SSR,.result-card.SSR{--card-halo:#d7aa49;--card-halo-soft:rgba(215,170,73,.6)}
+.collection-card.SR,.result-card.SR{--card-halo:#ae78d4;--card-halo-soft:rgba(174,120,212,.55)}
+.collection-card.R,.result-card.R{--card-halo:#6da9d1;--card-halo-soft:rgba(109,169,209,.5)}
+.collection-card.N,.result-card.N{--card-halo:#77b28c;--card-halo-soft:rgba(119,178,140,.48)}
+.collection-card.full-star,.result-card.full-star{border-color:var(--card-halo);box-shadow:0 0 0 1px var(--card-halo),0 0 9px 2px var(--card-halo-soft),0 0 22px 5px var(--card-halo-soft)}
+.result-card.SSR,.result-card.SR{border-color:var(--card-halo);box-shadow:0 0 0 1px var(--card-halo),0 0 9px 2px var(--card-halo-soft),0 0 19px 4px var(--card-halo-soft);animation:none}
+.result-card.SSR.full-star,.result-card.SR.full-star{box-shadow:0 0 0 1px var(--card-halo),0 0 12px 3px var(--card-halo-soft),0 0 25px 6px var(--card-halo-soft)}
+
+/* The scroll itself owns the sole action; tapping anywhere else collects it. */
+dialog.draw-modal .result-actions{justify-content:center}
+dialog.draw-modal .result-actions .result-redraw{min-width:172px;min-height:42px;padding:9px 26px;font:18px/1.2 var(--serif);letter-spacing:2px}
+dialog.draw-modal .scroll-skip-hint{position:absolute;left:0;right:0;bottom:-28px;z-index:21;margin:0;text-align:center;color:#e7bf72;font:18px/1.2 var(--serif);letter-spacing:3px;text-shadow:0 1px 2px #3d251f,0 2px 8px #3d251f;pointer-events:none}
+@media(max-height:650px) and (orientation:landscape){dialog.draw-modal .result-actions .result-redraw{min-width:118px;min-height:28px;padding:5px 12px;font-size:12px}dialog.draw-modal .scroll-skip-hint{bottom:-16px;font-size:10px;letter-spacing:1px}}
+@media(orientation:portrait) and (max-width:700px){html.soft-landscape dialog.draw-modal .result-actions .result-redraw{min-width:100px;min-height:26px;padding:4px 10px;font-size:10px}html.soft-landscape dialog.draw-modal .scroll-skip-hint{bottom:-12px;font-size:9px;letter-spacing:1px}}
