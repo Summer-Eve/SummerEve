@@ -399,6 +399,12 @@ html.soft-landscape .home-ring strong{top:22px;font-size:7px}
 /* The scroll itself owns the sole action; tapping anywhere else collects it. */
 dialog.draw-modal .result-actions{justify-content:center}
 dialog.draw-modal .result-actions .result-redraw{min-width:172px;min-height:42px;padding:9px 26px;font:18px/1.2 var(--serif);letter-spacing:2px}
-dialog.draw-modal .scroll-skip-hint{position:absolute;left:0;right:0;bottom:-28px;z-index:21;margin:0;text-align:center;color:#e7bf72;font:18px/1.2 var(--serif);letter-spacing:3px;text-shadow:0 1px 2px #3d251f,0 2px 8px #3d251f;pointer-events:none}
-@media(max-height:650px) and (orientation:landscape){dialog.draw-modal .result-actions .result-redraw{min-width:118px;min-height:28px;padding:5px 12px;font-size:12px}dialog.draw-modal .scroll-skip-hint{bottom:-16px;font-size:10px;letter-spacing:1px}}
-@media(orientation:portrait) and (max-width:700px){html.soft-landscape dialog.draw-modal .result-actions .result-redraw{min-width:100px;min-height:26px;padding:4px 10px;font-size:10px}html.soft-landscape dialog.draw-modal .scroll-skip-hint{bottom:-12px;font-size:9px;letter-spacing:1px}}
+dialog.draw-modal .scroll-skip-hint{position:absolute;left:0;right:0;bottom:3.5%;z-index:21;margin:0;text-align:center;color:#e7bf72;font:18px/1.2 var(--serif);letter-spacing:3px;text-shadow:0 1px 2px #3d251f,0 2px 8px #3d251f;pointer-events:none;opacity:1}
+dialog.draw-modal.scroll-opening .scroll-skip-hint{opacity:0}
+@media(max-height:650px) and (orientation:landscape){dialog.draw-modal .result-actions .result-redraw{min-width:118px;min-height:28px;padding:5px 12px;font-size:12px}dialog.draw-modal .scroll-skip-hint{bottom:3%;font-size:10px;letter-spacing:1px}}
+@media(orientation:portrait) and (max-width:700px){html.soft-landscape dialog.draw-modal .result-actions .result-redraw{min-width:100px;min-height:26px;padding:4px 10px;font-size:10px}html.soft-landscape dialog.draw-modal .scroll-skip-hint{bottom:2.5%;font-size:9px;letter-spacing:1px}}
+
+/* Keep the home collection preview anchored above the draw controls. */
+.demo-shell .identity-dock{top:auto;bottom:clamp(102px,17vh,145px)}
+@media(max-height:600px) and (orientation:landscape){.demo-shell .identity-dock{top:auto;bottom:max(74px,14vh)}}
+html.soft-landscape .demo-shell .identity-dock{top:auto;bottom:clamp(60px,20vh,78px)}

@@ -20,7 +20,7 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 .compact-landscape .wallet-item{padding:2px 4px;gap:3px;min-height:28px}
 .compact-landscape .wallet-item small{font-size:9px;letter-spacing:0}
 .compact-landscape .wallet-item strong{font-size:14px}
-.compact-landscape .demo-shell .identity-dock{top:46px;bottom:auto;right:var(--mobile-right);width:26%;padding:8px 10px;backdrop-filter:none}
+.compact-landscape .demo-shell .identity-dock{top:auto;bottom:calc(66px + var(--mobile-bottom));right:var(--mobile-right);width:26%;padding:8px 10px;backdrop-filter:none}
 .compact-landscape .featured{gap:9px}
 .compact-landscape .featured h2{font-size:20px;letter-spacing:2px;margin:1px 0 0}
 .compact-landscape .featured small{font-size:9px;letter-spacing:0}
