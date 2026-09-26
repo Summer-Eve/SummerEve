@@ -104,7 +104,7 @@ test('the result panel itself uses a skippable scroll animation and rarity halos
  assert.match(appSource,/r\.after>=c\.max\?' full-star'/);
  assert.match(appSource,/scroll-skip-hint/);
  assert.match(styleSource,/dialog\.draw-modal\.scroll-opening \.scroll-skip-hint\{opacity:0\}/);
- assert.match(styleSource,/\.demo-shell \.identity-dock\{top:auto;right:3%;bottom:22%;width:min\(510px,34vw\);height:auto;aspect-ratio:8\/7/);
+ assert.match(styleSource,/\.demo-shell \.identity-dock\{top:auto;right:3%;bottom:23%;width:min\(390px,32vw\);height:auto;aspect-ratio:8\/7/);
  assert.match(styleSource,/grid-template-rows:repeat\(4,auto\);align-content:space-between/);
  assert.match(appSource,/data-i="'\+i\+'" aria-pressed="'\+\(i===index\)/);
  assert.match(styleSource,/\.demo-shell \.hero-choices button\[aria-pressed="true"\] img\{filter:none;opacity:1;transform:scale\(1\.12\)/);
