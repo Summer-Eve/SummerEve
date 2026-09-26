@@ -39,6 +39,13 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 .compact-landscape .demo-shell .draw-dock .hint{margin-top:3px;font-size:8px;line-height:1.2}
 .compact-landscape .collection-page,.compact-landscape .utility-page{padding:12px var(--mobile-right) 20px calc(var(--mobile-left) + 66px);min-height:var(--mobile-height)}
 .compact-landscape dialog.draw-modal{height:calc(var(--mobile-height) - 12px);max-height:calc(var(--mobile-height) - 12px)}
+.compact-landscape dialog.draw-modal .scroll-content{inset:15% 8% 19%}
+.compact-landscape .ten-pull-modal .result-card>div{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;padding:5px 3px 2px;gap:0 2px}
+.compact-landscape .ten-pull-modal .result-card>div small{min-width:0;text-overflow:ellipsis;white-space:nowrap;overflow:hidden}
+.compact-landscape .ten-pull-modal .result-card .star-rating{grid-column:1 / -1}
+.compact-landscape .single-pull-modal .result-card>div{padding:8px 6px 4px;gap:1px}
+.compact-landscape .single-pull-modal .result-card .star-rating{grid-template-columns:repeat(var(--star-cols),10px);min-height:10px;gap:1px}
+.compact-landscape .single-pull-modal .result-card .star-rating .star{width:10px;height:10px}
 .compact-landscape dialog:not(.draw-modal){max-height:calc(var(--mobile-height) - 16px)}
 @media(max-height:330px){
  .compact-landscape .identity-copy{margin:4px 0;font-size:8px;line-height:1.3}
@@ -46,4 +53,26 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
  .compact-landscape .demo-shell .hero-copy h1{font-size:28px}
  .compact-landscape .demo-shell .hero-copy .eyebrow{margin-bottom:4px}
  .compact-landscape .demo-shell .hero-copy .poem{font-size:10px;margin-bottom:3px}
+}
+
+/* The portrait-phone UI is rotated into landscape. Reserve the space beside the
+   navigation rail and give the scroll's two card rows their own full-height area. */
+@media (orientation:portrait) and (max-width:700px){
+ html.soft-landscape .demo-shell .hero-copy{left:max(92px,12%);width:27%}
+ html.soft-landscape .demo-shell .hero-copy .poem,
+ html.soft-landscape .demo-shell .hero-copy .intro{max-width:100%}
+ html.soft-landscape dialog.draw-modal{height:96dvw}
+ html.soft-landscape dialog.draw-modal .scroll-content{inset:15% 8% 19%}
+ html.soft-landscape .ten-pull-modal .draw-results{gap:4px;overflow:visible}
+ html.soft-landscape .single-pull-modal .draw-results{overflow:visible}
+ html.soft-landscape .ten-pull-modal .result-card{height:94%;max-height:100%}
+ html.soft-landscape .single-pull-modal .result-card{height:96%;max-height:100%}
+ html.soft-landscape .ten-pull-modal .result-card>div{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;padding:5px 3px 2px;gap:0 2px}
+ html.soft-landscape .ten-pull-modal .result-card>div small{min-width:0;text-overflow:ellipsis;white-space:nowrap;overflow:hidden}
+ html.soft-landscape .ten-pull-modal .result-card .star-rating{grid-column:1 / -1}
+ html.soft-landscape .single-pull-modal .result-card>div{padding:8px 6px 4px;gap:1px}
+ html.soft-landscape .single-pull-modal .result-card strong{font-size:13px}
+ html.soft-landscape .single-pull-modal .result-card small{font-size:9px}
+ html.soft-landscape .single-pull-modal .result-card .star-rating{grid-template-columns:repeat(var(--star-cols),10px);min-height:10px;gap:1px}
+ html.soft-landscape .single-pull-modal .result-card .star-rating .star{width:10px;height:10px}
 }

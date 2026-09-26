@@ -34,7 +34,21 @@ function toggleProgressTip(item){openProgress=!item.classList.contains('is-open'
 [app,modal].forEach(root=>root.addEventListener('click',e=>{if(root===modal&&modal.classList.contains('draw-modal')){if(skipRevealClick){skipRevealClick=false;return;}const redraw=e.target.closest('[data-redraw]');if(redraw&&!redraw.disabled){doDraw(Number(redraw.dataset.redraw));return;}finishDrawReveal();modal.close();return;}const b=e.target.closest('button');if(!b)return;if(b.dataset.currencyTip!==undefined){closeProgressTip();toggleCurrencyTip(b);return;}if(b.dataset.progressTip!==undefined){closeCurrencyTips();toggleProgressTip(b);return;}closeCurrencyTips();closeProgressTip();if(b.dataset.close!==undefined){modal.close();return;}if(b.dataset.rules!==undefined){showRules();return;}if(b.dataset.reset!==undefined){showReset();return;}if(b.dataset.confirmReset!==undefined){state=newSave();persist(state);modal.close();render();notify('进度已重置。');return;}if(b.dataset.export!==undefined){exportSave();return;}if(b.dataset.import!==undefined){importSave();return;}if(b.dataset.history!==undefined){view='history';clearInterval(timer);timer=null;render();return;}if(b.dataset.settings!==undefined){view='settings';clearInterval(timer);timer=null;render();return;}if(b.dataset.card){showDetail(b.dataset.card);return;}if(b.dataset.exchange){try{exchange(state,b.dataset.exchange);persist(state);render();showDetail(b.dataset.exchange);notify('兑换成功，已收入图鉴。');}catch(error){notify(error.message);}return;}if(b.dataset.redraw){doDraw(Number(b.dataset.redraw));return;}if(b.dataset.daily!==undefined){try{const amount=claimDaily(state);persist(state);render();notify('已领取 '+amount+' 晷签。');}catch(error){notify(error.message);}return;}if(b.dataset.collection!==undefined){view='collection';clearInterval(timer);timer=null;render();return;}if(b.dataset.home!==undefined){view='home';render();start();return;}if(b.dataset.i!==undefined){index=Number(b.dataset.i);render();}if(b.dataset.draw){doDraw(Number(b.dataset.draw));}}));
 document.addEventListener('pointerdown',e=>{if(!e.target.closest('.wallet-item'))closeCurrencyTips();if(!e.target.closest('.progress-ring'))closeProgressTip();});
 app.addEventListener('change',e=>{const filterKey=e.target.dataset.filter;if(filterKey){filter[filterKey]=e.target.value;render();return;}const key=e.target.dataset.setting;if(!key)return;state.settings[key]=e.target.checked;persist(state);document.documentElement.classList.toggle('reduced',state.settings.reduced);if(key==='reduced'){clearInterval(timer);timer=null;if(!state.settings.reduced)start();}notify('设置已保存。');});
-function start(){if(timer||state.settings.reduced||matchMedia('(prefers-reduced-motion: reduce)').matches)return;timer=setInterval(()=>{if(view==='home'){index=(index+1)%ssr.length;render();}},4200);}
+function advanceHomeCarousel(){
+ if(view!=='home')return;
+ const shell=app.querySelector('.demo-shell');if(!shell)return;
+ index=(index+1)%ssr.length;
+ const character=CHARACTERS[ssr[index].characterIndex];
+ shell.querySelectorAll('.carousel-slide').forEach((slide,i)=>slide.classList.toggle('active',i===index));
+ shell.querySelectorAll('.carousel-dots .dot-button').forEach((dot,i)=>dot.setAttribute('aria-current',String(i===index)));
+ shell.querySelectorAll('.hero-choices button').forEach((choice,i)=>choice.setAttribute('aria-pressed',String(i===index)));
+ shell.querySelector('.hero-copy .poem').textContent=character.motto;
+ shell.querySelector('.featured .red-seal').textContent=character.seal;
+ shell.querySelector('.featured small').textContent=character.office;
+ shell.querySelector('.featured h2').textContent=character.name;
+ shell.querySelector('.identity-copy').innerHTML=character.motto+'<br>'+character.description;
+}
+function start(){if(timer||state.settings.reduced||matchMedia('(prefers-reduced-motion: reduce)').matches)return;timer=setInterval(advanceHomeCarousel,4200);}
 const portraitPhone=matchMedia('(orientation: portrait) and (max-width: 700px)');
 function clearRotateTimers(){clearTimeout(rotateTimer);clearInterval(rotateTick);rotateTimer=null;rotateTick=null;}
 function enterSoftLandscape(){if(!portraitPhone.matches)return;clearRotateTimers();rotatePrompt.classList.remove('is-counting');document.documentElement.classList.add('soft-landscape');try{screen.orientation?.lock?.('landscape')?.catch(()=>{});}catch{}}

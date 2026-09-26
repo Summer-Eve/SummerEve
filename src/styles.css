@@ -7,7 +7,7 @@
 @media(orientation:portrait) and (max-width:700px){.rotate{position:fixed;inset:0;z-index:50;background:var(--paper);display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:30px}.rotate span{font-size:70px;color:var(--red);margin-bottom:30px}.rotate h2{font-size:25px}.rotate p{font-size:12px;color:var(--muted)}}
 .home{isolation:isolate;background:#e9e6d9;}
 .demo-shell{position:relative;isolation:isolate;min-height:100dvh;height:100dvh;overflow:hidden;background:#eee8dc;color:var(--ink);}
-.demo-shell:before{content:"";position:absolute;inset:0;z-index:-1;background:url('../assets/palace-bg-v2.png') center/cover no-repeat;opacity:.58;filter:saturate(.52) contrast(.88) brightness(1.06);}
+.demo-shell:before{content:"";position:absolute;inset:0;z-index:-1;background:url('../assets/palace-bg-v2.webp') center/cover no-repeat;opacity:.58;filter:saturate(.52) contrast(.88) brightness(1.06);}
 .demo-shell .hero-copy{position:absolute;left:11%;top:11%;padding:0;width:38%;z-index:4;}
 .demo-shell .hero-copy h1{font-size:76px;line-height:1.25;letter-spacing:15px;margin:0 0 18px;font-family:var(--serif);font-weight:400;}
 .demo-shell .hero-copy h1 span{display:block;padding-left:45px;}
@@ -280,7 +280,7 @@ dialog.draw-modal{width:min(960px,96vw);height:min(90dvh,680px);max-height:96dvh
 dialog.draw-modal::backdrop{background:#213b365e;backdrop-filter:blur(5px)}
 dialog.draw-modal[open]{display:block}
 @property --scroll-edge{syntax:"<percentage>";inherits:true;initial-value:6.8%}
-.scroll-surface,.scroll-roller{background:url('../assets/scroll-reveal.png') center/108% 170% no-repeat}
+.scroll-surface,.scroll-roller{background:url('../assets/scroll-reveal.webp') center/108% 170% no-repeat}
 .scroll-surface{position:absolute;inset:0;overflow:hidden;clip-path:inset(0 var(--scroll-edge))}
 .scroll-content{position:absolute;inset:19% 10% 20%;display:flex;flex-direction:column;min-height:0;min-width:0}
 .scroll-opening{animation:scroll-sheet-unroll 2.35s cubic-bezier(.45,0,.55,1) both}

@@ -81,14 +81,14 @@ test('single pull stays complete and offers a one-pull redraw',()=>{
 });
 
 test('the result panel itself uses a skippable scroll animation and rarity halos',()=>{
- assert.ok(styleSource.includes("url('../assets/scroll-reveal.png')"));
+ assert.ok(styleSource.includes("url('../assets/scroll-reveal.webp')"));
  assert.match(appSource,/document\.addEventListener\('pointerdown',drawRevealSkip/);
  assert.match(appSource,/setTimeout\(finishDrawReveal,2400\)/);
  assert.match(appSource,/scroll-surface"><div class="scroll-content">/);
  assert.match(appSource,/result-actions.*result-redraw.*<\/div><\/div><i class="scroll-roller/s);
  assert.match(appSource,/scroll-roller scroll-roller-left/);
  assert.match(appSource,/scroll-roller scroll-roller-right/);
- assert.match(styleSource,/\.scroll-surface,\.scroll-roller\{background:url\('\.\.\/assets\/scroll-reveal\.png'\)/);
+ assert.match(styleSource,/\.scroll-surface,\.scroll-roller\{background:url\('\.\.\/assets\/scroll-reveal\.webp'\)/);
  assert.match(styleSource,/@property --scroll-edge/);
  assert.match(styleSource,/\.scroll-surface\{[^}]*clip-path:inset\(0 var\(--scroll-edge\)\)/);
  assert.match(styleSource,/\.scroll-roller-left\{[^}]*translateX\(calc\(var\(--scroll-edge\) - 6\.8%\)\)/);
