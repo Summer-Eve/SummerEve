@@ -390,11 +390,12 @@ html.soft-landscape .home-ring strong{top:22px;font-size:7px}
 /* A steady, rarity-colored fluorescence stays outside the artwork. */
 .collection-card.SSR,.result-card.SSR{--card-halo:#d7aa49;--card-halo-soft:rgba(215,170,73,.6)}
 .collection-card.SR,.result-card.SR{--card-halo:#ae78d4;--card-halo-soft:rgba(174,120,212,.55)}
-.collection-card.R,.result-card.R{--card-halo:#6da9d1;--card-halo-soft:rgba(109,169,209,.5)}
-.collection-card.N,.result-card.N{--card-halo:#77b28c;--card-halo-soft:rgba(119,178,140,.48)}
-.collection-card.full-star,.result-card.full-star{border-color:var(--card-halo);box-shadow:0 0 0 1px var(--card-halo),0 0 9px 2px var(--card-halo-soft),0 0 22px 5px var(--card-halo-soft)}
+.collection-card.R{--card-halo:#6da9d1;--card-halo-soft:rgba(109,169,209,.5)}
+.collection-card.N{--card-halo:#77b28c;--card-halo-soft:rgba(119,178,140,.48)}
+.collection-card.full-star{border-color:var(--card-halo);box-shadow:0 0 0 1px var(--card-halo),0 0 9px 2px var(--card-halo-soft),0 0 22px 5px var(--card-halo-soft)}
 .result-card.SSR,.result-card.SR{border-color:var(--card-halo);box-shadow:0 0 0 1px var(--card-halo),0 0 9px 2px var(--card-halo-soft),0 0 19px 4px var(--card-halo-soft);animation:none}
 .result-card.SSR.full-star,.result-card.SR.full-star{box-shadow:0 0 0 1px var(--card-halo),0 0 12px 3px var(--card-halo-soft),0 0 25px 6px var(--card-halo-soft)}
+.result-card.R,.result-card.N{box-shadow:none}
 
 /* The scroll itself owns the sole action; tapping anywhere else collects it. */
 dialog.draw-modal .result-actions{justify-content:center}

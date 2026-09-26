@@ -97,7 +97,9 @@ test('the result panel itself uses a skippable scroll animation and rarity halos
  assert.ok(!appSource.includes('scroll-card'));
  assert.doesNotMatch(styleSource,/rare-border-spin/);
  assert.match(styleSource,/\.result-card\.SSR,\.result-card\.SR\{border-color:var\(--card-halo\)/);
- assert.match(styleSource,/\.collection-card\.full-star,\.result-card\.full-star/);
+ assert.match(styleSource,/\.collection-card\.full-star\{border-color:var\(--card-halo\)/);
+ assert.doesNotMatch(styleSource,/\.result-card\.full-star\{[^}]*box-shadow/);
+ assert.match(styleSource,/\.result-card\.R,\.result-card\.N\{box-shadow:none\}/);
  assert.match(styleSource,/\.wallet-item strong,\.progress-ring strong\{font-family:Arial/);
  assert.match(styleSource,/font-variant-numeric:tabular-nums lining-nums/);
  assert.match(appSource,/n>=c\.max\?' full-star'/);
