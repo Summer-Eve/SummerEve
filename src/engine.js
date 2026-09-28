@@ -1,6 +1,6 @@
 import { CARDS, CARD_BY_ID, POOLS, RARITIES, RULES, TOTAL_COPIES } from './data.js';
 
-export const DEFAULT_SETTINGS = Object.freeze({ fast: false, reduced: false, rareEffects: true, sound: true, volume: .35 });
+export const DEFAULT_SETTINGS = Object.freeze({ fast: false, reduced: false, rareEffects: true, sound: true, music: true, effects: true, volume: .35 });
 export function newSave() {
   return { version: 1, tickets: RULES.firstGift, totalDraws: 0, pity: 0, blockHasSR: false,
     marks: 0, glow: 0, copies: {}, days: 0, lastClaim: '', history: [], received: 0,
@@ -87,6 +87,7 @@ export function validateSave(raw) {
   for(const [id,n] of Object.entries(s.copies)){if(!Object.hasOwn(CARD_BY_ID,id)||!Number.isSafeInteger(n)||n<0||n>CARD_BY_ID[id].max)fail();base.copies[id]=n;}
   if(!s.settings||typeof s.settings!=='object')fail();
   for(const k of ['fast','reduced','rareEffects','sound']){if(typeof s.settings[k]!=='boolean')fail();base.settings[k]=s.settings[k];}
+  for(const k of ['music','effects']){if(s.settings[k]!==undefined&&typeof s.settings[k]!=='boolean')fail();base.settings[k]=s.settings[k]??true;}
   if(typeof s.settings.volume!=='number'||!Number.isFinite(s.settings.volume)||s.settings.volume<0||s.settings.volume>1)fail();base.settings.volume=s.settings.volume;
   if(!Array.isArray(s.history)||s.history.length>300)fail();
   base.history=s.history.map(h=>{

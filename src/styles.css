@@ -92,7 +92,8 @@
 .draw-results{display:grid;grid-template-columns:repeat(5,minmax(115px,1fr));gap:14px;}
 .result-card{position:relative;isolation:isolate;aspect-ratio:2/3;overflow:hidden;border:1px solid #b48745;background:#e9e3d6;}
 .result-card img{width:100%;height:100%;object-fit:cover;mix-blend-mode:multiply;}
-.result-card>div{position:absolute;inset:auto 0 0;padding:28px 10px 10px;background:linear-gradient(transparent,#f4efe5 42%);display:flex;flex-direction:column;gap:4px;}
+.result-card::after{content:"";position:absolute;inset:auto 0 0;height:65%;z-index:0;pointer-events:none;background:linear-gradient(transparent,rgba(244,239,229,.88) 70%,#f4efe5)}
+.result-card>div{position:absolute;inset:auto 0 0;z-index:1;padding:28px 10px 10px;background:none;display:flex;flex-direction:column;gap:4px;}
 .result-card strong{font:18px var(--serif);color:#79362f;}.result-card em{position:absolute;right:7px;top:7px;background:#963e33;color:#f7e4b4;padding:3px 6px;font-size:10px;font-style:normal;}
 .result-card.SSR{border-color:#b89a5a;box-shadow:0 0 0 1px rgba(184,154,90,.7),0 0 15px rgba(184,154,90,.48)}
 .result-card.SR{border-color:#9b80ad;box-shadow:0 0 0 1px rgba(155,128,173,.58),0 0 12px rgba(121,84,157,.36)}
@@ -110,9 +111,10 @@ dialog .modal-head,dialog .result-summary,dialog .result-actions{color:#79362f;}
 .demo-shell .hero-copy{display:flex;flex-direction:column;}.demo-shell .hero-copy .eyebrow{order:1}.demo-shell .hero-title{order:2;display:flex;flex-direction:column;align-items:flex-start;width:max-content;max-width:100%;}.demo-shell .hero-title h1{margin-bottom:10px;}.demo-shell .hero-title .daily-gift{display:block;width:calc(100% - 45px);margin:0 0 18px 45px;}.demo-shell .hero-copy .poem{order:3}.demo-shell .hero-copy .intro{order:4}
 @media(max-height:600px) and (orientation:landscape){.demo-shell .hero-title{align-items:center}.demo-shell .hero-title .daily-gift{width:auto;margin-left:0}}
 .collection-page,.utility-page{padding-left:max(7vw,120px);}
-.utility-page{min-height:100dvh;background:#f4efe5;padding:34px 5vw 60px;color:#79362f;}.utility-heading{padding:42px 0 24px;border-bottom:1px solid #c7a875;}.utility-heading h1{font-size:42px;letter-spacing:7px;margin-bottom:8px;}.utility-heading p{color:#a07442;font-size:13px;}
+.utility-page{min-height:100dvh;background:#f4efe5;padding:34px 5vw 60px max(7vw,120px);color:#79362f;}.utility-heading{padding:42px 0 24px;border-bottom:1px solid #c7a875;}.utility-heading h1{font-size:42px;letter-spacing:7px;margin-bottom:8px;}.utility-heading p{color:#a07442;font-size:13px;}
 .history-table{margin-top:18px;}.history-row{display:grid;grid-template-columns:180px 55px 1fr 90px 100px;gap:14px;align-items:center;padding:15px 8px;border-bottom:1px solid #dac9a8;font-size:12px;}.history-row time,.history-row small{color:#a07442}.history-rarity{font:bold 13px Georgia;color:#79362f}.history-rarity.SSR{color:#a0742f}.history-rarity.SR{color:#7f5c76}
 .settings-panels{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:28px;}.settings-panels>section{border:1px solid #c7a875;background:#fff9ed99;padding:24px;}.settings-panels h2{color:#79362f}.settings-panels p{font-size:12px;color:#a07442}.setting-row{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:16px 0;border-bottom:1px solid #ddcba9;}.setting-row small{display:block;margin-top:5px;color:#a07442}.setting-row input{width:20px;height:20px;accent-color:#963e33}.settings-actions{display:flex;gap:12px;margin-top:24px}.settings-actions .primary{background:#963e33;color:#f7e4b4;border-color:#b48745}
+.setting-row input[type="range"]{width:clamp(90px,12vw,180px);max-width:45%;height:24px;flex-shrink:0}.setting-row input[type="checkbox"]{flex-shrink:0}
 .settings-panels hr{border:0;border-top:1px solid #ddcba9;margin:26px 0 20px}.settings-panels .danger,.reset-confirm .danger{border-color:#963e33;color:#963e33;background:#fff3e4}.rules-copy,.reset-confirm{color:#79362f}.rules-copy h3{font-size:20px;margin:22px 0 7px;color:#963e33}.rules-copy p,.reset-confirm p{font-size:13px;color:#8e6540}.reset-confirm .result-actions{margin-top:24px}
 .collection-card.SSR{border-color:#b89a5a}.collection-card.SSR .collection-rarity,.collection-card.SSR strong,.history-row.SSR .history-rarity,.history-row.SSR strong{color:#a17a26}
 .collection-card.SR{border-color:#9b80ad}.collection-card.SR .collection-rarity,.collection-card.SR strong,.history-row.SR .history-rarity,.history-row.SR strong{color:#79549d}
@@ -415,5 +417,17 @@ dialog.draw-modal.scroll-opening .scroll-skip-hint{opacity:0}
 .demo-shell .hero-choices img{transition:transform .2s ease,filter .2s ease,opacity .2s ease,box-shadow .2s ease}
 .demo-shell .hero-choices button[aria-pressed="false"] img{filter:grayscale(1);opacity:.65}
 .demo-shell .hero-choices button[aria-pressed="true"] img{filter:none;opacity:1;transform:scale(1.12);outline:2px solid #a77c44;outline-offset:2px;box-shadow:0 0 10px #a77c4480;position:relative;z-index:1}
+/* Draw-only rarity lettering reaches just past the card edge, with a pale ink-lit underside. */
+.result-card{overflow:visible}
+.result-card .collection-rarity{top:1px;left:-10px;z-index:3;font:bold italic 28px/1 Georgia,"Times New Roman",serif;letter-spacing:-.07em;white-space:nowrap;-webkit-text-stroke:.35px rgba(255,252,238,.8);text-shadow:0 1px 0 #fffaf0,1px 3px 0 rgba(255,255,255,.95),0 0 7px #fff,0 4px 7px rgba(72,46,30,.4)}
+.result-card.SSR .collection-rarity{color:#efb640}
+.result-card.SR .collection-rarity{color:#a766de}
+.result-card.R .collection-rarity{color:#4a9dce}
+.result-card.N .collection-rarity{color:#68a978}
+.result-card em{z-index:3}
+.single-pull-modal .result-card .collection-rarity{top:3px;left:-17px;font-size:34px}
+.ten-pull-modal .result-card .collection-rarity{top:1px;left:-8px;font-size:23px}
+@media(max-height:650px) and (orientation:landscape){.ten-pull-modal .result-card .collection-rarity{top:0;left:-11px;font-size:17px}.single-pull-modal .result-card .collection-rarity{top:1px;left:-12px;font-size:29px}}
+@media(orientation:portrait) and (max-width:700px){html.soft-landscape .ten-pull-modal .result-card .collection-rarity{top:0;left:-9px;font-size:16px}html.soft-landscape .single-pull-modal .result-card .collection-rarity{top:1px;left:-10px;font-size:26px}}
 @media(max-height:600px) and (orientation:landscape){.demo-shell .identity-dock{bottom:24%;width:min(270px,30vw);padding:10px 13px;row-gap:6px}}
 html.soft-landscape .demo-shell .identity-dock{top:auto;bottom:clamp(60px,20vh,78px);width:185px;height:190px;aspect-ratio:auto;padding:7px 9px;row-gap:5px}

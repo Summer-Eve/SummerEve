@@ -8,4 +8,4 @@ for(const file of ['index.html','src','assets'])await cp(path.join(root,file),pa
 for(const art of new Set(CARDS.map(c=>c.art)))await stat(path.join(root,'dist',art));
 const html=await readFile(path.join(root,'dist/index.html'),'utf8');
 if(html.includes('https://'))throw new Error('Unexpected remote dependency');
-console.log(`Build ready: ${CARDS.length} cards, ${new Set(CARDS.map(c=>c.art)).size} character studies. dist/`);
+console.log(`Build ready: ${CARDS.length} cards, ${new Set(CARDS.map(c=>c.art)).size} artwork assets. dist/`);
