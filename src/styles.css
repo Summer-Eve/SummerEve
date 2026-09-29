@@ -417,13 +417,16 @@ dialog.draw-modal.scroll-opening .scroll-skip-hint{opacity:0}
 .demo-shell .hero-choices img{transition:transform .2s ease,filter .2s ease,opacity .2s ease,box-shadow .2s ease}
 .demo-shell .hero-choices button[aria-pressed="false"] img{filter:grayscale(1);opacity:.65}
 .demo-shell .hero-choices button[aria-pressed="true"] img{filter:none;opacity:1;transform:scale(1.12);outline:2px solid #a77c44;outline-offset:2px;box-shadow:0 0 10px #a77c4480;position:relative;z-index:1}
-/* Draw-only rarity lettering reaches just past the card edge, with a pale ink-lit underside. */
+/* Draw-only rarity lettering reaches just past the card edge. */
 .result-card{overflow:visible}
-.result-card .collection-rarity{top:1px;left:-10px;z-index:3;font:bold italic 28px/1 Georgia,"Times New Roman",serif;letter-spacing:-.07em;white-space:nowrap;-webkit-text-stroke:.35px rgba(255,252,238,.8);text-shadow:0 1px 0 #fffaf0,1px 3px 0 rgba(255,255,255,.95),0 0 7px #fff,0 4px 7px rgba(72,46,30,.4)}
-.result-card.SSR .collection-rarity{color:#efb640}
-.result-card.SR .collection-rarity{color:#a766de}
-.result-card.R .collection-rarity{color:#4a9dce}
-.result-card.N .collection-rarity{color:#68a978}
+.result-card .collection-rarity{top:1px;left:-10px;z-index:3;font:bold italic 28px/1 Georgia,"Times New Roman",serif;letter-spacing:-.07em;white-space:nowrap}
+/* The lettering and its lower glow share each card's rarity palette. */
+.collection-card .collection-rarity{z-index:2;-webkit-text-stroke:.3px var(--rarity-shadow-light);text-shadow:0 1px 0 var(--rarity-shadow-light),1px 2px 0 var(--rarity-shadow-deep),0 0 6px var(--rarity-shadow-glow),0 3px 5px rgba(72,46,30,.32)}
+.collection-card.SSR .collection-rarity,.result-card.SSR .collection-rarity{color:#efb640;--rarity-shadow-light:#ffe098;--rarity-shadow-deep:rgba(219,156,37,.96);--rarity-shadow-glow:rgba(243,181,58,.85)}
+.collection-card.SR .collection-rarity,.result-card.SR .collection-rarity{color:#a766de;--rarity-shadow-light:#d9b2f4;--rarity-shadow-deep:rgba(147,80,199,.95);--rarity-shadow-glow:rgba(168,104,221,.8)}
+.collection-card.R .collection-rarity,.result-card.R .collection-rarity{color:#4a9dce;--rarity-shadow-light:#b6e1f8;--rarity-shadow-deep:rgba(52,130,184,.95);--rarity-shadow-glow:rgba(78,168,216,.78)}
+.collection-card.N .collection-rarity,.result-card.N .collection-rarity{color:#68a978;--rarity-shadow-light:#c1e8c9;--rarity-shadow-deep:rgba(72,142,88,.95);--rarity-shadow-glow:rgba(104,177,118,.8)}
+.result-card:is(.SSR,.SR,.R,.N) .collection-rarity{-webkit-text-stroke:.35px var(--rarity-shadow-light);text-shadow:0 1px 0 var(--rarity-shadow-light),1px 3px 0 var(--rarity-shadow-deep),0 0 7px var(--rarity-shadow-glow),0 4px 7px rgba(72,46,30,.4)}
 .result-card em{z-index:3}
 .single-pull-modal .result-card .collection-rarity{top:3px;left:-17px;font-size:34px}
 .ten-pull-modal .result-card .collection-rarity{top:1px;left:-8px;font-size:23px}
