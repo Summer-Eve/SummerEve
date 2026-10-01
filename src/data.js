@@ -20,14 +20,30 @@ const themes = {
   SSR: [''], SR: ['听雨','观澜','照夜'], R: ['晨朝','案牍','庭雪','临风','灯下'],
   N: ['初见','小憩','烹茶','展卷','听风','折枝','观云','落笔','归途','静思']
 };
+const SR_NAMES = Object.freeze({
+  chancellor: '上官瑾', marshal: '裴长缨', justice: '玄慎',
+  envoy: '郑怀远', aide: '陆知微'
+});
+const SR_TITLES = Object.freeze({
+  chancellor: ['夜半案牍','学堂授论','雨后巡河'],
+  marshal: ['凯旋归来','军帐筹策','校场点兵'],
+  justice: ['夜归疗伤','檐下共伞','雪夜候归'],
+  envoy: ['夜明看灯','春日折花','渡口相候'],
+  aide: ['温泉邀约','竹亭对弈','雨后煎茶']
+});
+const SR_ART_V2 = new Set(['justice-02','justice-03','envoy-01','envoy-02','aide-01','aide-02','aide-03']);
+const srArt = (id, index) => {
+  const number = String(index + 1).padStart(2, '0');
+  return `./assets/sr-${id}-${number}-v${SR_ART_V2.has(`${id}-${number}`) ? 2 : 1}.webp`;
+};
 export const CARDS = CHARACTERS.flatMap((person, characterIndex) => RARITIES.flatMap(rarity =>
   themes[rarity].map((title, i) => ({
     id: `${person.id}-${rarity.toLowerCase()}-${String(i + 1).padStart(2,'0')}`,
-    characterId: person.id, characterIndex, rarity, title: rarity === 'SSR' ? person.ssr : title,
-    displayName: rarity === 'SSR' ? (person.ssrName || person.name) : person.name,
+    characterId: person.id, characterIndex, rarity, title: rarity === 'SSR' ? person.ssr : rarity === 'SR' ? SR_TITLES[person.id][i] : title,
+    displayName: rarity === 'SSR' ? (person.ssrName || person.name) : rarity === 'SR' ? SR_NAMES[person.id] : person.name,
     max: RULES.caps[rarity], variant: i,
-    art: rarity === 'SSR' ? `./assets/ssr-${person.id}-final-v1.webp` : `./assets/${person.id}-${person.id === 'envoy' ? 'v4' : ['chancellor','marshal'].includes(person.id) ? 'v3' : 'v2'}.webp`,
-    artStatus: rarity === 'SSR' ? 'approved-unique' : 'shared-study', description: person.description
+    art: rarity === 'SSR' ? `./assets/ssr-${person.id}-final-v${person.id === 'marshal' ? 2 : 1}.webp` : rarity === 'SR' ? srArt(person.id, i) : `./assets/${person.id}-${person.id === 'envoy' ? 'v4' : ['chancellor','marshal'].includes(person.id) ? 'v3' : 'v2'}.webp`,
+    artStatus: ['SSR','SR'].includes(rarity) ? 'approved-unique' : 'shared-study', description: person.description
   }))
 ));
 export const CARD_BY_ID = Object.fromEntries(CARDS.map(c => [c.id, c]));

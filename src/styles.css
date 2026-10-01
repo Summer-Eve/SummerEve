@@ -420,13 +420,12 @@ dialog.draw-modal.scroll-opening .scroll-skip-hint{opacity:0}
 /* Draw-only rarity lettering reaches just past the card edge. */
 .result-card{overflow:visible}
 .result-card .collection-rarity{top:1px;left:-10px;z-index:3;font:bold italic 28px/1 Georgia,"Times New Roman",serif;letter-spacing:-.07em;white-space:nowrap}
-/* The lettering and its lower glow share each card's rarity palette. */
-.collection-card .collection-rarity{z-index:2;-webkit-text-stroke:.3px var(--rarity-shadow-light);text-shadow:0 1px 0 var(--rarity-shadow-light),1px 2px 0 var(--rarity-shadow-deep),0 0 6px var(--rarity-shadow-glow),0 3px 5px rgba(72,46,30,.32)}
-.collection-card.SSR .collection-rarity,.result-card.SSR .collection-rarity{color:#efb640;--rarity-shadow-light:#ffe098;--rarity-shadow-deep:rgba(219,156,37,.96);--rarity-shadow-glow:rgba(243,181,58,.85)}
-.collection-card.SR .collection-rarity,.result-card.SR .collection-rarity{color:#a766de;--rarity-shadow-light:#d9b2f4;--rarity-shadow-deep:rgba(147,80,199,.95);--rarity-shadow-glow:rgba(168,104,221,.8)}
-.collection-card.R .collection-rarity,.result-card.R .collection-rarity{color:#4a9dce;--rarity-shadow-light:#b6e1f8;--rarity-shadow-deep:rgba(52,130,184,.95);--rarity-shadow-glow:rgba(78,168,216,.78)}
-.collection-card.N .collection-rarity,.result-card.N .collection-rarity{color:#68a978;--rarity-shadow-light:#c1e8c9;--rarity-shadow-deep:rgba(72,142,88,.95);--rarity-shadow-glow:rgba(104,177,118,.8)}
-.result-card:is(.SSR,.SR,.R,.N) .collection-rarity{-webkit-text-stroke:.35px var(--rarity-shadow-light);text-shadow:0 1px 0 var(--rarity-shadow-light),1px 3px 0 var(--rarity-shadow-deep),0 0 7px var(--rarity-shadow-glow),0 4px 7px rgba(72,46,30,.4)}
+/* Quiet stamped-foil lettering: narrow metallic highlights, no fluorescent halo. */
+.collection-card .collection-rarity,.result-card:is(.SSR,.SR,.R,.N) .collection-rarity{z-index:3;color:var(--foil-fallback);background-image:var(--foil-gradient);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent;-webkit-text-stroke:.25px var(--foil-edge);text-shadow:none;filter:drop-shadow(0 1px 0 var(--foil-edge)) drop-shadow(0 1px 1px rgba(43,32,27,.3))}
+.collection-card.SSR .collection-rarity,.result-card.SSR .collection-rarity{--foil-fallback:#d8ac5a;--foil-edge:#a97c36;--foil-gradient:linear-gradient(160deg,#ac792e 0%,#e0b965 24%,#fff0bc 43%,#d4a750 62%,#ad782b 82%,#f3d992 100%)}
+.collection-card.SR .collection-rarity,.result-card.SR .collection-rarity{--foil-fallback:#ac729d;--foil-edge:#78516f;--foil-gradient:linear-gradient(160deg,#79466f 0%,#b67eaa 24%,#ead0e2 43%,#aa699a 62%,#78446e 82%,#d4a6c8 100%)}
+.collection-card.R .collection-rarity,.result-card.R .collection-rarity{--foil-fallback:#74a5be;--foil-edge:#557d96;--foil-gradient:linear-gradient(160deg,#4d7895 0%,#89b1c6 24%,#e0edf0 43%,#78a2bd 62%,#4f7998 82%,#bed6dd 100%)}
+.collection-card.N .collection-rarity,.result-card.N .collection-rarity{--foil-fallback:#88ad8d;--foil-edge:#66876a;--foil-gradient:linear-gradient(160deg,#5d8261 0%,#9ab79a 24%,#e0ead5 43%,#89a98e 62%,#5d8062 82%,#bdd1b8 100%)}
 .result-card em{z-index:3}
 .single-pull-modal .result-card .collection-rarity{top:3px;left:-17px;font-size:34px}
 .ten-pull-modal .result-card .collection-rarity{top:1px;left:-8px;font-size:23px}
