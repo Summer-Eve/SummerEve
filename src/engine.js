@@ -1,4 +1,4 @@
-import { CARDS, CARD_BY_ID, POOLS, RARITIES, RULES, TOTAL_COPIES } from './data.js?v=20261002-r2';
+import { CARDS, CARD_BY_ID, POOLS, RARITIES, RULES, TOTAL_COPIES } from './data.js?v=20261003-r1';
 
 const LEGACY_CAPS = { SSR: 3, SR: 5, R: 8, N: 10 };
 
@@ -73,7 +73,7 @@ export function exchange(s,id) {
   if((s.copies[id]||0)>=c.max)throw new Error('此卷已满星，请选择尚未满星的卡牌。');
   const currency=c.rarity==='SSR'?'marks':'glow';
   const cost=c.rarity==='SSR'?RULES.exchange:RULES.costs[c.rarity];
-  if(s[currency]<cost)throw new Error(`${currency==='marks'?'印记':'余晖'}不足，还需 ${cost-s[currency]}。`);
+  if(s[currency]<cost){const label=currency==='marks'?'印记':'余晖';throw new Error(`${label}余额不足，还需 ${cost-s[currency]} ${label}。`);}
   s[currency]-=cost;return grant(s,c,'定向兑换');
 }
 export function validateSave(raw) {

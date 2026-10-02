@@ -1,4 +1,4 @@
-import {newSave,validateSave} from './engine.js?v=20261002-r2';
+import {newSave,validateSave} from './engine.js?v=20261003-r1';
 export const SAVE_KEY='rigui.save.v1';
 export const BACKUP_KEY='rigui.save.backup.v1';
 export function loadSave(storage=localStorage) {

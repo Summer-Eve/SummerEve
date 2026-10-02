@@ -79,6 +79,42 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 /* Detail has one fitted canvas: header + complete artwork + all information.
    Visible viewport (not device height) accounts for in-app browser toolbars. */
 .detail-open,.detail-open body{overflow:hidden;overscroll-behavior:none}
+/* Exchange feedback belongs to the dialog's top layer, not the page toast. */
+dialog.detail-modal .exchange-notice{position:absolute;top:10px;left:50%;transform:translateX(-50%);z-index:100;max-width:calc(100% - 32px);width:max-content;padding:12px 20px;background:#fff5df;color:#80392f;border:1px solid #b98c4a;box-shadow:0 6px 22px #30241755;font-size:16px;line-height:1.5;text-align:center;pointer-events:none}
+dialog.exchange-modal{box-sizing:border-box;width:min(900px,calc(100vw - 24px));height:min(700px,calc(var(--visible-height,100vh) - 24px));max-width:none;max-height:none;padding:14px 24px;border:0;background:transparent;box-shadow:none;overflow:hidden;overscroll-behavior:contain;cursor:pointer;color:#fff3d4}
+dialog.exchange-modal[open]{display:grid;grid-template-rows:auto minmax(0,1fr) auto;justify-items:center;gap:10px;text-align:center}
+dialog.exchange-modal::backdrop{background:#182821cb;backdrop-filter:blur(6px)}
+.exchange-heading{font-size:30px;line-height:1.2;margin:0;letter-spacing:4px;color:#f2d894;outline:none}
+.exchange-card{position:relative;min-height:0;height:100%;max-width:100%;aspect-ratio:2 / 3;border:1px solid #9dad93;background:#f4efe5;box-shadow:0 8px 30px #0005}
+.exchange-card.SSR{border-color:#d3b56a}.exchange-card.SR{border-color:#b38cae}.exchange-card.R{border-color:#83aac1}
+.exchange-card img{display:block;width:100%;height:100%;object-fit:contain}
+.exchange-rarity{position:absolute;top:6px;left:8px;padding:2px 5px;color:#675133;background:#fff6e2df;font:bold italic 19px Georgia,serif}
+.exchange-card.SSR .exchange-rarity{color:#a17a26}.exchange-card.SR .exchange-rarity{color:#78516f}.exchange-card.R .exchange-rarity{color:#477ca5}.exchange-card.N .exchange-rarity{color:#577f5a}
+.exchange-caption{display:grid;justify-items:center;gap:4px}
+.exchange-caption p{margin:0;line-height:1.3}
+.exchange-name{font:20px var(--serif)}
+.exchange-caption .star-rating{min-height:14px}
+.exchange-state,.exchange-dismiss{font-size:12px;color:#e4d9bf}
+.exchange-image-status{position:absolute;top:42%;left:5%;width:90%;padding:8px;background:#fff4deef;color:#80392f;font-size:12px;line-height:1.4}
+.exchange-image-status[hidden]{display:none}
+[data-exchange-retry]{position:absolute;top:64%;left:50%;transform:translateX(-50%);background:#fff5df;white-space:nowrap;font-size:12px;padding:6px 10px}
+.compact-landscape dialog.exchange-modal{max-height:none}
+@media(max-height:450px){
+ dialog.exchange-modal{padding:8px 20px}
+ dialog.exchange-modal[open]{gap:6px}
+ .exchange-heading{font-size:23px}.exchange-name{font-size:16px}
+ .exchange-caption{gap:2px}.exchange-state,.exchange-dismiss{font-size:10px}
+ dialog.detail-modal .exchange-notice{padding:9px 16px;font-size:14px}
+}
+@media(orientation:portrait) and (max-width:700px){
+ html.soft-landscape dialog.exchange-modal{width:min(900px,calc(var(--visible-height,100vh) - 24px));height:calc(100vw - 24px);max-height:none;padding:8px 20px;overflow:hidden}
+ html.soft-landscape dialog.exchange-modal[open]{gap:6px}
+ html.soft-landscape .exchange-heading{font-size:23px}
+ html.soft-landscape .exchange-name{font-size:16px}
+ html.soft-landscape .exchange-caption{gap:2px}
+ html.soft-landscape .exchange-state,html.soft-landscape .exchange-dismiss{font-size:10px}
+ html.soft-landscape dialog.detail-modal .exchange-notice{padding:9px 16px;font-size:14px}
+}
 dialog.detail-modal{box-sizing:border-box;width:min(900px,calc(100vw - 24px));height:min(640px,calc(var(--visible-height,100vh) - 24px));max-width:none;max-height:none;padding:16px 20px;overflow:hidden;overscroll-behavior:contain}
 dialog.detail-modal[open]{display:grid;grid-template-rows:auto minmax(0,1fr);gap:12px}
 dialog.detail-modal .modal-head{margin:0;padding:0 0 8px;min-width:0;gap:12px;align-items:center}

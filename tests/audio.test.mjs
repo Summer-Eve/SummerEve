@@ -54,3 +54,20 @@ test('local PCM sound assets have requested durations and non-clipped audio',asy
   assert.ok(peak>1000&&peak<32767);
  }
 });
+
+test('successful exchange plays its supplied cue once and respects mute, effects and hidden state',async()=>{
+ const requested=[],{audio,settings}=setup(async url=>{requested.push(String(url));return {ok:true,arrayBuffer:async()=>new ArrayBuffer(8)};});
+ await audio.playExchange();assert.ok(audio.effects.has('exchange'));assert.ok(requested.some(url=>url.endsWith('/exchange-success-v1.wav')));
+ const prior=audio.effects.get('exchange');await audio.playExchange();assert.equal(prior.stopped,true);assert.equal(audio.effects.size,1);
+ settings.effects=false;audio.sync();assert.equal(audio.effects.size,0);await audio.playExchange();assert.equal(audio.effects.size,0);
+ settings.effects=true;settings.sound=false;audio.sync();await audio.playExchange();assert.equal(audio.effects.size,0);
+ settings.sound=true;await audio.playExchange();await audio.setHidden(true);assert.equal(audio.effects.size,0);
+});
+test('closing success while its cue downloads prevents late playback',async()=>{
+ let release;const {audio}=setup(async url=>({ok:true,arrayBuffer:()=>String(url).includes('exchange-success')?new Promise(r=>release=r):Promise.resolve(new ArrayBuffer(8))}));
+ const playing=audio.playExchange();await tick();audio.stopExchange();release(new ArrayBuffer(8));await playing;
+ assert.equal(audio.effects.has('exchange'),false);
+});
+test('failed exchange audio downloads do not reject or block the result',async()=>{
+ const {audio}=setup(async()=>({ok:false}));await assert.doesNotReject(()=>audio.playExchange());assert.equal(audio.effects.size,0);
+});
