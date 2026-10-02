@@ -2,7 +2,7 @@ export const VERSION = '0.1.0';
 export const RARITIES = ['SSR', 'SR', 'R', 'N'];
 export const RULES = Object.freeze({
   rates: { SSR: .015, SR: .035, R: .25, N: .70 },
-  caps: { SSR: 3, SR: 5, R: 8, N: 10 },
+  caps: { SSR: 5, SR: 5, R: 5, N: 5 },
   counts: { SSR: 1, SR: 3, R: 5, N: 10 },
   overflow: { SSR: 20, SR: 8, R: 3, N: 1 },
   costs: { SR: 80, R: 30, N: 10 },
@@ -36,14 +36,16 @@ const srArt = (id, index) => {
   const number = String(index + 1).padStart(2, '0');
   return `./assets/sr-${id}-${number}-v${SR_ART_V2.has(`${id}-${number}`) ? 2 : 1}.webp`;
 };
+const rnArt = (id, rarity, index) =>
+  `./assets/${rarity.toLowerCase()}-${id}-${String(index + 1).padStart(2, '0')}-v1.webp`;
 export const CARDS = CHARACTERS.flatMap((person, characterIndex) => RARITIES.flatMap(rarity =>
   themes[rarity].map((title, i) => ({
     id: `${person.id}-${rarity.toLowerCase()}-${String(i + 1).padStart(2,'0')}`,
     characterId: person.id, characterIndex, rarity, title: rarity === 'SSR' ? person.ssr : rarity === 'SR' ? SR_TITLES[person.id][i] : title,
     displayName: rarity === 'SSR' ? (person.ssrName || person.name) : rarity === 'SR' ? SR_NAMES[person.id] : person.name,
     max: RULES.caps[rarity], variant: i,
-    art: rarity === 'SSR' ? `./assets/ssr-${person.id}-final-v${person.id === 'marshal' ? 2 : 1}.webp` : rarity === 'SR' ? srArt(person.id, i) : `./assets/${person.id}-${person.id === 'envoy' ? 'v4' : ['chancellor','marshal'].includes(person.id) ? 'v3' : 'v2'}.webp`,
-    artStatus: ['SSR','SR'].includes(rarity) ? 'approved-unique' : 'shared-study', description: person.description
+    art: rarity === 'SSR' ? `./assets/ssr-${person.id}-final-v${person.id === 'marshal' ? 2 : 1}.webp` : rarity === 'SR' ? srArt(person.id, i) : rnArt(person.id, rarity, i),
+    artStatus: 'approved-unique', description: person.description
   }))
 ));
 export const CARD_BY_ID = Object.fromEntries(CARDS.map(c => [c.id, c]));

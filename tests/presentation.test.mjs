@@ -13,11 +13,11 @@ test('pity text stays dynamic and uses approved exact wording',()=>{
 });
 
 test('collection meter weights every lit star equally and formats two decimals',()=>{
- assert.equal(collectionPercent({copies:0,max:790}),'0.00');
- assert.equal(collectionPercent({copies:1,max:790}),'0.13');
- assert.equal(collectionPercent({copies:395,max:790}),'50.00');
- assert.equal(collectionPercent({copies:790,max:790}),'100.00');
- assert.equal(collectionPercent({copies:999,max:790}),'100.00');
+ assert.equal(collectionPercent({copies:0,max:475}),'0.00');
+ assert.equal(collectionPercent({copies:1,max:475}),'0.21');
+ assert.equal(collectionPercent({copies:95,max:475}),'20.00');
+ assert.equal(collectionPercent({copies:475,max:475}),'100.00');
+ assert.equal(collectionPercent({copies:999,max:475}),'100.00');
  assert.match(appSource,/progressRingMarkup\(p,'collection'\)/);
  assert.match(appSource,/progressRingMarkup\(p,'home'\)/);
  assert.match(appSource,/图鉴总收集度/);
@@ -28,9 +28,9 @@ test('local review builds refill tickets without affecting the hosted game',()=>
  assert.match(appSource,/reviewParams\.get\('review'\)==='1'/);
  assert.match(appSource,/localReview\)\{state\.tickets=Math\.max\(state\.tickets,9999\);persist\(state\);\}/);
 });
-for(const [rarity,max] of Object.entries({SSR:3,SR:5,R:8,N:10})){
+for(const [rarity,max] of Object.entries({SSR:5,SR:5,R:5,N:5})){
  test(`${rarity} renders correct total, lit and empty stars`,()=>{
-  for(const count of [0,1,max]){const html=starsMarkup(rarity,count);assert.equal((html.match(/<svg /g)||[]).length,max);assert.equal((html.match(/class="star lit"/g)||[]).length,count);assert.equal((html.match(/class="star unlit"/g)||[]).length,max-count);assert.ok(html.includes(`aria-label="${count}/${max}星"`));assert.ok(html.includes(`--star-cols:${rarity==='R'?4:Math.min(max,5)}`));}
+  for(const count of [0,1,max]){const html=starsMarkup(rarity,count);assert.equal((html.match(/<svg /g)||[]).length,max);assert.equal((html.match(/class="star lit"/g)||[]).length,count);assert.equal((html.match(/class="star unlit"/g)||[]).length,max-count);assert.ok(html.includes(`aria-label="${count}/${max}星"`));assert.ok(html.includes(`--star-cols:${max}`));}
  });
 }
 

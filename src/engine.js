@@ -1,5 +1,7 @@
 import { CARDS, CARD_BY_ID, POOLS, RARITIES, RULES, TOTAL_COPIES } from './data.js';
 
+const LEGACY_CAPS = { SSR: 3, SR: 5, R: 8, N: 10 };
+
 export const DEFAULT_SETTINGS = Object.freeze({ fast: false, reduced: false, rareEffects: true, sound: true, music: true, effects: true, volume: .35 });
 export function newSave() {
   return { version: 1, tickets: RULES.firstGift, totalDraws: 0, pity: 0, blockHasSR: false,
@@ -84,7 +86,13 @@ export function validateSave(raw) {
   if((s.days===0)!==(s.lastClaim===''))fail();
   if(s.lastClaim){const date=new Date(s.lastClaim+'T12:00:00');if(!Number.isFinite(+date)||localDay(date)!==s.lastClaim)fail();}base.lastClaim=s.lastClaim;
   if(!s.copies||typeof s.copies!=='object'||Array.isArray(s.copies))fail();base.copies={};
-  for(const [id,n] of Object.entries(s.copies)){if(!Object.hasOwn(CARD_BY_ID,id)||!Number.isSafeInteger(n)||n<0||n>CARD_BY_ID[id].max)fail();base.copies[id]=n;}
+  for(const [id,n] of Object.entries(s.copies)){
+    const card=CARD_BY_ID[id];
+    if(!card||!Number.isSafeInteger(n)||n<0||n>Math.max(card.max,LEGACY_CAPS[card.rarity]))fail();
+    base.copies[id]=Math.min(n,card.max);
+    base.glow+=(n-base.copies[id])*RULES.overflow[card.rarity];
+  }
+  if(!Number.isSafeInteger(base.glow)||base.glow>1e9)fail();
   if(!s.settings||typeof s.settings!=='object')fail();
   for(const k of ['fast','reduced','rareEffects','sound']){if(typeof s.settings[k]!=='boolean')fail();base.settings[k]=s.settings[k];}
   for(const k of ['music','effects']){if(s.settings[k]!==undefined&&typeof s.settings[k]!=='boolean')fail();base.settings[k]=s.settings[k]??true;}
@@ -94,7 +102,8 @@ export function validateSave(raw) {
     if(!h||!Object.hasOwn(CARD_BY_ID,h.id)||!['抽取','SSR保底','SR保底','SR补发','定向兑换'].includes(h.source)||typeof h.time!=='string'||!Number.isFinite(Date.parse(h.time)))fail();
     if(typeof h.bonus!=='boolean'||typeof h.isNew!=='boolean')fail();
     for(const k of ['before','after','glow','number'])if(!Number.isSafeInteger(h[k])||h[k]<0)fail();
-    if(h.before>CARD_BY_ID[h.id].max||h.after>CARD_BY_ID[h.id].max||h.number>s.totalDraws||h.glow>20)fail();
+    const historicalMax=Math.max(CARD_BY_ID[h.id].max,LEGACY_CAPS[CARD_BY_ID[h.id].rarity]);
+    if(h.before>historicalMax||h.after>historicalMax||h.number>s.totalDraws||h.glow>20)fail();
     return {id:h.id,source:h.source,time:h.time,bonus:h.bonus,isNew:h.isNew,before:h.before,after:h.after,glow:h.glow,number:h.number};
   });
   base.createdAt=typeof s.createdAt==='string'&&Number.isFinite(Date.parse(s.createdAt))?s.createdAt:base.createdAt;
