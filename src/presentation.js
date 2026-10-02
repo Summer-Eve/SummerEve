@@ -1,4 +1,4 @@
-import {RULES} from './data.js';
+import {RULES} from './data.js?v=20261002-r2';
 
 export function pityCopy(pity) {
   return {ssr:`${RULES.pity-pity}抽内可获得SSR`,sr:'每10抽必出SR',shared:'单抽与十连均享有保底'};
@@ -7,6 +7,14 @@ export function pityCopy(pity) {
 export function collectionPercent({copies,max}) {
   if (!max) return '0.00';
   return (Math.min(max,Math.max(0,copies))/max*100).toFixed(2);
+}
+
+export const drawArt=card=>card.art.replace('./assets/','./assets/draw/');
+export function firstMeetingMarkup(result,settings) {
+  return result.isNew&&settings.showNew!==false?'<em class="first-meeting" aria-label="初见">初见</em>':'';
+}
+export function drawSummary(items,count) {
+  return `消耗 ${count} 晷签 · 获得 ${items.length} 份 · 印记 +${count}`;
 }
 
 export function starsMarkup(rarity,owned) {

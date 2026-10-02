@@ -76,3 +76,38 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
  html.soft-landscape .single-pull-modal .result-card .star-rating{grid-template-columns:repeat(var(--star-cols),10px);min-height:10px;gap:1px}
  html.soft-landscape .single-pull-modal .result-card .star-rating .star{width:10px;height:10px}
 }
+/* Detail has one fitted canvas: header + complete artwork + all information.
+   Visible viewport (not device height) accounts for in-app browser toolbars. */
+.detail-open,.detail-open body{overflow:hidden;overscroll-behavior:none}
+dialog.detail-modal{box-sizing:border-box;width:min(900px,calc(100vw - 24px));height:min(640px,calc(var(--visible-height,100vh) - 24px));max-width:none;max-height:none;padding:16px 20px;overflow:hidden;overscroll-behavior:contain}
+dialog.detail-modal[open]{display:grid;grid-template-rows:auto minmax(0,1fr);gap:12px}
+dialog.detail-modal .modal-head{margin:0;padding:0 0 8px;min-width:0;gap:12px;align-items:center}
+dialog.detail-modal .modal-head h2{margin:0;font-size:24px;line-height:1.2;min-width:0}
+dialog.detail-modal .modal-head button{flex-shrink:0;min-height:32px;padding:4px 10px;white-space:nowrap}
+dialog.detail-modal .card-detail{display:grid;grid-template-columns:minmax(0,42%) minmax(0,1fr);gap:22px;min-width:0;min-height:0;height:100%}
+dialog.detail-modal .card-detail>img{display:block;width:100%;height:100%;min-width:0;min-height:0;max-height:100%;object-fit:contain;object-position:center}
+dialog.detail-modal .detail-info{min-width:0;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:12px}
+dialog.detail-modal .detail-info .collection-rarity{position:static;margin:0;font-size:28px;line-height:1.1}
+dialog.detail-modal .detail-info p{margin:0;font-size:16px;line-height:1.6;overflow-wrap:anywhere}
+dialog.detail-modal .detail-info .star-rating{flex-shrink:0;margin:0}
+dialog.detail-modal .detail-info button{align-self:flex-start;flex-shrink:0;max-width:100%;min-height:36px;margin:0;padding:6px 14px;font-size:15px;line-height:1.3}
+.compact-landscape dialog.detail-modal{max-height:none}
+@media(max-height:450px){
+ dialog.detail-modal{padding:10px 16px}
+ dialog.detail-modal[open]{gap:8px}
+ dialog.detail-modal .modal-head h2{font-size:19px}
+ dialog.detail-modal .card-detail{grid-template-columns:minmax(0,38%) minmax(0,1fr);gap:16px}
+ dialog.detail-modal .detail-info{gap:8px}
+ dialog.detail-modal .detail-info p{font-size:13px;line-height:1.45}
+ dialog.detail-modal .detail-info .collection-rarity{font-size:24px}
+ dialog.detail-modal .detail-info button{font-size:13px;min-height:32px;padding:5px 10px}
+}
+@media(orientation:portrait) and (max-width:700px){
+ html.soft-landscape dialog.detail-modal{width:min(900px,calc(var(--visible-height,100vh) - 24px));height:calc(100vw - 24px);max-height:none;overflow:hidden;padding:10px 16px}
+ html.soft-landscape dialog.detail-modal .modal-head h2{font-size:19px}
+ html.soft-landscape dialog.detail-modal .card-detail{grid-template-columns:minmax(0,38%) minmax(0,1fr);gap:16px}
+ html.soft-landscape dialog.detail-modal .detail-info{gap:8px}
+ html.soft-landscape dialog.detail-modal .detail-info p{font-size:13px;line-height:1.45}
+ html.soft-landscape dialog.detail-modal .detail-info .collection-rarity{font-size:24px}
+ html.soft-landscape dialog.detail-modal .detail-info button{font-size:13px;min-height:32px;padding:5px 10px}
+}

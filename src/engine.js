@@ -1,10 +1,10 @@
-import { CARDS, CARD_BY_ID, POOLS, RARITIES, RULES, TOTAL_COPIES } from './data.js';
+import { CARDS, CARD_BY_ID, POOLS, RARITIES, RULES, TOTAL_COPIES } from './data.js?v=20261002-r2';
 
 const LEGACY_CAPS = { SSR: 3, SR: 5, R: 8, N: 10 };
 
-export const DEFAULT_SETTINGS = Object.freeze({ fast: false, reduced: false, rareEffects: true, sound: true, music: true, effects: true, volume: .35 });
+export const DEFAULT_SETTINGS = Object.freeze({ fast: false, reduced: false, rareEffects: true, showNew: true, sound: true, music: true, effects: true, volume: .35 });
 export function newSave() {
-  return { version: 1, tickets: RULES.firstGift, totalDraws: 0, pity: 0, blockHasSR: false,
+  return { version: 1, tickets: RULES.firstGift, totalDraws: 0, pity: 0, srPity: 0, blockHasSR: false,
     marks: 0, glow: 0, copies: {}, days: 0, lastClaim: '', history: [], received: 0,
     settings: {...DEFAULT_SETTINGS}, createdAt: new Date().toISOString(), welcomed: false };
 }
@@ -46,20 +46,24 @@ export function draw(s,count=1,rng=Math.random) {
   const results=[];
   for(let i=0;i<count;i++) {
     let rarity; const hard=s.pity===RULES.pity-1;
+    // Reserve the ninth SR-counter slot only if the next draw hits SSR hard pity.
+    // That lets both guarantees fit inside ten actual draws, never an extra grant.
+    const reserveSR=s.srPity===8&&s.pity===RULES.pity-2;
+    const needSR=s.srPity===9||reserveSR;
     if(hard)rarity='SSR'; else {
       const roll=randomValue(rng); let threshold=0;
       rarity=RARITIES.find(r=>{threshold+=RULES.rates[r];return roll<threshold;})||'N';
     }
     s.tickets--;s.totalDraws++;s.marks++;
     const blockEnd=s.totalDraws%10===0;
-    const needSR=blockEnd&&!s.blockHasSR&&rarity!=='SR';
-    const bonus=needSR&&rarity==='SSR';
     let source=hard?'SSR保底':'抽取';
-    if(needSR&&!bonus){rarity='SR';source='SR保底';}
+    if(needSR&&!hard&&rarity!=='SR'){rarity='SR';source='SR保底';}
     s.pity=rarity==='SSR'?0:s.pity+1;
+    // Legacy saves may already sit at both boundaries: honor SSR, then SR on
+    // the next paid slot. Old cards/history are never removed or rewritten.
+    s.srPity=rarity==='SR'?0:Math.min(9,s.srPity+1);
     if(rarity==='SR')s.blockHasSR=true;
     results.push(grant(s,selectCard(s,rarity,rng),source));
-    if(bonus)results.push(grant(s,selectCard(s,'SR',rng),'SR补发',true));
     if(blockEnd)s.blockHasSR=false;
   }
   return results;
@@ -95,7 +99,7 @@ export function validateSave(raw) {
   if(!Number.isSafeInteger(base.glow)||base.glow>1e9)fail();
   if(!s.settings||typeof s.settings!=='object')fail();
   for(const k of ['fast','reduced','rareEffects','sound']){if(typeof s.settings[k]!=='boolean')fail();base.settings[k]=s.settings[k];}
-  for(const k of ['music','effects']){if(s.settings[k]!==undefined&&typeof s.settings[k]!=='boolean')fail();base.settings[k]=s.settings[k]??true;}
+  for(const k of ['music','effects','showNew']){if(s.settings[k]!==undefined&&typeof s.settings[k]!=='boolean')fail();base.settings[k]=s.settings[k]??true;}
   if(typeof s.settings.volume!=='number'||!Number.isFinite(s.settings.volume)||s.settings.volume<0||s.settings.volume>1)fail();base.settings.volume=s.settings.volume;
   if(!Array.isArray(s.history)||s.history.length>300)fail();
   base.history=s.history.map(h=>{
@@ -106,6 +110,11 @@ export function validateSave(raw) {
     if(h.before>historicalMax||h.after>historicalMax||h.number>s.totalDraws||h.glow>20)fail();
     return {id:h.id,source:h.source,time:h.time,bonus:h.bonus,isNew:h.isNew,before:h.before,after:h.after,glow:h.glow,number:h.number};
   });
+  if(s.srPity!==undefined){base.srPity=number('srPity',9);if(base.srPity>base.totalDraws)fail();}
+  else {
+    const lastSR=base.history.filter(h=>CARD_BY_ID[h.id].rarity==='SR'&&h.source!=='定向兑换').reduce((latest,h)=>Math.max(latest,h.number),-1);
+    base.srPity=Math.min(9,lastSR<0?base.totalDraws%10:base.totalDraws-lastSR);
+  }
   base.createdAt=typeof s.createdAt==='string'&&Number.isFinite(Date.parse(s.createdAt))?s.createdAt:base.createdAt;
   base.welcomed=Boolean(s.welcomed);
   return base;

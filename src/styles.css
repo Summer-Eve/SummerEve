@@ -433,3 +433,24 @@ dialog.draw-modal.scroll-opening .scroll-skip-hint{opacity:0}
 @media(orientation:portrait) and (max-width:700px){html.soft-landscape .ten-pull-modal .result-card .collection-rarity{top:0;left:-9px;font-size:16px}html.soft-landscape .single-pull-modal .result-card .collection-rarity{top:1px;left:-10px;font-size:26px}}
 @media(max-height:600px) and (orientation:landscape){.demo-shell .identity-dock{bottom:24%;width:min(270px,30vw);padding:10px 13px;row-gap:6px}}
 html.soft-landscape .demo-shell .identity-dock{top:auto;bottom:clamp(60px,20vh,78px);width:185px;height:190px;aspect-ratio:auto;padding:7px 9px;row-gap:5px}
+/* First meeting is a small vertical seal outside the artwork, below rarity. */
+dialog.draw-modal .result-card .first-meeting{position:absolute;top:32px;left:-12px;right:auto;width:max-content;z-index:4;writing-mode:vertical-rl;text-orientation:upright;white-space:nowrap;line-height:1;letter-spacing:1px;padding:3px 2px;font-size:10px;font-style:normal;color:#fff6df;background:#963f32;border:1px solid #c8a76c;box-shadow:none}
+dialog.single-pull-modal .result-card .first-meeting{top:44px;left:-17px;font-size:11px}
+dialog.ten-pull-modal .result-card .first-meeting{top:30px;left:-18px;font-size:9px}
+.result-image-status{margin:3px 0 0;font-size:11px;line-height:1.2;text-align:center}
+[data-retry-images]{padding:4px 10px;font-size:11px;min-height:28px}
+[data-retry-images][hidden],.result-image-status[hidden]{display:none}
+.result-card:not(.image-ready)::before{content:'载入中';position:absolute;inset:30% 0 auto;text-align:center;font-size:10px;color:#85654a;pointer-events:none;z-index:2}
+.result-card.image-failed::before{content:'加载失败'}
+@media(orientation:landscape) and (max-height:650px){
+ dialog.ten-pull-modal .result-card .first-meeting{top:22px;left:-18px;font-size:8px}
+ dialog.single-pull-modal .result-card .first-meeting{top:36px;left:-14px;font-size:9px}
+ .result-image-status{font-size:9px}
+}
+@media(orientation:portrait) and (max-width:700px){
+ html.soft-landscape dialog.ten-pull-modal .result-card .first-meeting{top:21px;left:-18px;right:auto;font-size:8px}
+ html.soft-landscape dialog.single-pull-modal .result-card .first-meeting{top:33px;left:-13px;right:auto;font-size:9px}
+ html.soft-landscape .result-image-status{font-size:9px}
+}
+/* Collection ownership affects only the preview, not the approved source art. */
+.collection-card.unowned>img{filter:grayscale(.72) saturate(.65);opacity:.72}
