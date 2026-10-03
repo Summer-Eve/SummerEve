@@ -57,7 +57,7 @@ test('cache denied or full still preloads from network',async()=>{
  const full=await loadResources([{url:'a'}],{base,cache:{match:async()=>undefined,put:cache.put},fetcher:async()=>new Response('ok')});
  assert.equal(full.loaded,1);assert.equal(full.cacheWritable,false);
 });
-test('safe early entry aborts unfinished preloads without counting them as complete',async()=>{
+test('explicit cancellation aborts unfinished preloads without counting them as complete',async()=>{
  const controller=new AbortController(),progress=[];
  const result=await loadResources([{url:'core',required:true},{url:'slow'},{url:'later'}],{base,signal:controller.signal,concurrency:1,
   fetcher:async url=>new Response(url),onProgress:p=>{progress.push(p);if(p.requiredReady)controller.abort();}
