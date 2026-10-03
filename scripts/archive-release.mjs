@@ -56,7 +56,7 @@ const webZip=path.join(output,'rigui-'+version+'-web.zip');
 execFileSync('pwsh',['-NoProfile','-NonInteractive','-Command',
   'Add-Type -AssemblyName System.IO.Compression.FileSystem; [System.IO.Compression.ZipFile]::CreateFromDirectory('+quote(web)+','+quote(webZip)+',[System.IO.Compression.CompressionLevel]::Optimal,$false)'],{stdio:'pipe'});
 const sourceZip=path.join(output,'rigui-'+version+'-source.zip');
-git('archive','--format=zip','--output='+sourceZip,sourceCommit);
+git('-c','core.autocrlf=false','-c','core.eol=lf','archive','--format=zip','--output='+sourceZip,sourceCommit);
 const sourceFiles=git('ls-tree','-r','--name-only',sourceCommit).toString().trim().split('\n').map(file=>{
   const bytes=git('show',sourceCommit+':'+file);return {path:file,bytes:bytes.length,sha256:hash(bytes)};
 });
