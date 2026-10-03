@@ -6,10 +6,23 @@
 /* The rail and scrollable pages have separate boxes, not overlapping padding.
    Clip horizontal overscroll/focus scrolling before it can paint under the rail. */
 .side-nav{left:var(--nav-left);width:var(--nav-width)}
-.collection-page,.utility-page{box-sizing:border-box;margin-left:var(--nav-space);width:calc(100% - var(--nav-space));min-width:0;height:var(--visible-height,100dvh);min-height:0;padding-left:0;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain}
+.collection-page,.utility-page{box-sizing:border-box;margin-left:var(--nav-space);width:calc(100% - var(--nav-space));min-width:0;height:var(--visible-height,100dvh);min-height:0;padding-left:0;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;touch-action:pinch-zoom}
+.collection-page :is(input,select,textarea,[contenteditable]),.utility-page :is(input,select,textarea,[contenteditable]){touch-action:auto}
 .compact-landscape{--nav-left:var(--mobile-left);--nav-width:52px;--nav-space:calc(var(--nav-left) + var(--nav-width) + 14px)}
 .compact-landscape .side-nav{left:var(--nav-left);width:var(--nav-width)}
 .compact-landscape .collection-page,.compact-landscape .utility-page{padding-left:0;min-height:0}
+
+/* Web-owned filter choices follow the same rotation as the game, unlike OS selects. */
+.collection-filter-button{display:inline-flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 0 6px;min-width:90px;padding:6px 10px;font-size:12px;border:0;border-bottom:1px solid var(--gold)}
+dialog.filter-modal{box-sizing:border-box;width:min(620px,calc(var(--visible-width,100vw) - 24px));max-height:calc(var(--visible-height,100dvh) - 24px);padding:20px 24px;overflow:auto}
+.filter-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.collection-filter-button,.filter-options button{-webkit-tap-highlight-color:transparent}
+.filter-options button{min-height:44px;padding:10px 12px;font-size:16px}
+.filter-options button[aria-pressed="true"]{background:var(--red);color:#fff5df;border-color:var(--red)}
+.compact-landscape .collection-filter-button{font-size:9px;min-width:78px;padding:3px 6px;gap:6px}
+.compact-landscape dialog.filter-modal{padding:12px 18px}
+.compact-landscape dialog.filter-modal .modal-head{margin-bottom:12px;padding-bottom:8px}
+.compact-landscape .filter-options button{font-size:13px;min-height:36px;padding:6px}
 
 @media(orientation:portrait) and (max-width:700px){
  html.soft-landscape{--nav-left:max(7px,env(safe-area-inset-top));--nav-width:61px;--nav-space:calc(var(--nav-left) + var(--nav-width) + 12px)}
@@ -17,4 +30,7 @@
  html.soft-landscape .side-nav{left:var(--nav-left);width:var(--nav-width)}
  html.soft-landscape .collection-page,html.soft-landscape .utility-page{width:calc(100% - var(--nav-space));height:100%;min-height:0;padding-left:0;overflow-x:hidden;overflow-y:auto}
  html.soft-landscape .demo-shell .hero-copy{left:max(calc(var(--nav-space) + 12px),12%)}
+ html.soft-landscape .collection-filter-button{font-size:8px;min-width:72px;padding:3px 6px;gap:6px}
+ html.soft-landscape dialog.filter-modal{width:min(620px,calc(var(--visible-height,100dvh) - 24px));max-height:calc(var(--visible-width,100dvw) - 24px);padding:14px 20px}
+ html.soft-landscape .filter-options button{font-size:13px;min-height:36px;padding:6px}
 }

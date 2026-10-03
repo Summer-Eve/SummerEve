@@ -134,12 +134,19 @@ test('native image and background preloader share one worker download',async()=>
  assert.equal(await (await native).text(),'one body');assert.equal(await (await background).text(),'one body');
 });
 
-test('r9 also reuses unchanged r8 art without executing r8 cache programs',async()=>{
+test('current release reuses unchanged r8 art without executing r8 cache programs',async()=>{
  const cache=fakeCache(),old=fakeCache();await old.put(base+'assets/card.webp',new Response('r8 art'));
  await old.put(base+'src/app2.js?v='+RESOURCE_VERSION,new Response('incompatible code'));
  const worker=workerHarness(cache,old,async()=>new Response('new code'),'20261003-r8');
  assert.equal(await(await worker.fetch('assets/card.webp')).text(),'r8 art');
  assert.equal(await(await worker.fetch('src/app2.js?v='+RESOURCE_VERSION)).text(),'new code');assert.equal(worker.requests.length,1);
+});
+test('current release reuses r9 artwork but fetches versioned code freshly',async()=>{
+ const cache=fakeCache(),old=fakeCache();await old.put(base+'assets/card.webp',new Response('r9 art'));
+ await old.put(base+'src/app2.js?v='+RESOURCE_VERSION,new Response('old code'));
+ const worker=workerHarness(cache,old,async()=>new Response('fresh code'),'20261004-r9');
+ assert.equal(await(await worker.fetch('assets/card.webp')).text(),'r9 art');
+ assert.equal(await(await worker.fetch('src/app2.js?v='+RESOURCE_VERSION)).text(),'fresh code');assert.equal(worker.requests.length,1);
 });
 test('optional downloads use normal HTTP cache and low priority while critical code stays normal',async()=>{
  const seen=[];

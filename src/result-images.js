@@ -1,5 +1,5 @@
 // Result thumbnails load independently of the reveal animation and never redraw.
-import {resourceActivity} from './resource-activity.js?v=20261004-r9';
+import {resourceActivity} from './resource-activity.js?v=20261004-r10';
 export function watchResultImages(root) {
   const images=[...root.querySelectorAll('img[data-full-src]')];
   const status=root.querySelector('[data-image-status]');

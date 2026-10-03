@@ -6,7 +6,7 @@ import {verifyEntryImage,loadResources} from '../src/resource-loader.js';
 
 test('entry requires all 95 draw previews, five homepage originals and the two scene surfaces',()=>{
  const list=startupResources(),byUrl=new Map(list.map(r=>[r.url,r]));
- assert.equal(list.length,217);assert.equal(list.filter(r=>r.required).length,120);
+ assert.equal(list.length,218);assert.equal(list.filter(r=>r.required).length,121);
  for(const card of CARDS){assert.equal(byUrl.get(card.art.replace('./assets/','./assets/draw/')).required,true);assert.equal(byUrl.get(card.art).required,card.rarity==='SSR');}
  for(const file of ['palace-bg-v2.webp','scroll-reveal.webp'])assert.equal(byUrl.get('./assets/'+file).required,true);
  assert.ok(list.filter(r=>r.url.endsWith('.wav')).every(r=>!r.required));

@@ -1,4 +1,4 @@
-import {RULES} from './data.js?v=20261004-r9';
+import {RULES} from './data.js?v=20261004-r10';
 
 export function pityCopy(pity) {
   return {ssr:`${RULES.pity-pity}抽内可获得SSR`,sr:'每10抽必出SR',shared:'单抽与十连均享有保底'};
@@ -10,6 +10,23 @@ export function collectionPercent({copies,max}) {
 }
 
 export const drawArt=card=>card.art.replace('./assets/','./assets/draw/');
+
+export function collectionFilterChoices(key,characters){
+  const groups={
+    rarity:{label:'稀有度',options:[['all','全部'],['SSR','SSR'],['SR','SR'],['R','R'],['N','N']]},
+    role:{label:'人物',options:[['all','全部人物'],...characters.map(c=>[c.id,c.name])]},
+    owned:{label:'收集',options:[['all','全部状态'],['missing','未获得'],['owned','已获得'],['unfinished','未满星'],['full','已满星']]}
+  };
+  return groups[key];
+}
+export function collectionFilterButton(key,value,characters){
+  const group=collectionFilterChoices(key,characters),label=group.options.find(option=>option[0]===value)?.[1]||group.options[0][1];
+  return `<label>${group.label}<button type="button" class="collection-filter-button" data-open-filter="${key}" aria-label="${group.label}：${label}" aria-haspopup="dialog">${label}<span aria-hidden="true">⌄</span></button></label>`;
+}
+export function collectionFilterMarkup(key,value,characters){
+  const group=collectionFilterChoices(key,characters);
+  return `<header class="modal-head"><h2>${group.label}</h2><button data-close>关闭 ×</button></header><div class="filter-options" role="group" aria-label="${group.label}">${group.options.map(([id,label])=>`<button type="button" data-filter-key="${key}" data-filter-option="${id}" aria-pressed="${id===value}">${label}</button>`).join('')}</div>`;
+}
 // Explicit dimensions avoid percentage-height/aspect-ratio feedback in WebKit.
 export function resultCardSize(width,height,count){
   const rows=count===1?1:2,columns=count===1?1:5,gap=count===1?0:8;

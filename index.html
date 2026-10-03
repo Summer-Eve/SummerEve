@@ -8,11 +8,11 @@
   <title>日晷 · 一卷山河</title>
   <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
   <style>:root{color-scheme:light;color-scheme:only light}html.booting #game-root,html.booting .rotate{display:none!important}#startup{position:fixed;inset:0;background:#f4efe5;color:#695a43}html.booting body{margin:0;overflow:hidden}</style>
-  <link rel="stylesheet" href="./src/startup.css?v=20261004-r9">
-  <link rel="stylesheet" href="./src/styles.css?v=20261004-r9">
-  <link rel="stylesheet" href="./src/presentation.css?v=20261004-r9">
-  <link rel="stylesheet" href="./src/mobile.css?v=20261004-r9">
-  <link rel="stylesheet" href="./src/browser-compat.css?v=20261004-r9">
+  <link rel="stylesheet" href="./src/startup.css?v=20261004-r10">
+  <link rel="stylesheet" href="./src/styles.css?v=20261004-r10">
+  <link rel="stylesheet" href="./src/presentation.css?v=20261004-r10">
+  <link rel="stylesheet" href="./src/mobile.css?v=20261004-r10">
+  <link rel="stylesheet" href="./src/browser-compat.css?v=20261004-r10">
 </head>
 <body>
   <section id="startup" aria-label="游戏资源加载">
@@ -51,7 +51,7 @@
   </div>
   <noscript>请启用 JavaScript 以游玩日晷。</noscript>
 <script type="module">
-  import('./src/startup.js?v=20261004-r9').catch(error=>{
+  import('./src/startup.js?v=20261004-r10').catch(error=>{
     console.error('Resource loader unavailable',error);
     document.querySelector('[data-load-status]').textContent='加载程序未能下载，请检查网络后重试。';
     const retry=document.querySelector('[data-load-retry]');retry.hidden=false;retry.textContent='重新加载';retry.onclick=()=>location.reload();
