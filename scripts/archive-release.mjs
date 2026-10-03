@@ -53,8 +53,8 @@ for(const file of ['RELEASE-20261003.md','GAME.md','DEVICE-QA.md','assets/audio/
   await writeFile(path.join(output,'docs',file==='assets/audio/README.md'?'AUDIO-SOURCES.md':file),git('show',sourceCommit+':'+file));
 }
 const webZip=path.join(output,'rigui-'+version+'-web.zip');
-execFileSync('powershell.exe',['-NoProfile','-NonInteractive','-Command',
-  'Compress-Archive -LiteralPath '+['index.html','src','assets'].map(f=>quote(path.join(web,f))).join(',')+' -DestinationPath '+quote(webZip)+' -CompressionLevel Optimal'],{stdio:'pipe'});
+execFileSync('pwsh',['-NoProfile','-NonInteractive','-Command',
+  'Add-Type -AssemblyName System.IO.Compression.FileSystem; [System.IO.Compression.ZipFile]::CreateFromDirectory('+quote(web)+','+quote(webZip)+',[System.IO.Compression.CompressionLevel]::Optimal,$false)'],{stdio:'pipe'});
 const sourceZip=path.join(output,'rigui-'+version+'-source.zip');
 git('archive','--format=zip','--output='+sourceZip,sourceCommit);
 const sourceFiles=git('ls-tree','-r','--name-only',sourceCommit).toString().trim().split('\n').map(file=>{
