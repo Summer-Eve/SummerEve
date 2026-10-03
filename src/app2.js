@@ -1,10 +1,10 @@
-import {CARDS,CARD_BY_ID,CHARACTERS} from './data.js?v=20261003-r6';
-import {newSave,draw,progress,claimDaily,localDay,exchange,validateSave} from './engine.js?v=20261003-r6';
-import {loadSave,persist} from './storage.js?v=20261003-r6';
-import {GameAudio} from './audio.js?v=20261003-r6';
-import {pityCopy,starsMarkup,collectionPercent,drawArt,firstMeetingMarkup,drawSummary} from './presentation.js?v=20261003-r6';
-import {watchResultImages} from './result-images.js?v=20261003-r6';
-import {exchangeSuccessMarkup,watchExchangeImage,showExchangeError} from './exchange-feedback.js?v=20261003-r6';
+import {CARDS,CARD_BY_ID,CHARACTERS} from './data.js?v=20261003-r7';
+import {newSave,draw,progress,claimDaily,localDay,exchange,validateSave} from './engine.js?v=20261003-r7';
+import {loadSave,persist} from './storage.js?v=20261003-r7';
+import {GameAudio} from './audio.js?v=20261003-r7';
+import {pityCopy,starsMarkup,collectionPercent,drawArt,firstMeetingMarkup,drawSummary} from './presentation.js?v=20261003-r7';
+import {watchResultImages} from './result-images.js?v=20261003-r7';
+import {exchangeSuccessMarkup,watchExchangeImage,showExchangeError} from './exchange-feedback.js?v=20261003-r7';
 const app=document.querySelector('#app'),modal=document.querySelector('#modal'),toast=document.querySelector('#toast'),rotatePrompt=document.querySelector('.rotate'),rotateCountdown=document.querySelector('.rotate-countdown');let state=loadSave().save||newSave(),index=0,view='home',timer,toastTimer,rotateTimer,rotateTick,drawRevealTimer,drawRevealSkip,skipRevealClick=false,openCurrency=null,openProgress=false,filter={rarity:'all',role:'all',owned:'all'};
 const reviewParams=new URLSearchParams(location.search),localReview=['localhost','127.0.0.1'].includes(location.hostname)||reviewParams.get('review')==='1';if(localReview){state.tickets=Math.max(state.tickets,9999);persist(state);}
 const ssr=CARDS.filter(c=>c.rarity==='SSR');
@@ -64,7 +64,7 @@ function clearRotateTimers(){clearTimeout(rotateTimer);clearInterval(rotateTick)
 function enterSoftLandscape(){if(!portraitPhone.matches)return;clearRotateTimers();rotatePrompt.classList.remove('is-counting');document.documentElement.classList.add('soft-landscape');try{screen.orientation?.lock?.('landscape')?.catch(()=>{});}catch{}}
 function syncPhoneOrientation(){clearRotateTimers();if(!portraitPhone.matches){document.documentElement.classList.remove('soft-landscape');rotatePrompt.classList.remove('is-counting');return;}document.documentElement.classList.remove('soft-landscape');rotatePrompt.classList.add('is-counting');let seconds=3;rotateCountdown.textContent=seconds;rotateTick=setInterval(()=>{seconds-=1;if(seconds>0)rotateCountdown.textContent=seconds;},1000);rotateTimer=setTimeout(enterSoftLandscape,3000);}
 if(portraitPhone.addEventListener)portraitPhone.addEventListener('change',syncPhoneOrientation);else portraitPhone.addListener?.(syncPhoneOrientation);window.addEventListener('orientationchange',()=>setTimeout(syncPhoneOrientation,120));
-function syncVisibleViewport(){const viewport=window.visualViewport;if(viewport&&Math.abs(viewport.scale-1)>.05)return;const width=viewport?.width||innerWidth,height=viewport?.height||innerHeight,root=document.documentElement;root.style.setProperty('--visible-height',height+'px');root.classList.toggle('compact-landscape',width>height&&height<=600&&width<=1200);}
+function syncVisibleViewport(){const viewport=window.visualViewport;if(viewport&&Math.abs(viewport.scale-1)>.05)return;const width=viewport?.width||innerWidth,height=viewport?.height||innerHeight,root=document.documentElement;root.style.setProperty('--visible-height',height+'px');root.style.setProperty('--visible-width',width+'px');root.classList.toggle('compact-landscape',width>height&&height<=600&&width<=1200);}
 window.addEventListener('resize',syncVisibleViewport);window.visualViewport?.addEventListener('resize',syncVisibleViewport);
 app.addEventListener('input',e=>{if(!e.target.matches('[data-volume]'))return;state.settings.volume=Number(e.target.value)/100;audio.sync();});
 app.addEventListener('change',e=>{if(e.target.matches('[data-volume]'))persist(state);});

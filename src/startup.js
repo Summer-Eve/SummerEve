@@ -1,6 +1,6 @@
-import {RESOURCE_VERSION,resourceCacheName,startupResources} from './startup-resources.js?v=20261003-r6';
-import {loadResources} from './resource-loader.js?v=20261003-r6';
-import {startTown} from './startup-town.js?v=20261003-r6';
+import {RESOURCE_VERSION,resourceCacheName,startupResources} from './startup-resources.js?v=20261003-r7';
+import {loadResources} from './resource-loader.js?v=20261003-r7';
+import {startTown} from './startup-town.js?v=20261003-r7';
 
 const base=new URL('../',import.meta.url),screen=document.querySelector('#startup');
 const bar=screen.querySelector('progress'),percent=screen.querySelector('[data-load-percent]');
@@ -48,7 +48,7 @@ async function startGame(){
   status.textContent=done===total?'资源已就绪，正在展卷':'正在进入游戏，剩余资源将继续后台下载';
   try{
     await ensureStyles();
-    await import('./app2.js?v=20261003-r6');
+    await import('./app2.js?v=20261003-r7');
     entered=true;
     stopTown();
     document.documentElement.classList.remove('booting');screen.remove();

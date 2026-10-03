@@ -1,5 +1,5 @@
 /* Scoped resource cache only. Saves remain in localStorage and are never touched. */
-const VERSION='20261003-r6';
+const VERSION='20261003-r7';
 const BASE=new URL('./',self.location.href);
 const CACHE='rigui-resources:'+BASE.pathname+':'+VERSION;
 self.addEventListener('install',event=>event.waitUntil(self.skipWaiting()));
