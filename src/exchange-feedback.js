@@ -1,4 +1,4 @@
-import {starsMarkup} from './presentation.js?v=20261003-r7';
+import {starsMarkup} from './presentation.js?v=20261003-r8';
 
 export function exchangeSuccessMarkup(card,result){
   return '<h2 class="exchange-heading" tabindex="-1">兑换成功</h2><article class="exchange-card '+card.rarity+'"><img src="'+card.art+'" alt="'+card.displayName+'·'+card.title+'" decoding="async"><span class="exchange-rarity">'+card.rarity+'</span><span class="exchange-image-status" role="status" data-exchange-image-status>卡面载入中…</span><button type="button" data-exchange-retry hidden>重试卡面</button></article><footer class="exchange-caption"><p class="exchange-name">'+card.displayName+' · '+card.title+'</p>'+starsMarkup(card.rarity,result.after)+'<p class="exchange-state">已收入图鉴 · 获得一份</p><p class="exchange-dismiss">点击任意位置关闭</p></footer>';

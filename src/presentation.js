@@ -1,4 +1,4 @@
-import {RULES} from './data.js?v=20261003-r7';
+import {RULES} from './data.js?v=20261003-r8';
 
 export function pityCopy(pity) {
   return {ssr:`${RULES.pity-pity}抽内可获得SSR`,sr:'每10抽必出SR',shared:'单抽与十连均享有保底'};
@@ -10,6 +10,24 @@ export function collectionPercent({copies,max}) {
 }
 
 export const drawArt=card=>card.art.replace('./assets/','./assets/draw/');
+// Explicit dimensions avoid percentage-height/aspect-ratio feedback in WebKit.
+export function resultCardSize(width,height,count){
+  const rows=count===1?1:2,columns=count===1?1:5,gap=count===1?0:8;
+  const cardHeight=Math.max(0,Math.floor(Math.min((height-gap*(rows-1))/rows,(width/columns-20)*1.5)));
+  return {width:Math.floor(cardHeight*2/3),height:cardHeight};
+}
+export function fitResultCards(root){
+  const grid=root.querySelector('.draw-results');
+  if(!grid)return;
+  let frame;
+  const fit=()=>{if(!root.open||!root.contains(grid))return;const size=resultCardSize(grid.clientWidth,grid.clientHeight,grid.children.length);root.style.setProperty('--result-card-width',size.width+'px');root.style.setProperty('--result-card-height',size.height+'px');};
+  const schedule=()=>{cancelAnimationFrame(frame);frame=requestAnimationFrame(fit);};
+  const observer=typeof ResizeObserver==='function'?new ResizeObserver(schedule):null;
+  observer?.observe(grid);window.addEventListener('resize',schedule);window.visualViewport?.addEventListener('resize',schedule);schedule();
+  const cleanup=()=>{observer?.disconnect();cancelAnimationFrame(frame);window.removeEventListener('resize',schedule);window.visualViewport?.removeEventListener('resize',schedule);root.removeEventListener('close',closed);};
+  const closed=()=>{if(!root.open||!root.contains(grid))cleanup();};root.addEventListener('close',closed);
+  return cleanup;
+}
 export function firstMeetingMarkup(result,settings) {
   return result.isNew&&settings.showNew!==false?'<em class="first-meeting" aria-label="初见">初见</em>':'';
 }

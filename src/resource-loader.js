@@ -1,5 +1,5 @@
 // Counts only fully read, successful responses. A failed file never advances progress.
-export async function loadResources(resources,{base,cache=null,fetcher=globalThis.fetch,concurrency=4,timeout=25000,signal,onProgress=()=>{}}={}){
+export async function loadResources(resources,{base,cache=null,assetCache=null,fetcher=globalThis.fetch,concurrency=4,timeout=25000,signal,waitForTurn=async()=>{},onProgress=()=>{}}={}){
   let cursor=0,loaded=0,cached=0,bytes=0,cacheWritable=Boolean(cache);
   const failed=[];
   let requiredLeft=resources.filter(resource=>resource.required).length;
@@ -12,6 +12,11 @@ export async function loadResources(resources,{base,cache=null,fetcher=globalThi
       let response;
       if(cache)try{response=await cache.match(url);}catch{cacheWritable=false;}
       let hit=Boolean(response?.ok);
+      // r8 artwork is unchanged from r7; never inherit old release code.
+      if(!hit&&assetCache&&resource.url.startsWith('./assets/'))try{
+        response=await assetCache.match(url);hit=Boolean(response?.ok);
+        if(hit&&cacheWritable)try{await cache.put(url,response.clone());}catch{cacheWritable=false;}
+      }catch{}
       if(!hit){
         let lastError;
         for(let attempt=0;attempt<2;attempt++){
@@ -21,7 +26,7 @@ export async function loadResources(resources,{base,cache=null,fetcher=globalThi
           if(signal?.aborted)controller.abort();
           const timer=setTimeout(()=>controller.abort(),timeout);
           try{
-            response=await fetcher(url,{signal:controller.signal,cache:'no-cache',headers:{'X-Rigui-Preload':'1'}});
+            response=await fetcher(url,{signal:controller.signal,cache:'default',priority:resource.required?'auto':'low',headers:{'X-Rigui-Preload':'1'}});
             if(!response.ok)throw new Error('HTTP '+response.status);
             // Keep the timeout active until the body has actually arrived.
             const body=await response.arrayBuffer();
@@ -41,7 +46,11 @@ export async function loadResources(resources,{base,cache=null,fetcher=globalThi
     }catch(error){failed.push({...resource,error:String(error.message||error)});report();}
   }
   await Promise.all(Array.from({length:Math.min(concurrency,resources.length)},async()=>{
-    while(cursor<resources.length)await one(resources[cursor++]);
+    while(cursor<resources.length){
+      const resource=resources[cursor++];
+      if(!resource.required)await waitForTurn();
+      await one(resource);
+    }
   }));
   return {loaded,total:resources.length,cached,bytes,cacheWritable,failed};
 }

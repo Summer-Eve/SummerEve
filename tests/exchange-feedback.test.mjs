@@ -6,9 +6,13 @@ import {CARDS} from '../src/data.js';
 import {newSave,exchange} from '../src/engine.js';
 import {exchangeSuccessMarkup,watchExchangeImage} from '../src/exchange-feedback.js';
 
-test('approved draw result markup remains unchanged by exchange feedback',()=>{
+test('iPhone layout update keeps draw controls and exchange feedback separate',()=>{
  const source=readFileSync(new URL('../src/app2.js',import.meta.url),'utf8'),drawMarkup=source.split(/\r?\n/).find(line=>line.startsWith('function showResults'));
- assert.equal(createHash('sha256').update(drawMarkup).digest('hex'),'23dfa879bc9afba4a132da460b8a62292e6805e2f2f7d907571995dab8be0b0f');
+ assert.match(drawMarkup,/firstMeetingMarkup\(r,state.settings\)/);
+ assert.match(drawMarkup,/starsMarkup\(c.rarity,r.after\)/);
+ assert.match(drawMarkup,/drawSummary\(items,count\)/);
+ assert.match(drawMarkup,/result-actions.*data-image-status.*data-retry-images.*data-redraw/);
+ assert.doesNotMatch(drawMarkup,/data-exchange|兑换成功/);
 });
 
 test('insufficient exchange names the currency and exact shortfall without changing progress',()=>{

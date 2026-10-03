@@ -74,10 +74,10 @@ test('bounded concurrency and timeout include a stalled response body',async()=>
  const result=await loadResources([{url:'stalled',required:true}],{base,timeout:10,fetcher:async(url,{signal})=>({ok:true,status:200,headers:{},arrayBuffer:()=>new Promise((resolve,reject)=>signal.addEventListener('abort',()=>reject(new Error('timeout')),{once:true}))})});
  assert.equal(result.loaded,0);assert.equal(result.failed[0].required,true);
 });
-function workerHarness(cache){
+function workerHarness(cache,oldCache=null,fetcher=async()=>new Response('network')){
  const handlers={},requests=[];
  const self={location:{href:base+'sw.js?v='+RESOURCE_VERSION},addEventListener:(name,handler)=>{handlers[name]=handler;}};
- vm.runInNewContext(readFileSync(new URL('../sw.js',import.meta.url),'utf8'),{self,URL,Response,Headers,caches:{open:async()=>cache},fetch:async request=>{requests.push(request);return new Response('network');}});
+ vm.runInNewContext(readFileSync(new URL('../sw.js',import.meta.url),'utf8'),{self,URL,Response,Headers,caches:{keys:async()=>oldCache?['rigui-resources:/SummerEve/:20261003-r7']:[],open:async name=>oldCache&&name.endsWith(':20261003-r7')?oldCache:cache},fetch:async request=>{requests.push(request);return fetcher(request);}});
  const fetch=async(url,headers={})=>{let result;handlers.fetch({request:new Request(new URL(url,base),{headers}),respondWith:promise=>{result=promise;}});return result?await result:null;};
  return {fetch,requests};
 }
@@ -91,10 +91,10 @@ test('worker intercepts native images and serves proper audio byte ranges from t
  assert.equal((await worker.fetch('assets/audio/sound.wav',{Range:'bytes=20-'})).status,416);
  assert.equal(worker.requests.length,0);
 });
-test('worker never intercepts saves, navigation, another project, preload requests or other release code',async()=>{
+test('worker never intercepts saves, navigation, another project or other release code',async()=>{
  const worker=workerHarness(fakeCache());
  for(const url of ['index.html','https://example.test/OtherGame/assets/card.webp','src/app2.js?v=future','save.json'])assert.equal(await worker.fetch(url),null);
- assert.equal(await worker.fetch('assets/card.webp',{'X-Rigui-Preload':'1'}),null);
+ assert.equal(await (await worker.fetch('assets/card.webp',{'X-Rigui-Preload':'1'})).text(),'network');
  const current=await worker.fetch('src/app2.js?v='+RESOURCE_VERSION);assert.equal(await current.text(),'network');
 });
 test('explicit image retry bypasses and repairs canonical cache; errors and partial responses stay uncached',async()=>{
@@ -110,4 +110,31 @@ test('startup remains isolated from save and economy; pavilion clip and bottom p
  assert.match(html,/<progress max="100" value="0"/);assert.match(html,/id="town-ground"/);
  assert.match(startup,/paint\(0\)/);assert.match(startup,/paint\(total\)/);
  assert.ok(html.includes('data-load-enter'));
+});
+
+test('only unchanged artwork migrates from the explicitly compatible previous cache',async()=>{
+ const cache=fakeCache(),oldCache=fakeCache();
+ await oldCache.put(base+'assets/card.webp',new Response('approved art'));
+ await oldCache.put(base+'src/app2.js?v='+RESOURCE_VERSION,new Response('stale program'));
+ const resources=[{url:'./assets/card.webp'},{url:'./src/app2.js?v='+RESOURCE_VERSION,required:true}];let calls=0;
+ const result=await loadResources(resources,{base,cache,assetCache:oldCache,fetcher:async()=>{calls++;return new Response('fresh code');}});
+ assert.equal(result.cached,1);assert.equal(calls,1);
+ assert.equal(await (await cache.match(base+'assets/card.webp')).text(),'approved art');
+ assert.equal(await (await cache.match(base+'src/app2.js?v='+RESOURCE_VERSION)).text(),'fresh code');
+ const worker=workerHarness(fakeCache(),oldCache);
+ assert.equal(await (await worker.fetch('assets/card.webp')).text(),'approved art');
+ assert.equal(await (await worker.fetch('src/app2.js?v='+RESOURCE_VERSION)).text(),'network');
+ assert.equal(worker.requests.length,1);
+});
+test('native image and background preloader share one worker download',async()=>{
+ let resolve;const gate=new Promise(r=>resolve=r);
+ const worker=workerHarness(fakeCache(),null,async()=>{await gate;return new Response('one body');});
+ const native=worker.fetch('assets/shared.webp'),background=worker.fetch('assets/shared.webp',{'X-Rigui-Preload':'1'});
+ await new Promise(r=>setImmediate(r));assert.equal(worker.requests.length,1);resolve();
+ assert.equal(await (await native).text(),'one body');assert.equal(await (await background).text(),'one body');
+});
+test('optional downloads use normal HTTP cache and low priority while critical code stays normal',async()=>{
+ const seen=[];
+ await loadResources([{url:'./assets/a.webp'},{url:'./src/app2.js',required:true}],{base,fetcher:async(url,options)=>{seen.push(options);return new Response('ok');}});
+ assert.deepEqual(seen.map(x=>x.priority).sort(),['auto','low']);assert.ok(seen.every(x=>x.cache==='default'));
 });

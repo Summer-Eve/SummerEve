@@ -20,6 +20,7 @@ function boot(fetcher,importGame=async()=>{}){
  const completion=vm.runInNewContext('(async()=>{'+source+'})()',{
   URL,setTimeout,clearTimeout,navigator:{},console:{error(){}},document,location:{reload(){}},
   RESOURCE_VERSION:'test',resourceCacheName:()=> 'test',startupResources:()=>resources,
+  resourceActivity:{wait:async()=>{}},
   caches:{open:async()=>({match:async key=>cached.get(key)?.clone(),put:async(key,response)=>{cached.set(key,response);}})},
   startTown:()=>()=>{stopped++;},loadResources:(list,options)=>loadResources(list,{...options,fetcher}),
   importGame:async()=>{imports++;await importGame();}
