@@ -1,10 +1,10 @@
-import {CARDS,CARD_BY_ID,CHARACTERS} from './data.js?v=20261003-r4';
-import {newSave,draw,progress,claimDaily,localDay,exchange,validateSave} from './engine.js?v=20261003-r4';
-import {loadSave,persist} from './storage.js?v=20261003-r4';
-import {GameAudio} from './audio.js?v=20261003-r4';
-import {pityCopy,starsMarkup,collectionPercent,drawArt,firstMeetingMarkup,drawSummary} from './presentation.js?v=20261003-r4';
-import {watchResultImages} from './result-images.js?v=20261003-r4';
-import {exchangeSuccessMarkup,watchExchangeImage,showExchangeError} from './exchange-feedback.js?v=20261003-r4';
+import {CARDS,CARD_BY_ID,CHARACTERS} from './data.js?v=20261003-r5';
+import {newSave,draw,progress,claimDaily,localDay,exchange,validateSave} from './engine.js?v=20261003-r5';
+import {loadSave,persist} from './storage.js?v=20261003-r5';
+import {GameAudio} from './audio.js?v=20261003-r5';
+import {pityCopy,starsMarkup,collectionPercent,drawArt,firstMeetingMarkup,drawSummary} from './presentation.js?v=20261003-r5';
+import {watchResultImages} from './result-images.js?v=20261003-r5';
+import {exchangeSuccessMarkup,watchExchangeImage,showExchangeError} from './exchange-feedback.js?v=20261003-r5';
 const app=document.querySelector('#app'),modal=document.querySelector('#modal'),toast=document.querySelector('#toast'),rotatePrompt=document.querySelector('.rotate'),rotateCountdown=document.querySelector('.rotate-countdown');let state=loadSave().save||newSave(),index=0,view='home',timer,toastTimer,rotateTimer,rotateTick,drawRevealTimer,drawRevealSkip,skipRevealClick=false,openCurrency=null,openProgress=false,filter={rarity:'all',role:'all',owned:'all'};
 const reviewParams=new URLSearchParams(location.search),localReview=['localhost','127.0.0.1'].includes(location.hostname)||reviewParams.get('review')==='1';if(localReview){state.tickets=Math.max(state.tickets,9999);persist(state);}
 const ssr=CARDS.filter(c=>c.rarity==='SSR');

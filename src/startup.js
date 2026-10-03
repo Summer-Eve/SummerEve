@@ -1,12 +1,13 @@
-import {RESOURCE_VERSION,resourceCacheName,startupResources} from './startup-resources.js?v=20261003-r4';
-import {loadResources} from './resource-loader.js?v=20261003-r4';
-import {paintTown,settleTown} from './startup-town.js?v=20261003-r4';
+import {RESOURCE_VERSION,resourceCacheName,startupResources} from './startup-resources.js?v=20261003-r5';
+import {loadResources} from './resource-loader.js?v=20261003-r5';
+import {startTown} from './startup-town.js?v=20261003-r5';
 
 const base=new URL('../',import.meta.url),screen=document.querySelector('#startup');
 const bar=screen.querySelector('progress'),percent=screen.querySelector('[data-load-percent]');
 const status=screen.querySelector('[data-load-status]'),note=screen.querySelector('[data-cache-note]');
 const retry=screen.querySelector('[data-load-retry]'),enter=screen.querySelector('[data-load-enter]');
 const town=screen.querySelector('.startup-town');
+const stopTown=startTown(town);
 let cache=null,controlled=false,done=0,hits=0,pending=startupResources(),busy=false;
 const total=pending.length;
 async function enableCache(){
@@ -30,7 +31,6 @@ async function enableCache(){
 function paint(count){
   const value=Math.floor(count/total*100);
   bar.value=value;percent.textContent=value+'%';
-  paintTown(town,value);
 }
 async function ensureStyles(){
   await Promise.all([...document.querySelectorAll('link[rel="stylesheet"]')].filter(link=>!link.sheet).map(link=>new Promise((resolve,reject)=>{
@@ -47,8 +47,8 @@ async function startGame(){
   status.textContent=done===total?'资源已就绪，正在展卷':'正在进入游戏，未完成的资源将在使用时重试';
   try{
     await ensureStyles();
-    await import('./app2.js?v=20261003-r4');
-    if(done===total)await settleTown(town);
+    await import('./app2.js?v=20261003-r5');
+    stopTown();
     document.documentElement.classList.remove('booting');screen.remove();
   }catch(error){
     console.error('Game startup failed',error);busy=false;

@@ -1,6 +1,6 @@
-import {CARDS} from './data.js?v=20261003-r4';
+import {CARDS} from './data.js?v=20261003-r5';
 
-export const RESOURCE_VERSION='20261003-r4';
+export const RESOURCE_VERSION='20261003-r5';
 export function resourceCacheName(base){
   return 'rigui-resources:'+new URL(base).pathname+':'+RESOURCE_VERSION;
 }
