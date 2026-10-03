@@ -1,16 +1,40 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="zh-CN" class="booting">
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#f4efe5"><meta name="description" content="日晷 · 一卷山河。免费古代水墨抽卡与图鉴小游戏。">
   <title>日晷 · 一卷山河</title>
   <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
-  <link rel="preload" href="./assets/ssr-chancellor-final-v1.webp" as="image" fetchpriority="high">
-  <link rel="stylesheet" href="./src/styles.css?v=20261003-r1">
-  <link rel="stylesheet" href="./src/presentation.css?v=20261003-r1">
-  <link rel="stylesheet" href="./src/mobile.css?v=20261003-r1">
+  <style>html.booting #game-root,html.booting .rotate{display:none!important}#startup{position:fixed;inset:0;background:#f4efe5;color:#695a43}html.booting body{margin:0;overflow:hidden}</style>
+  <link rel="stylesheet" href="./src/startup.css?v=20261003-r4">
+  <link rel="stylesheet" href="./src/styles.css?v=20261003-r4">
+  <link rel="stylesheet" href="./src/presentation.css?v=20261003-r4">
+  <link rel="stylesheet" href="./src/mobile.css?v=20261003-r4">
 </head>
 <body>
+  <section id="startup" aria-label="游戏资源加载">
+    <header class="startup-heading"><small>日 晷</small><h1>一卷山河</h1></header>
+    <div class="startup-scene">
+      <svg class="startup-town" viewBox="0 0 1900 740" role="img" aria-label="三座正面楼阁随加载依次从地面升起，两段廊桥连接其间">
+        <defs><clipPath id="town-ground"><rect width="1900" height="706"/></clipPath></defs>
+        <path d="M30 708H1870" stroke="#b59a6a" stroke-width="2" opacity=".45"/>
+        <g clip-path="url(#town-ground)">
+          <g class="corridor-lift" data-corridor="0"><image href="./assets/loading-corridor-front-v4.webp" x="400" y="570" width="380" height="137"/></g>
+          <g class="corridor-lift" data-corridor="1"><image href="./assets/loading-corridor-front-v4.webp" x="1080" y="570" width="420" height="137"/></g>
+          <g transform="translate(50 0)"><g class="building-lift" data-building="0"><svg width="438" height="706" viewBox="364 0 438 706"><image href="./assets/loading-pavilions-front-v4.webp" width="2172" height="724"/></svg></g></g>
+          <g transform="translate(640 0)"><g class="building-lift" data-building="1"><svg width="568" height="706" viewBox="802 0 568 706"><image href="./assets/loading-pavilions-front-v4.webp" width="2172" height="724"/></svg></g></g>
+          <g transform="translate(1400 0)"><g class="building-lift" data-building="2"><svg width="373" height="706" viewBox="1370 0 373 706"><image href="./assets/loading-pavilions-front-v4.webp" width="2172" height="724"/></svg></g></g>
+        </g>
+      </svg>
+    </div>
+    <footer class="startup-floor">
+      <div class="startup-progress-label"><span>展卷备景</span><span data-load-percent>0%</span></div>
+      <progress max="100" value="0" aria-label="资源加载进度">0%</progress>
+      <p data-load-status role="status" aria-live="polite">正在准备加载资源</p>
+      <p data-cache-note>首次进入需下载资源，请稍候</p>
+      <div class="startup-actions"><button data-load-retry hidden>重试未完成资源</button><button data-load-enter hidden>先进入游戏</button></div>
+    </footer>
+  </section>
   <div id="game-root">
     <div id="app"><p class="boot">日晷 · 正在展卷</p></div>
     <dialog id="modal" aria-label="游戏面板"></dialog>
@@ -23,6 +47,12 @@
     <small>也可以现在横置手机</small>
   </div>
   <noscript>请启用 JavaScript 以游玩日晷。</noscript>
-<script type="module" src="./src/app2.js?v=20261003-r1"></script>
+<script type="module">
+  import('./src/startup.js?v=20261003-r4').catch(error=>{
+    console.error('Resource loader unavailable',error);
+    document.querySelector('[data-load-status]').textContent='加载程序未能下载，请检查网络后重试。';
+    const retry=document.querySelector('[data-load-retry]');retry.hidden=false;retry.textContent='重新加载';retry.onclick=()=>location.reload();
+  });
+</script>
 </body>
 </html>

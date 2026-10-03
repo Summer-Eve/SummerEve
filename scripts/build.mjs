@@ -5,7 +5,7 @@ import {CARDS} from '../src/data.js';
 import {drawArt} from '../src/presentation.js';
 const root=fileURLToPath(new URL('../',import.meta.url));
 await mkdir(path.join(root,'dist'),{recursive:true});
-for(const file of ['index.html','src','assets'])await cp(path.join(root,file),path.join(root,'dist',file),{recursive:true});
+for(const file of ['index.html','sw.js','src','assets'])await cp(path.join(root,file),path.join(root,'dist',file),{recursive:true});
 for(const art of new Set(CARDS.flatMap(c=>[c.art,drawArt(c)])))await stat(path.join(root,'dist',art));
 const html=await readFile(path.join(root,'dist/index.html'),'utf8');
 if(html.includes('https://'))throw new Error('Unexpected remote dependency');
