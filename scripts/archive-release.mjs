@@ -6,10 +6,16 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {CARDS,RULES} from '../src/data.js';
 import {drawArt} from '../src/presentation.js';
+import {startupResources} from '../src/startup-resources.js';
 
 const root=fileURLToPath(new URL('../',import.meta.url));
-const version='20261003-r1';
-const baseline='47681a623e9c0d616f3370d5552356826e82cc16';
+const version=process.argv[2]||'20261003-r1';
+const releases={
+  '20261003-r1':{baseline:'47681a623e9c0d616f3370d5552356826e82cc16',document:'RELEASE-20261003.md',loader:false,acceptanceSource:'User confirmed real-device review complete'},
+  '20261003-r5':{baseline:'b11452d4d764f71177287539f608f5c226360c78',document:'RELEASE-20261003-r5.md',loader:true,acceptanceSource:'User confirmed r5 review complete; no per-device test log supplied'}
+};
+assert.ok(Object.hasOwn(releases,version),'Unknown accepted release');
+const release=releases[version],baseline=release.baseline;
 const output=path.resolve(root,'../releases/rigui-'+version);
 const git=(...args)=>execFileSync('git',args,{cwd:root,maxBuffer:64*1024*1024});
 const hash=bytes=>createHash('sha256').update(bytes).digest('hex');
@@ -23,7 +29,9 @@ const audio=[
   {path:'assets/audio/scroll-wood-v3.wav',source:'User-supplied mixkit-wood-hard-hit-2182.wav; mono conversion and one-second window'},
   {path:'assets/audio/exchange-success-v1.wav',source:'User-supplied 点击兑换.wav; bytes unchanged'}
 ];
-const files=[...new Set(['index.html',...runtime,'assets/favicon.svg','assets/palace-bg-v2.webp','assets/scroll-reveal.webp',...audio.map(a=>a.path),...CARDS.flatMap(c=>[c.art.slice(2),drawArt(c).slice(2)])])].sort();
+const loadingFiles=release.loader?['sw.js',...startupResources().map(resource=>resource.url.slice(2).split('?')[0])]:[];
+const files=[...new Set(['index.html',...runtime,...loadingFiles,'assets/favicon.svg','assets/palace-bg-v2.webp','assets/scroll-reveal.webp',...audio.map(a=>a.path),...CARDS.flatMap(c=>[c.art.slice(2),drawArt(c).slice(2)])])].sort();
+assert.equal(files.length,release.loader?218:207);
 assert.equal(CARDS.length,95);assert.equal(new Set(CARDS.map(c=>c.art)).size,95);assert.equal(new Set(CARDS.map(drawArt)).size,95);
 assert.ok(CARDS.every(c=>c.max===5&&c.artStatus==='approved-unique'));
 assert.equal(git('diff','--name-only',baseline,sourceCommit,'--',...files).toString().trim(),'','Runtime differs from accepted online baseline');
@@ -49,7 +57,7 @@ assert.deepEqual(counts,{SSR:5,SR:15,R:25,N:50});
 const json=async(name,data)=>writeFile(path.join(output,name),JSON.stringify(data,null,2)+'\n');
 await json('card-manifest.json',{version,cards});
 await mkdir(path.join(output,'docs'));
-for(const file of ['RELEASE-20261003.md','GAME.md','DEVICE-QA.md','assets/audio/README.md']){
+for(const file of [release.document,'GAME.md','DEVICE-QA.md',...(release.loader?['STARTUP-LOADING.md']:[]),'assets/audio/README.md']){
   await writeFile(path.join(output,'docs',file==='assets/audio/README.md'?'AUDIO-SOURCES.md':file),git('show',sourceCommit+':'+file));
 }
 const webZip=path.join(output,'rigui-'+version+'-web.zip');
@@ -62,7 +70,7 @@ const sourceFiles=git('ls-tree','-r','--name-only',sourceCommit).toString().trim
 });
 const packages=[];
 for(const file of [webZip,sourceZip])packages.push({path:path.basename(file),bytes:(await stat(file)).size,sha256:hash(await readFile(file))});
-await json('archive-manifest.json',{version,acceptanceDate:'2026-10-03',acceptanceSource:'User confirmed real-device review complete',url:'https://summer-eve.github.io/SummerEve/?v='+version,baseline,sourceCommit,counts,totalEffectiveCopies:475,rules:RULES,audio:audio.map(a=>({...a,...recordFor(a.path)})),files:records,sourceFiles,packages});
+await json('archive-manifest.json',{version,releaseDocument:release.document,acceptanceDate:'2026-10-03',acceptanceSource:release.acceptanceSource,url:'https://summer-eve.github.io/SummerEve/?v='+version,baseline,sourceCommit,counts,totalEffectiveCopies:475,rules:RULES,audio:audio.map(a=>({...a,...recordFor(a.path)})),files:records,sourceFiles,packages});
 for(const record of records)assert.equal(hash(await readFile(path.join(web,record.path))),record.sha256);
 await json('verification.json',{version,checks:{cardCount:95,artwork:95,drawPreviews:95,maxStars:5,audio:4,files:records.length,baselineRuntimeUnchanged:true,workingCopyMatchesBaseline:true,webFileHashes:true},packages,zipReadback:'Run scripts/verify-release-archive.ps1 to verify both ZIPs before delivery'});
 console.log(JSON.stringify({output,version,baseline,sourceCommit,files:records.length,cards:95,audio:4,packages},null,2));

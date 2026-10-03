@@ -3,8 +3,11 @@ $ErrorActionPreference = 'Stop'
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 $taskDirectory = (Resolve-Path -LiteralPath $ArchiveDirectory).Path
 $taskManifest = Get-Content -Raw -Encoding UTF8 -LiteralPath (Join-Path $taskDirectory 'archive-manifest.json') | ConvertFrom-Json
+if ($taskManifest.version -notin @('20261003-r1','20261003-r5')) { throw 'Unknown accepted archive version' }
+$taskVersion = $taskManifest.version
+$taskReleaseDocument = if ($taskManifest.releaseDocument) { $taskManifest.releaseDocument } else { 'RELEASE-20261003.md' }
 $taskSha = [System.Security.Cryptography.SHA256]::Create()
-$taskWebZip = [System.IO.Compression.ZipFile]::OpenRead((Join-Path $taskDirectory 'rigui-20261003-r1-web.zip'))
+$taskWebZip = [System.IO.Compression.ZipFile]::OpenRead((Join-Path $taskDirectory "rigui-$taskVersion-web.zip"))
 try {
     $taskEntries = @{}
     foreach ($taskEntry in $taskWebZip.Entries) {
@@ -26,7 +29,7 @@ foreach ($taskPackage in $taskManifest.packages) {
     $taskPackagePath = Join-Path $taskDirectory $taskPackage.path
     if ((Get-FileHash -Algorithm SHA256 -LiteralPath $taskPackagePath).Hash.ToLowerInvariant() -ne $taskPackage.sha256) { throw "Package hash mismatch: $($taskPackage.path)" }
 }
-$taskSourceZip = [System.IO.Compression.ZipFile]::OpenRead((Join-Path $taskDirectory 'rigui-20261003-r1-source.zip'))
+$taskSourceZip = [System.IO.Compression.ZipFile]::OpenRead((Join-Path $taskDirectory "rigui-$taskVersion-source.zip"))
 $taskSourceSha = [System.Security.Cryptography.SHA256]::Create()
 try {
     $taskSourceEntries = @($taskSourceZip.Entries | ForEach-Object { $_.FullName.Replace('\','/') })
@@ -44,7 +47,7 @@ try {
         try { $taskHash = [BitConverter]::ToString($taskSourceSha.ComputeHash($taskStream)).Replace('-','').ToLowerInvariant() } finally { $taskStream.Dispose() }
         if ($taskHash -ne $taskRecord.sha256 -or $taskSourceLookup[$taskRecord.path].Length -ne $taskRecord.bytes) { throw "Source ZIP hash or size mismatch: $($taskRecord.path)" }
     }
-    foreach ($taskRequired in @('index.html','package.json','src/app2.js','tests/exchange-feedback.test.mjs','RELEASE-20261003.md','DEVICE-QA.md','scripts/archive-release.mjs')) {
+    foreach ($taskRequired in @('index.html','package.json','src/app2.js','tests/exchange-feedback.test.mjs',$taskReleaseDocument,'DEVICE-QA.md','scripts/archive-release.mjs')) {
         if ($taskRequired -notin $taskSourceEntries) { throw "Missing source file: $taskRequired" }
     }
     if (@($taskSourceEntries | Where-Object { $_ -match '^(qa/|dist/|node_modules/|\.git/)' }).Count -gt 0) { throw 'Private or generated content found in source ZIP' }
