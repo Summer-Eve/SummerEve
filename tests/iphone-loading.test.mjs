@@ -34,7 +34,7 @@ test('gallery requests previews on intersection; full art remains in details',()
  const watcher=readFileSync(new URL('../src/result-images.js',import.meta.url),'utf8');
  assert.match(watcher,/new IntersectionObserver/);assert.match(watcher,/rootMargin:'80px'/);assert.match(watcher,/20000/);
 });
-test('all previews precede original art in optional preload order',()=>{
+test('all previews precede original art in startup manifest order',()=>{
  const list=startupResources();const lastPreview=Math.max(...list.map((r,i)=>r.url.includes('/assets/draw/')?i:-1));
  const firstFull=list.findIndex(r=>r.url.startsWith('./assets/ssr-'));
  assert.ok(lastPreview>=0&&firstFull>lastPreview);assert.equal(list.filter(r=>r.url.includes('/assets/draw/')).length,95);

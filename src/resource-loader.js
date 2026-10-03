@@ -1,5 +1,5 @@
 // Counts only fully read, successful responses. A failed file never advances progress.
-export async function loadResources(resources,{base,cache=null,assetCache=null,fetcher=globalThis.fetch,concurrency=4,timeout=25000,signal,waitForTurn=async()=>{},onProgress=()=>{}}={}){
+export async function loadResources(resources,{base,cache=null,assetCache=null,fetcher=globalThis.fetch,concurrency=4,timeout=25000,signal,waitForTurn=async()=>{},validateResource=async()=>{},onProgress=()=>{}}={}){
   let cursor=0,loaded=0,cached=0,bytes=0,cacheWritable=Boolean(cache);
   const failed=[];
   let requiredLeft=resources.filter(resource=>resource.required).length;
@@ -12,7 +12,7 @@ export async function loadResources(resources,{base,cache=null,assetCache=null,f
       let response;
       if(cache)try{response=await cache.match(url);}catch{cacheWritable=false;}
       let hit=Boolean(response?.ok);
-      // r8 artwork is unchanged from r7; never inherit old release code.
+      // Artwork is unchanged from compatible releases; never inherit old code.
       if(!hit&&assetCache&&resource.url.startsWith('./assets/'))try{
         response=await assetCache.match(url);hit=Boolean(response?.ok);
         if(hit&&cacheWritable)try{await cache.put(url,response.clone());}catch{cacheWritable=false;}
@@ -41,7 +41,9 @@ export async function loadResources(resources,{base,cache=null,assetCache=null,f
         }
         if(lastError)throw lastError;
         if(cacheWritable)try{await cache.put(url,response.clone());}catch{cacheWritable=false;}
-      }else cached++;
+      }
+      try{await validateResource(resource,url);}catch(error){if(cache)try{await cache.delete(url);}catch{}throw error;}
+      if(hit)cached++;
       loaded++;if(resource.required)requiredLeft--;report();
     }catch(error){failed.push({...resource,error:String(error.message||error)});report();}
   }
@@ -53,4 +55,18 @@ export async function loadResources(resources,{base,cache=null,assetCache=null,f
     }
   }));
   return {loaded,total:resources.length,cached,bytes,cacheWritable,failed};
+}
+
+// Validate native image loading as well as bytes before exposing early entry.
+// Keep only the current worker's image alive, rather than retaining all decoded cards.
+export function verifyEntryImage(resource,url,{ImageClass=globalThis.Image,timeout=20000}={}){
+  if(!resource.required||!url.endsWith('.webp'))return Promise.resolve();
+  if(!ImageClass)return Promise.reject(new Error('Image decoder unavailable'));
+  return new Promise((resolve,reject)=>{
+    const image=new ImageClass();let settled=false;
+    const finish=error=>{if(settled)return;settled=true;clearTimeout(timer);image.onload=null;image.onerror=null;if(error){image.removeAttribute?.('src');reject(error);}else resolve();};
+    const timer=setTimeout(()=>finish(new Error('Entry image timeout')),timeout);
+    image.onload=async()=>{try{if(image.decode)await image.decode();if(!image.naturalWidth)throw new Error('Empty entry image');finish();}catch(error){finish(error);}};
+    image.onerror=()=>finish(new Error('Entry image unavailable'));image.src=url;
+  });
 }

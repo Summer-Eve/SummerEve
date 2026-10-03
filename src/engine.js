@@ -1,4 +1,4 @@
-import { CARDS, CARD_BY_ID, POOLS, RARITIES, RULES, TOTAL_COPIES } from './data.js?v=20261003-r8';
+import { CARDS, CARD_BY_ID, POOLS, RARITIES, RULES, TOTAL_COPIES } from './data.js?v=20261004-r9';
 
 const LEGACY_CAPS = { SSR: 3, SR: 5, R: 8, N: 10 };
 

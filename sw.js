@@ -1,9 +1,9 @@
 /* Scoped resource cache only. Saves remain in localStorage and are never touched. */
-const VERSION='20261003-r8';
+const VERSION='20261004-r9';
 const BASE=new URL('./',self.location.href);
 const CACHE='rigui-resources:'+BASE.pathname+':'+VERSION;
-// Only unchanged r7 assets can migrate; versioned programs always use r8.
-const PREVIOUS_ASSETS='rigui-resources:'+BASE.pathname+':20261003-r7';
+// Only unchanged r8/r7 assets can migrate; versioned programs always use r9.
+const PREVIOUS_ASSETS=['20261003-r8','20261003-r7'].map(version=>'rigui-resources:'+BASE.pathname+':'+version);
 const pendingResources=new Map();
 self.addEventListener('install',event=>event.waitUntil(self.skipWaiting()));
 self.addEventListener('activate',event=>event.waitUntil(self.clients.claim()));
@@ -16,7 +16,7 @@ async function cachedResource(request,url){
     const key=url.href;
     let cached=retry?null:await cache.match(key);
     if(!cached&&!retry&&url.pathname.startsWith(BASE.pathname+'assets/'))try{
-      if((await caches.keys()).includes(PREVIOUS_ASSETS))cached=await (await caches.open(PREVIOUS_ASSETS)).match(key);
+      const names=await caches.keys();for(const name of PREVIOUS_ASSETS)if(names.includes(name)){cached=await (await caches.open(name)).match(key);if(cached)break;}
       if(cached)await cache.put(key,cached.clone());
     }catch{}
     if(cached){

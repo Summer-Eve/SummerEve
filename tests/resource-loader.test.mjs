@@ -74,10 +74,10 @@ test('bounded concurrency and timeout include a stalled response body',async()=>
  const result=await loadResources([{url:'stalled',required:true}],{base,timeout:10,fetcher:async(url,{signal})=>({ok:true,status:200,headers:{},arrayBuffer:()=>new Promise((resolve,reject)=>signal.addEventListener('abort',()=>reject(new Error('timeout')),{once:true}))})});
  assert.equal(result.loaded,0);assert.equal(result.failed[0].required,true);
 });
-function workerHarness(cache,oldCache=null,fetcher=async()=>new Response('network')){
+function workerHarness(cache,oldCache=null,fetcher=async()=>new Response('network'),oldVersion='20261003-r7'){
  const handlers={},requests=[];
  const self={location:{href:base+'sw.js?v='+RESOURCE_VERSION},addEventListener:(name,handler)=>{handlers[name]=handler;}};
- vm.runInNewContext(readFileSync(new URL('../sw.js',import.meta.url),'utf8'),{self,URL,Response,Headers,caches:{keys:async()=>oldCache?['rigui-resources:/SummerEve/:20261003-r7']:[],open:async name=>oldCache&&name.endsWith(':20261003-r7')?oldCache:cache},fetch:async request=>{requests.push(request);return fetcher(request);}});
+ vm.runInNewContext(readFileSync(new URL('../sw.js',import.meta.url),'utf8'),{self,URL,Response,Headers,caches:{keys:async()=>oldCache?['rigui-resources:/SummerEve/:'+oldVersion]:[],open:async name=>oldCache&&name.endsWith(':'+oldVersion)?oldCache:cache},fetch:async request=>{requests.push(request);return fetcher(request);}});
  const fetch=async(url,headers={})=>{let result;handlers.fetch({request:new Request(new URL(url,base),{headers}),respondWith:promise=>{result=promise;}});return result?await result:null;};
  return {fetch,requests};
 }
@@ -132,6 +132,14 @@ test('native image and background preloader share one worker download',async()=>
  const native=worker.fetch('assets/shared.webp'),background=worker.fetch('assets/shared.webp',{'X-Rigui-Preload':'1'});
  await new Promise(r=>setImmediate(r));assert.equal(worker.requests.length,1);resolve();
  assert.equal(await (await native).text(),'one body');assert.equal(await (await background).text(),'one body');
+});
+
+test('r9 also reuses unchanged r8 art without executing r8 cache programs',async()=>{
+ const cache=fakeCache(),old=fakeCache();await old.put(base+'assets/card.webp',new Response('r8 art'));
+ await old.put(base+'src/app2.js?v='+RESOURCE_VERSION,new Response('incompatible code'));
+ const worker=workerHarness(cache,old,async()=>new Response('new code'),'20261003-r8');
+ assert.equal(await(await worker.fetch('assets/card.webp')).text(),'r8 art');
+ assert.equal(await(await worker.fetch('src/app2.js?v='+RESOURCE_VERSION)).text(),'new code');assert.equal(worker.requests.length,1);
 });
 test('optional downloads use normal HTTP cache and low priority while critical code stays normal',async()=>{
  const seen=[];

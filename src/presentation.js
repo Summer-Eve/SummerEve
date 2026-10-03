@@ -1,4 +1,4 @@
-import {RULES} from './data.js?v=20261003-r8';
+import {RULES} from './data.js?v=20261004-r9';
 
 export function pityCopy(pity) {
   return {ssr:`${RULES.pity-pity}抽内可获得SSR`,sr:'每10抽必出SR',shared:'单抽与十连均享有保底'};

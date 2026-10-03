@@ -2,18 +2,17 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
-import {loadResources} from '../src/resource-loader.js';
+import {loadResources,verifyEntryImage} from '../src/resource-loader.js';
 
 const tick=()=>new Promise(resolve=>setImmediate(resolve));
 async function until(check){for(let i=0;i<100;i++){if(check())return;await tick();}assert.fail('Condition did not settle');}
 function deferred(){let resolve;const promise=new Promise(r=>{resolve=r;});return {promise,resolve};}
-function boot(fetcher,importGame=async()=>{}){
+function boot(fetcher,importGame=async()=>{},resources=[{url:'core',required:true},{url:'slow-a'},{url:'slow-b'}],imageValidator=verifyEntryImage){
  const elements=new Map();
  for(const name of ['progress','[data-load-percent]','[data-load-status]','[data-cache-note]','[data-load-retry]','[data-load-enter]','.startup-town'])elements.set(name,{hidden:true,disabled:false,textContent:'',value:0});
  let removed=0,stopped=0,imports=0;
  const cached=new Map(),screen={querySelector:name=>elements.get(name),remove:()=>{removed++;}};
  const document={querySelector:()=>screen,querySelectorAll:()=>[],documentElement:{classList:{remove(){}}}};
- const resources=[{url:'core',required:true},{url:'slow-a'},{url:'slow-b'}];
  let source=readFileSync(new URL('../src/startup.js',import.meta.url),'utf8');
  source=source.replace(/^import .*;\r?\n/gm,'').replaceAll('import.meta.url',JSON.stringify('https://example.test/src/startup.js'));
  source=source.replace(/import\('\.\/app2\.js\?v=[^']+'\)/,'importGame()');
@@ -22,7 +21,7 @@ function boot(fetcher,importGame=async()=>{}){
   RESOURCE_VERSION:'test',resourceCacheName:()=> 'test',startupResources:()=>resources,
   resourceActivity:{wait:async()=>{}},
   caches:{open:async()=>({match:async key=>cached.get(key)?.clone(),put:async(key,response)=>{cached.set(key,response);}})},
-  startTown:()=>()=>{stopped++;},loadResources:(list,options)=>loadResources(list,{...options,fetcher}),
+  startTown:()=>()=>{stopped++;},verifyEntryImage:imageValidator,loadResources:(list,options)=>loadResources(list,{...options,fetcher}),
   importGame:async()=>{imports++;await importGame();}
  });
  return {completion,elements,cached,get removed(){return removed;},get stopped(){return stopped;},get imports(){return imports;}};
@@ -58,6 +57,23 @@ test('required failure blocks entry even if its handler is called directly',asyn
  const session=boot(async url=>new Response('body',{status:url.endsWith('core')?503:200}));
  await session.completion;assert.equal(session.elements.get('[data-load-enter]').hidden,true);
  await session.elements.get('[data-load-enter]').onclick();assert.equal(session.imports,0);assert.equal(session.removed,0);
+});
+
+test('entry stays hidden until every basic card image decodes; background originals start afterwards',async()=>{
+ const gate=deferred(),background=deferred(),requests=[];
+ const resources=[{url:'core',required:true},{url:'card.webp',required:true},{url:'original'}];
+ const session=boot(async url=>{requests.push(url);if(url.endsWith('original'))await background.promise;return new Response('ok');},async()=>{},resources,async resource=>{if(resource.url==='card.webp')await gate.promise;});
+ await until(()=>session.cached.size===2);
+ const enter=session.elements.get('[data-load-enter]');assert.equal(enter.hidden,true);
+ await enter.onclick();assert.equal(session.imports,0);assert.ok(!requests.some(url=>url.endsWith('original')));
+ gate.resolve();await until(()=>!enter.hidden);await enter.onclick();assert.equal(session.removed,1);
+ background.resolve();await session.completion;assert.equal(session.cached.size,3);
+});
+
+test('basic image decode failure blocks entry even after optional files finish',async()=>{
+ const session=boot(async()=>new Response('ok'),async()=>{},[{url:'card.webp',required:true},{url:'original'}],async resource=>{if(resource.required)throw Error('image unavailable');});
+ await session.completion;const enter=session.elements.get('[data-load-enter]');assert.equal(enter.hidden,true);await enter.onclick();assert.equal(session.imports,0);
+ assert.ok(session.elements.get('[data-load-retry]').hidden===false);
 });
 test('a failed game import stays visible and cannot be overwritten by background progress',async()=>{
  const gate=deferred();

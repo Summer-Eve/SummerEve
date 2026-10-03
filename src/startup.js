@@ -1,7 +1,7 @@
-import {RESOURCE_VERSION,resourceCacheName,startupResources} from './startup-resources.js?v=20261003-r8';
-import {loadResources} from './resource-loader.js?v=20261003-r8';
-import {startTown} from './startup-town.js?v=20261003-r8';
-import {resourceActivity} from './resource-activity.js?v=20261003-r8';
+import {RESOURCE_VERSION,resourceCacheName,startupResources} from './startup-resources.js?v=20261004-r9';
+import {loadResources,verifyEntryImage} from './resource-loader.js?v=20261004-r9';
+import {startTown} from './startup-town.js?v=20261004-r9';
+import {resourceActivity} from './resource-activity.js?v=20261004-r9';
 
 const base=new URL('../',import.meta.url),screen=document.querySelector('#startup');
 const bar=screen.querySelector('progress'),percent=screen.querySelector('[data-load-percent]');
@@ -14,7 +14,7 @@ let loading=false,starting=false,entered=false,entryFailed=false,requiredReady=f
 const total=pending.length;
 async function enableCache(){
   try{if(globalThis.caches)cache=await caches.open(resourceCacheName(base));}catch{}
-  try{const oldName='rigui-resources:'+base.pathname+':20261003-r7';if((await caches.keys()).includes(oldName))assetCache=await caches.open(oldName);}catch{}
+  try{const names=await caches.keys(),previous=[];for(const version of ['20261003-r8','20261003-r7']){const name='rigui-resources:'+base.pathname+':'+version;if(names.includes(name))previous.push(await caches.open(name));}if(previous.length)assetCache={match:async url=>{for(const old of previous){const response=await old.match(url);if(response?.ok)return response;}}};}catch{}
   if(!('serviceWorker' in navigator))return;
   // A bounded handshake lets browsers that deny registration still preload and enter.
   const handshake=(async()=>{
@@ -50,7 +50,7 @@ async function startGame(){
   status.textContent=done===total?'资源已就绪，正在展卷':'正在进入游戏，剩余资源将继续后台下载';
   try{
     await ensureStyles();
-    await import('./app2.js?v=20261003-r8');
+    await import('./app2.js?v=20261004-r9');
     entered=true;
     stopTown();
     document.documentElement.classList.remove('booting');screen.remove();
@@ -83,7 +83,7 @@ async function run(background=false){
     note.textContent=p.cacheWritable&&controlled?'首次加载后可在此浏览器复用缓存':'正在预加载；当前浏览器可能无法保留资源缓存';
     if(previousHits+roundHits+p.cached>0)note.textContent=`已从缓存读取 ${previousHits+roundHits+p.cached} 项`+(p.cacheWritable&&controlled?'':' · 缓存功能受限');
   };
-  const core=await loadResources(critical,{base,cache,assetCache,concurrency:4,onProgress:report});
+  const core=await loadResources(critical,{base,cache,assetCache,concurrency:4,validateResource:verifyEntryImage,onProgress:report});
   roundLoaded=core.loaded;roundHits=core.cached;
   // A failed core must not be reported ready by the optional-only phase.
   const rest=await loadResources(optional,{base,cache,assetCache,concurrency:1,waitForTurn:()=>resourceActivity.wait(),onProgress:p=>report({...p,requiredReady:!core.failed.length})});
